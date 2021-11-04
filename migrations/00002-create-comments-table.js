@@ -18,3 +18,14 @@ exports.down = async function up(sql) {
   console.log('Dropping comments table...');
   await sql`DROP TABLE comments;`;
 };
+
+/* INSERT INTO comments
+      (user_id, user_name, verb_choice, argument, event_id)
+    VALUES
+      (1, 'blablah', 'blablah', 'blablah', 1);
+*/
+/* INSERT INTO events
+      (event_title, left_logo, left_link, left_headline, left_author_s, right_logo, right_link, right_headline, right_author_s, event_link)
+    VALUES
+      ('blablah', 'blablah', 'blablah', 'blablah','blablah', 'blablah', 'blablah', 'blablah', 'blablah', 'blablah')
+*/
