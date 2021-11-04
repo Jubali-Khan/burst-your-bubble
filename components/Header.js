@@ -1,25 +1,55 @@
+import { css } from '@emotion/react';
 import Link from 'next/link';
+
+const navStyles = css`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: stretch;
+  align-content: stretch;
+  background-color: lightblue;
+  border-radius: 10px;
+  margin: 1%;
+  padding: 1% 3%;
+`;
 
 export default function Header(props) {
   return (
-    // Logged in as admin
+    <header>
+      {/* // Logged in as admin */}
+      <nav css={navStyles}>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
 
-    // Logged in as user
+        <Link href="/admin/create">
+          <a>Create Event</a>
+        </Link>
+        <Link href="/admin/reports">
+          <a>Reports</a>
+        </Link>
 
-    // Not logged in
+        <Link href="/logout">
+          <a>Log Out</a>
+        </Link>
+      </nav>
 
-    <nav>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
+      {/* Logged in as user*/}
+      {/* Not logged in */}
+      {/* <nav css={navStyles}>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
 
-      <Link href="/guide">
-        <a>Guide</a>
-      </Link>
+        <Link href="/guide">
+          <a>Guide</a>
+        </Link>
 
-      <Link href="/login">
-        <a>Log In</a>
-      </Link>
-    </nav>
+        <Link href="/login">
+          <a>Log In / Sign Up</a>
+        </Link>
+      </nav> */}
+    </header>
   );
 }
