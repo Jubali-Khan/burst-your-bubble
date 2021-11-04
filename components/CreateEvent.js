@@ -55,10 +55,41 @@ export default function CreateEvent() {
   const [leftArticle, setLeftArticle] = useState('');
   const [rightArticle, setRightArticle] = useState('');
 
-  const [errors, setErrors] = useState('');
+  const [messages, setMessages] = useState([]);
 
-  function publishHandler() {
+  async function publishHandler() {
     // ping API /api/events/create
+    const response = await fetch('/api/events/create', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventTitle,
+        leftLogo,
+        leftLink,
+        leftHeadline,
+        leftAuthorS,
+        rightLogo,
+        rightLink,
+        rightHeadline,
+        rightAuthorS,
+        eventLink,
+        leftArticle,
+        rightArticle,
+      }),
+    });
+    const statusJson = await response.json();
+
+    console.log('statusJson: ', statusJson);
+    // setMessages([statusJson]);
+
+    // if there's an error in the response from the api ..
+    if ('errors' in statusJson) {
+      setMessages(statusJson.errors);
+      return;
+    }
+    // if everything's alright..
   }
 
   return (
@@ -139,11 +170,11 @@ export default function CreateEvent() {
       <hr />
       <section id="publish">
         <div>
-          {/* {errors.map((error) => (
-            <li key={`err-${error}`}>{error}</li>
-          ))} */}
+          {messages.map((message) => (
+            <li key={`mess-${message}`}>{message}</li>
+          ))}
         </div>
-        <button>PUBLISH</button>
+        <button onClick={publishHandler}>PUBLISH</button>
       </section>
     </form>
   );
