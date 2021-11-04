@@ -169,12 +169,12 @@ export default function CreateEvent() {
       </section>
       <hr />
       <section id="publish">
+        <button onClick={publishHandler}>PUBLISH</button>
         <div>
           {messages.map((message) => (
             <li key={`mess-${message}`}>{message}</li>
           ))}
         </div>
-        <button onClick={publishHandler}>PUBLISH</button>
       </section>
     </form>
   );
