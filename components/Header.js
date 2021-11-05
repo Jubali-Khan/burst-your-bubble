@@ -12,6 +12,10 @@ const navStyles = css`
   border-radius: 10px;
   margin: 1%;
   padding: 1% 3%;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 export default function Header(props) {

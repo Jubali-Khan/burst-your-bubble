@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import Image from 'next/image';
 import { useState } from 'react';
 
 const formStyles = css`
@@ -109,6 +110,7 @@ export default function CreateEvent() {
         />
       </section>
       <section id="headlines" css={headlinesSectionStyles}>
+        <Image src="/../public/favicon.ico" width="100px" height="80px" />
         <div css={headlineInfoStyle}>
           <input
             value={leftLink}
@@ -129,6 +131,7 @@ export default function CreateEvent() {
             required
           />
         </div>
+        <Image src="/../public/favicon.ico" width="100px" height="80px" />
         <div css={headlineInfoStyle}>
           <input
             value={rightLink}

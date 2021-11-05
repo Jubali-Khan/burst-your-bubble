@@ -29,6 +29,7 @@ function connectOneTimeToDatabase() {
 // Connect to PostgreSQL
 const sql = connectOneTimeToDatabase();
 
+// EVENTS
 export async function insertEvent(
   eventTitle,
   leftLogo,
@@ -52,6 +53,7 @@ export async function insertEvent(
   return camelcaseKeys(event[0]);
 }
 
+// ARTICLES
 export async function insertArticles(leftArt, rightArt, eventId) {
   const articlesEntry = await sql`
   INSERT INTO articles
@@ -63,3 +65,31 @@ export async function insertArticles(leftArt, rightArt, eventId) {
   `;
   return camelcaseKeys(articlesEntry[0]);
 }
+
+// REPORTS
+export async function getReports() {
+  const reports = await sql`
+  SELECT
+    *
+  FROM
+    comment_reports
+  `;
+  return reports.map((report) => camelcaseKeys(report));
+}
+
+export async function insertReport(userId, commentId, eventId, reportedFor) {
+  const reportInserted = await sql`
+  INSERT INTO comment_reports
+    (user_id, comment_id, event_id, reported_for)
+  VALUES
+    (${userId}, ${commentId}, ${eventId}, ${reportedFor})
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(reportInserted[0]);
+}
+
+// update report function needed to increase the number of times_reported & acted_on
+
+// delete report function
+// delete comment function
