@@ -89,7 +89,30 @@ export async function insertReport(userId, commentId, eventId, reportedFor) {
   return camelcaseKeys(reportInserted[0]);
 }
 
-// update report function needed to increase the number of times_reported & acted_on
+// update report functions needed to increase the number of times_reported & to switch acted_on
 
 // delete report function
 // delete comment function
+
+// COMMENTS
+export async function getCommentByID(commentId) {
+  const comment = await sql`
+  SELECT
+    *
+  FROM
+    comments
+  WHERE
+    id = ${commentId}
+  `;
+  return camelcaseKeys(comment[0]);
+}
+
+export async function getComments() {
+  const comments = await sql`
+  SELECT
+    *
+  FROM
+    comments
+  `;
+  return comments.map((comment) => camelcaseKeys(comment));
+}

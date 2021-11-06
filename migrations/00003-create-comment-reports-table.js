@@ -6,9 +6,9 @@ exports.up = async function up(sql) {
       user_id integer NOT NULL,
       comment_id integer REFERENCES comments (id),
       event_id integer NOT NULL,
-      acted_on boolean NOT NULL DEFAULT false,
+      acted_on boolean DEFAULT false,
       reported_for integer NOT NULL,
-      times_reported integer NOT NULL
+      times_reported integer DEFAULT 1
     );
   `;
 };
