@@ -1,22 +1,130 @@
+import { css } from '@emotion/react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+const reportContainer = css`
+  border: 1px grey solid;
+  border-radius: 10px;
+  margin: 1% 2%;
+  padding: 1%;
+
+  display: flex;
+  flex-direction: row;
+
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  .delete {
+    background-color: transparent;
+    border-radius: 25%;
+  }
+
+  :hover {
+    background-color: #e3e3e3;
+  }
+
+  .comment {
+    text-align: center;
+    margin: auto;
+  }
+  .why {
+    text-align: center;
+    margin: auto;
+  }
+
+  .buttons {
+    text-align: center;
+    margin: auto;
+  }
+`;
+
 export default function ReportInstance(props) {
-  console.log('props.rep in ReportInstance:', props.rep);
-  console.log('props.comments in ReportInstance:', props.comments);
-  const comment = props.comments.filter(
-    (cmnt) => props.rep.commentId === cmnt.id,
+  const [commentDeleted, setCommentDeleted] = useState(false);
+
+  async function deleteComment(commentId, reportId) {
+    const response = await fetch(
+      'http://localhost:3000/api/reports/deleteComment',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          comment_id: commentId,
+          report_id: reportId,
+        }),
+      },
+    );
+    const commentDeleted = await response.json();
+    console.log('comment from deleteComment: ', commentDeleted);
+  }
+
+  async function deleteReport(reportId) {
+    const response = await fetch(
+      'http://localhost:3000/api/reports/deleteReport',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          report_id: reportId,
+        }),
+      },
+    );
+    const newReports = props.reports.filter((report) => {
+      return report.id !== props.rep.id;
+    });
+    props.setReports(newReports);
+  }
+
+  const comment = props.comments.find(
+    (cmnt) => cmnt.id === props.rep.commentId,
   );
-  console.log('comment in ReportInstance: ', comment);
+  console.log('comment:', comment);
+  console.log('props.comments:', props.comments);
+  console.log('props.rep:', props.rep);
+
+  // Reasons to report:
+  // 1. offensive and/or disrespectful language
+  // 2. hate language
+  // 3. spam, scam or fraud
+  // 4. incompliance with comment guidelines
+
+  let reportReason;
+  if (props.rep.reportedFor === 1) {
+    reportReason = 'offensive and/or disrespectful language';
+  } else if (props.rep.reportedFor === 2) {
+    reportReason = 'hate language';
+  } else if (props.rep.reportedFor === 3) {
+    reportReason = 'spam, scam or fraud';
+  } else if (props.rep.reportedFor === 4) {
+    reportReason = 'incompliance with comment guidelines';
+  }
 
   return (
-    <div>
-      userId: {comment[0].userId}
-      <br />
-      {comment[0].userName} {comment[0].verbChoice} {comment[0].argument}{' '}
+    <div css={reportContainer}>
+      <section className="comment">
+        {/* using the comment is no longer necessary, only the id is needed to delete the comment. props.rep.comment can be used instead! */}
+        {comment.userName} (userId: {comment.userId}) {comment.verbChoice}{' '}
+        {comment.argument}
+      </section>
+      <hr />
+      <section className="why">
+        {comment.userName} used {reportReason} (reported{' '}
+        {props.rep.timesReported} times)
+        {/* times reported and report reason logic needs to be implemented in the report functionality in the comment component and the corresponding tables need to be updated */}
+      </section>
+      <hr />
+      <section className="buttons">
+        <button onClick={() => deleteReport(props.rep.id)}>
+          delete report
+        </button>
+        <br />
+        <button onClick={() => deleteComment(comment.id, props.rep.id)}>
+          delete comment
+        </button>
+        {commentDeleted ? 'comment has been successfuly deleted' : ''}
+      </section>
     </div>
   );
 }
-
-// const comment = await response.json();
-// checkbox and the 2 buttons
-// comment info:
-// 1. comment with userId and eventId
-// 2. reason for report and times reported

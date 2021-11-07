@@ -77,19 +77,50 @@ export async function getReports() {
   return reports.map((report) => camelcaseKeys(report));
 }
 
-export async function insertReport(userId, commentId, eventId, reportedFor) {
+export async function insertReport(
+  userId,
+  commentId,
+  comment,
+  eventId,
+  reportedFor,
+) {
   const reportInserted = await sql`
   INSERT INTO comment_reports
-    (user_id, comment_id, event_id, reported_for)
+    (user_id, comment_id, comment, event_id, reported_for)
   VALUES
-    (${userId}, ${commentId}, ${eventId}, ${reportedFor})
+    (${userId}, ${commentId}, ${comment}, ${eventId}, ${reportedFor})
   RETURNING
     *
   `;
   return camelcaseKeys(reportInserted[0]);
 }
 
-// update report functions needed to increase the number of times_reported & to switch acted_on
+export async function updateReport(reportId) {
+  const updated = await sql`
+  UPDATE
+    comment_reports
+  SET
+    acted_on = true
+  WHERE
+    id = ${reportId}
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(updated);
+}
+
+export async function deleteReportByID(reportId) {
+  const deleted = await sql`
+  DELETE FROM
+    comment_reports
+  WHERE
+    id=${reportId}
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(deleted);
+}
+// update report functions needed to increase the number of times_reported (in report button functionality) & to switch acted_on (admin side, deleteHandler or notify handler)
 
 // delete report function
 // delete comment function
@@ -116,3 +147,25 @@ export async function getComments() {
   `;
   return comments.map((comment) => camelcaseKeys(comment));
 }
+
+export async function deleteCommentByID(commentId) {
+  const commentDeleted = await sql`
+  DELETE
+  FROM
+    comments
+  WHERE
+    id = ${commentId}
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(commentDeleted[0]);
+}
+
+/*
+insert into comments (user_id, user_name, verb_choice, argument, event_id) values (1, 'james', 'thinks', 'blahblah', 3);
+
+INSERT INTO comment_reports
+    (user_id, comment_id, comment, event_id, reported_for)
+  VALUES
+    (1, 1, 'user123 thinks blahblah', 3, 2);
+*/
