@@ -169,3 +169,78 @@ INSERT INTO comment_reports
   VALUES
     (1, 1, 'user123 thinks blahblah', 3, 2);
 */
+
+// AUTHENTICATION: LOGIN/REGISTER
+export async function getUserWPASSHASH(userName) {
+  const [user] = await sql`
+  SELECT
+    *
+  FROM
+    users
+  WHERE
+    user_name = ${userName}
+  `;
+  return camelcaseKeys(user);
+}
+export async function getUsernameWPASSHASH(userName) {
+  const [user] = await sql`
+  SELECT
+    *
+  FROM
+    users
+  WHERE
+    user_name = ${userName}
+  `;
+  return camelcaseKeys(user);
+}
+
+export async function getUserEmailWPASSHASH(userEmail) {
+  const [user] = await sql`
+  SELECT
+    *
+  FROM
+    users
+  WHERE
+    user_email = ${userEmail}
+  `;
+  return camelcaseKeys(user);
+}
+
+// USERS
+export async function insertUser(name, email, passhash) {
+  const user = await sql`
+  INSERT INTO users
+    (user_name, user_email, user_passhash)
+  VALUES
+    (${name}, ${email}, ${passhash})
+  RETURNING
+    user_name,
+    user_email
+  `;
+  return camelcaseKeys(user);
+}
+
+// SESSIONS
+export async function deleteExpiredSessions() {
+  const sessions = await sql`
+  DELETE FROM
+    sessions
+  WHERE
+    expiry_timestamp < NOW()
+  RETURNING
+    *
+  `;
+  return sessions.map((session) => camelcaseKeys(session));
+}
+
+export async function insertSession(token, user_id) {
+  const [session] = await sql`
+    INSERT INTO sessions
+      (token, user_id)
+    VALUES
+      (${token}, ${user_id})
+    RETURNING
+      *
+  `;
+  return camelcaseKeys(session);
+}
