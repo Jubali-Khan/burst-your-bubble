@@ -38,6 +38,8 @@ export default async function login(req, res) {
     return;
   }
 
+  // is the logging user admin by role? create special token here and check for it in gSSP in admin pages -> header change
+
   // credentials correct -> session creation
   // Sesh
   // clean old sessions

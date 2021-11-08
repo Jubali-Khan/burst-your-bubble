@@ -281,3 +281,25 @@ export async function isSessionValid(token) {
   `;
   return sessions.map((session) => camelcaseKeys(session));
 }
+
+export async function isAdminSession(token) {
+  if (!token) return undefined;
+  const session = await sql`
+  SELECT
+    sessions.id,
+    sessions.token,
+    sessions.expiry_timestamp,
+    sessions.user_id,
+    users.id,
+    users.role
+  FROM
+    sessions,
+    users
+  WHERE
+    sessions.token = ${token} AND sessions.expiry_timestamp > NOW() AND
+    (sessions.user_id = users.id AND
+    users.role = 1)
+  `;
+  console.log('session in isAdminSession: ', session[0]);
+  return camelcaseKeys(session[0]);
+}

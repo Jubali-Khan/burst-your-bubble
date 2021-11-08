@@ -66,7 +66,7 @@ export default function Reports(props) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const reportsResponse = await fetch(
     'http://localhost:3000/api/reports/handle',
   );
@@ -77,6 +77,41 @@ export async function getServerSideProps() {
     'http://localhost:3000/api/comments/get',
   );
   const comments = await commentsResponse.json();
+
+  //
+  // is admin?
+  const { isAdminSession } = await import('../../util/database');
+
+  // No session to begin with?
+  const sessionToken = context.req.cookies.sessionToken;
+  console.log('sessionToken in gSSP in reports', sessionToken);
+
+  if (typeof sessionToken === 'undefined') {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  //
+
+  const adminSession = await isAdminSession(sessionToken);
+
+  console.log('adminSession in gSSP reports: ', adminSession);
+  console.log('typeof adminSession in gSSP reports: ', typeof adminSession);
+
+  // undefined returned from isAdminSession? Not admin.
+  if (typeof adminSession === 'undefined') {
+    return {
+      redirect: {
+        destination: '/logout',
+        permanent: false,
+      },
+    };
+  }
+  //
+
   return {
     props: {
       reports: reports,
