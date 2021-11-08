@@ -1,6 +1,11 @@
 import crypto from 'node:crypto';
 import { verifyPassword } from '../../../util/auth';
-import { getUserWPASSHASH } from '../../../util/database';
+import { createSTC } from '../../../util/cookies';
+import {
+  deleteExpiredSessions,
+  getUserWPASSHASH,
+  insertSession,
+} from '../../../util/database';
 
 /*
 login api route functions (for login):
@@ -11,8 +16,9 @@ login api route functions (for login):
   - deleteExpiredSessions() (X)
   - crypto to create a token (X)
   - insertSession (X)
-  - createSRSTC + cookie library
-  - gSSP (to redirect)
+  - createSRSTC + cookie library (X)
+  - gSSP (to redirect) (X)
+    - isSessionValid (X)
 */
 
 export default async function login(req, res) {
@@ -46,7 +52,21 @@ export default async function login(req, res) {
     return;
   }
 
+  // Sesh
+  // clean old sessions
+  deleteExpiredSessions();
+
+  // Create the record in the sessions table with a new token
+  const token = crypto.randomBytes(64).toString('base64');
+
+  const newSession = await insertSession(token, userWPASSHASH.id);
+
+  const sessionTokenCookie = createSTC(newSession.token);
+
   // destructuring
   const { userPasshash, ...user } = userWPASSHASH;
-  res.status(200).send({ user: user });
+  res
+    .status(200)
+    .setHeader('Set-Cookie', sessionTokenCookie)
+    .send({ user: user });
 }

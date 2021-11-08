@@ -38,5 +38,12 @@ export default async function register(req, res) {
 
   const userInserted = await insertUser(userName, userEmail, passwordHash);
 
+  if (!userInserted) {
+    res.send({
+      errors: [{ message: "An account can't be created at the moment" }],
+    });
+    return;
+  }
+
   res.status(200).send({ userInserted: userInserted });
 }

@@ -74,3 +74,39 @@ export default function Login() {
     </Layout>
   );
 }
+
+// This is used to redirect to another page because you already have a valid session, otherwise it won't stop you from accessing /login
+export async function getServerSideProps(context) {
+  // Redirect from HTTP to HTTPS on Heroku
+  if (
+    context.req.headers.host &&
+    context.req.headers['x-forwarded-proto'] &&
+    context.req.headers['x-forwarded-proto'] !== 'https'
+  ) {
+    return {
+      redirect: {
+        destination: `https://${context.req.headers.host}/login`,
+        permanent: true,
+      },
+    };
+  }
+
+  const { isSessionValid } = await import('../util/database');
+
+  const sessionToken = context.req.cookies.sessionToken;
+  const session = await isSessionValid(sessionToken);
+
+  // redirecting part!
+  if (session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}

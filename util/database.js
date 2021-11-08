@@ -244,3 +244,16 @@ export async function insertSession(token, user_id) {
   `;
   return camelcaseKeys(session);
 }
+
+export async function isSessionValid(token) {
+  if (!token) return undefined;
+  const sessions = await sql`
+  SELECT
+    *
+  FROM
+    sessions
+  WHERE
+    token = ${token} AND expiry_timestamp > NOW()
+  `;
+  return sessions.map((session) => camelcaseKeys(session));
+}
