@@ -7,20 +7,6 @@ import {
   insertSession,
 } from '../../../util/database';
 
-/*
-login api route functions (for login):
-  - getUserWPASSHASH (to get the user row from users table)
-  - hashPassword (to hash the given password)
-  - verifyPassword (to see if the hashed password is the same as the one )
-(for sessions):
-  - deleteExpiredSessions() (X)
-  - crypto to create a token (X)
-  - insertSession (X)
-  - createSRSTC + cookie library (X)
-  - gSSP (to redirect) (X)
-    - isSessionValid (X)
-*/
-
 export default async function login(req, res) {
   if (!req.body.username || !req.body.password) {
     res.status(400).send({
@@ -29,7 +15,7 @@ export default async function login(req, res) {
     return;
   }
 
-  // username part
+  // username verification part
   const userWPASSHASH = await getUserWPASSHASH(req.body.username);
   console.log('userWPASSHASH: ', userWPASSHASH);
 
@@ -40,7 +26,7 @@ export default async function login(req, res) {
     return;
   }
 
-  // password part
+  // password verification part
   const isPassword = verifyPassword(
     req.body.password,
     userWPASSHASH.userPasshash,
@@ -52,9 +38,11 @@ export default async function login(req, res) {
     return;
   }
 
+  // credentials correct -> session creation
   // Sesh
   // clean old sessions
   deleteExpiredSessions();
+  // deleteExtraSessions(userWPASSHASH.id);
 
   // Create the record in the sessions table with a new token
   const token = crypto.randomBytes(64).toString('base64');
@@ -70,3 +58,17 @@ export default async function login(req, res) {
     .setHeader('Set-Cookie', sessionTokenCookie)
     .send({ user: user });
 }
+
+/*
+login api route functions (for login):
+  - getUserWPASSHASH (to get the user row from users table)
+  - hashPassword (to hash the given password)
+  - verifyPassword (to see if the hashed password is the same as the one )
+(for sessions):
+  - deleteExpiredSessions() (X)
+  - crypto to create a token (X)
+  - insertSession (X)
+  - createSRSTC + cookie library (X)
+  - gSSP on page (to redirect) (X)
+    - isSessionValid (X)
+*/

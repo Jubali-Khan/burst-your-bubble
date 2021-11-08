@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Layout from '../components/Layout';
 
 export default function Login() {
-  // const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
@@ -40,13 +39,6 @@ export default function Login() {
           router.push('/');
         }}
       >
-        {/* <label>
-          Email:
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
-        </label> */}
         <br />
         <label>
           Username:
@@ -100,7 +92,7 @@ export async function getServerSideProps(context) {
   if (session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: '/',
         permanent: false,
       },
     };

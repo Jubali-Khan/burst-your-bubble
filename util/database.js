@@ -233,6 +233,30 @@ export async function deleteExpiredSessions() {
   return sessions.map((session) => camelcaseKeys(session));
 }
 
+export async function deleteExtraSessions(userId) {
+  const sessions = await sql`
+  DELETE FROM
+    sessions
+  WHERE
+    user_id = ${userId}
+  RETURNING
+    *
+  `;
+  return sessions.map((session) => camelcaseKeys(session));
+}
+
+export async function deleteSession(token) {
+  const sessions = await sql`
+  DELETE FROM
+    sessions
+  WHERE
+    token = ${token}
+  RETURNING
+  *
+  `;
+  return sessions.map((session) => camelcaseKeys(session));
+}
+
 export async function insertSession(token, user_id) {
   const [session] = await sql`
     INSERT INTO sessions

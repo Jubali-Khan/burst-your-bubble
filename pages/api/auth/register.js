@@ -6,6 +6,7 @@ import {
 } from '../../../util/database';
 
 export default async function register(req, res) {
+  // Are all fields occupied
   if (!req.body.username || !req.body.password || !req.body.useremail) {
     res.send({
       errors: [{ message: 'Please input an email, username and password' }],
@@ -13,6 +14,7 @@ export default async function register(req, res) {
     return;
   }
 
+  // is username already in DB (duplicate sign up)?
   const userName = req.body.username;
   const userNameExists = await getUsernameWPASSHASH(userName);
   console.log('userNameExists: ', userNameExists);
@@ -23,6 +25,7 @@ export default async function register(req, res) {
     return;
   }
 
+  // is email already in DB (duplicate sign up)?
   const userEmail = req.body.useremail;
   const userEmailExists = await getUserEmailWPASSHASH(userEmail);
   console.log('userEmailExists: ', userEmailExists);
@@ -34,10 +37,12 @@ export default async function register(req, res) {
     return;
   }
 
+  // Username and email alright -> hash password & add user to users table
   const passwordHash = await hashPassword(req.body.password);
 
   const userInserted = await insertUser(userName, userEmail, passwordHash);
 
+  // Some problem while adding user? No can do
   if (!userInserted) {
     res.send({
       errors: [{ message: "An account can't be created at the moment" }],
