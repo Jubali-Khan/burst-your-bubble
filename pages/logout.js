@@ -11,7 +11,15 @@ export async function getServerSideProps(context) {
   // if there is, delete it
   if (sessionToken) {
     // fetch an api route called logout
-    await fetch(`${process.env.BASE_URL}/api/logout`);
+    await fetch(`${process.env.BASE_URL}/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionToken: sessionToken,
+      }),
+    });
 
     context.res.setHeader(
       'Set-Cookie',
@@ -22,6 +30,7 @@ export async function getServerSideProps(context) {
     );
   }
 
+  console.log('redirecting home from logout page');
   // finally, redirect home
   return {
     redirect: {

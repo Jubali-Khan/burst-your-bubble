@@ -3,6 +3,7 @@ import { verifyPassword } from '../../../util/auth';
 import { createSTC } from '../../../util/cookies';
 import {
   deleteExpiredSessions,
+  deleteExtraSessions,
   getUserWPASSHASH,
   insertSession,
 } from '../../../util/database';
@@ -14,7 +15,7 @@ export default async function login(req, res) {
     });
     return;
   }
-
+  // Verification:
   // username verification part
   const userWPASSHASH = await getUserWPASSHASH(req.body.username);
   console.log('userWPASSHASH: ', userWPASSHASH);
@@ -27,24 +28,23 @@ export default async function login(req, res) {
   }
 
   // password verification part
-  const isPassword = verifyPassword(
+  const isPassword = await verifyPassword(
     req.body.password,
     userWPASSHASH.userPasshash,
   );
+  console.log('isPassword: ', isPassword);
   if (!isPassword) {
     res.status(401).send({
       errors: [{ message: 'Username or password incorrect' }],
     });
     return;
   }
+  //
 
-  // is the logging user admin by role? create special token here and check for it in gSSP in admin pages -> header change
-
-  // credentials correct -> session creation
   // Sesh
   // clean old sessions
   deleteExpiredSessions();
-  // deleteExtraSessions(userWPASSHASH.id);
+  deleteExtraSessions(userWPASSHASH.id);
 
   // Create the record in the sessions table with a new token
   const token = crypto.randomBytes(64).toString('base64');
@@ -52,6 +52,7 @@ export default async function login(req, res) {
   const newSession = await insertSession(token, userWPASSHASH.id);
 
   const sessionTokenCookie = createSTC(newSession.token);
+  //
 
   // destructuring
   const { userPasshash, ...user } = userWPASSHASH;

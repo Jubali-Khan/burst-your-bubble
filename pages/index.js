@@ -14,3 +14,15 @@ export default function Home() {
     </div>
   );
 }
+
+// export async function getServerSideProps(context) {
+//   const { isAdminSession } = await import('../util/database');
+//   const sessionToken = context.req.cookies.sessionToken;
+//   const adminSession = await isAdminSession(sessionToken);
+
+//   console.log('adminSession in index: ', adminSession);
+//   // console.log('adminSession.role in index: ', adminSession.role);
+//   return {
+//     props: {},
+//   };
+// }

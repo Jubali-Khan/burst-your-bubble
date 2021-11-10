@@ -78,15 +78,14 @@ export async function getServerSideProps(context) {
   );
   const comments = await commentsResponse.json();
 
-  //
   // is admin?
   const { isAdminSession } = await import('../../util/database');
 
-  // No session to begin with?
+  // No session?
   const sessionToken = context.req.cookies.sessionToken;
   console.log('sessionToken in gSSP in reports', sessionToken);
 
-  if (typeof sessionToken === 'undefined') {
+  if (!sessionToken) {
     return {
       redirect: {
         destination: '/login',
@@ -99,10 +98,10 @@ export async function getServerSideProps(context) {
   const adminSession = await isAdminSession(sessionToken);
 
   console.log('adminSession in gSSP reports: ', adminSession);
-  console.log('typeof adminSession in gSSP reports: ', typeof adminSession);
+  // console.log('adminSession.role in gSSP create: ', adminSession.role);
 
-  // undefined returned from isAdminSession? Not admin.
-  if (typeof adminSession === 'undefined') {
+  // Not an admin adminSession?
+  if (!adminSession) {
     return {
       redirect: {
         destination: '/logout',

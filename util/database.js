@@ -296,10 +296,34 @@ export async function isAdminSession(token) {
     sessions,
     users
   WHERE
-    sessions.token = ${token} AND sessions.expiry_timestamp > NOW() AND
-    (sessions.user_id = users.id AND
-    users.role = 1)
+    sessions.token = ${token} AND
+    sessions.expiry_timestamp > NOW() AND
+    users.role = 1 AND
+    sessions.user_id = users.id
   `;
   console.log('session in isAdminSession: ', session[0]);
+  return camelcaseKeys(session[0]);
+}
+
+export async function getSessionAndRole(token) {
+  if (!token) return undefined;
+  const session = await sql`
+  SELECT
+    sessions.id,
+    sessions.token,
+    sessions.expiry_timestamp,
+    sessions.user_id,
+    users.id,
+    users.role
+  FROM
+    sessions,
+    users
+  WHERE
+    sessions.token = ${token} AND
+    sessions.expiry_timestamp > NOW() AND
+    (sessions.user_id = users.id AND
+    users.role = 1 OR 2)
+  `;
+  console.log('session in getSessionAndRole: ', session[0]);
   return camelcaseKeys(session[0]);
 }

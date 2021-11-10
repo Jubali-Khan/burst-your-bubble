@@ -12,6 +12,9 @@ const navStyles = css`
   border-radius: 10px;
   margin: 1%;
   padding: 1% 3%;
+
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
   a {
     text-decoration: none;
     color: inherit;
@@ -21,6 +24,20 @@ const navStyles = css`
 export default function Header(props) {
   return (
     <header>
+      {/* Not logged in */}
+      {/* <nav css={navStyles}>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
+
+        <Link href="/guide">
+          <a>Guide</a>
+        </Link>
+
+        <Link href="/login">
+          <a>Log In / Sign Up</a>
+        </Link>
+      </nav> */}
       {/* // Logged in as admin */}
       <nav css={navStyles}>
         <Link href="/">
@@ -46,20 +63,6 @@ export default function Header(props) {
       </nav>
 
       {/* Logged in as user*/}
-      {/* Not logged in */}
-      {/* <nav css={navStyles}>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-
-        <Link href="/guide">
-          <a>Guide</a>
-        </Link>
-
-        <Link href="/login">
-          <a>Log In / Sign Up</a>
-        </Link>
-      </nav> */}
     </header>
   );
 }
