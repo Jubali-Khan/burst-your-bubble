@@ -5,7 +5,7 @@ const navStyles = css`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: stretch;
   align-content: stretch;
   background-color: lightblue;
@@ -21,48 +21,92 @@ const navStyles = css`
   }
 `;
 
+const adminCenterStyles = css`
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  text-align: center;
+  justify-content: space-around;
+`;
+
+const centerStyles = css`
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  text-align: center;
+  justify-content: space-around;
+`;
+
 export default function Header(props) {
-  return (
-    <header>
-      {/* Not logged in */}
-      {/* <nav css={navStyles}>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
+  console.log('props.userType in Header: ', props.userType);
+  if (!props.userType) {
+    return (
+      <header>
+        {/* Not logged in */}
+        <nav css={navStyles}>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+          <section css={centerStyles}>
+            <Link href="/guide">
+              <a>Guide</a>
+            </Link>
+          </section>
+          <section>
+            <Link href="/login">
+              <a>Login</a>
+            </Link>{' '}
+            /{' '}
+            <Link href="/register">
+              <a>Register</a>
+            </Link>
+          </section>
+        </nav>
+      </header>
+    );
+  }
+  if (props.userType === 'admin') {
+    return (
+      <header>
+        {/* // Logged in as admin */}
+        <nav css={navStyles}>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+          <section css={adminCenterStyles}>
+            <Link href="/admin/create">
+              <a>Create Event</a>
+            </Link>
+            <Link href="/admin/reports">
+              <a>Reports</a>
+            </Link>
+          </section>
+          <Link href="/logout">
+            <a>Log Out</a>
+          </Link>
+        </nav>
+      </header>
+    );
+  }
+  if (props.userType === 'user') {
+    return (
+      <header>
+        {/* Logged in as user*/}
+        <nav css={navStyles}>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+          <section css={centerStyles}>
+            <Link href="/guide">
+              <a>Guide</a>
+            </Link>
+          </section>
 
-        <Link href="/guide">
-          <a>Guide</a>
-        </Link>
-
-        <Link href="/login">
-          <a>Log In / Sign Up</a>
-        </Link>
-      </nav> */}
-      {/* // Logged in as admin */}
-      <nav css={navStyles}>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-
-        <Link href="/admin/create">
-          <a>Create Event</a>
-        </Link>
-        <Link href="/admin/reports">
-          <a>Reports</a>
-        </Link>
-
-        <Link href="/logout">
-          <a>Log Out</a>
-        </Link>
-        <Link href="/login">
-          <a>Login</a>
-        </Link>
-        <Link href="/register">
-          <a>Register</a>
-        </Link>
-      </nav>
-
-      {/* Logged in as user*/}
-    </header>
-  );
+          <Link href="/logout">
+            <a>Log Out</a>
+          </Link>
+        </nav>
+      </header>
+    );
+  }
 }

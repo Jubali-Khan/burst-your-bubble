@@ -322,7 +322,7 @@ export async function getSessionAndRole(token) {
     sessions.token = ${token} AND
     sessions.expiry_timestamp > NOW() AND
     (sessions.user_id = users.id AND
-    users.role = 1 OR 2)
+    (users.role = 1 OR users.role = 2))
   `;
   console.log('session in getSessionAndRole: ', session[0]);
   return camelcaseKeys(session[0]);

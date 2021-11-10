@@ -21,6 +21,7 @@ const mainChild = css`
 `;
 
 export default function Layout(props) {
+  console.log('props.userType in Layout: ', props.userType);
   return (
     <div css={layoutStyles}>
       <Head>
@@ -31,7 +32,7 @@ export default function Layout(props) {
           rel="stylesheet"
         />
       </Head>
-      <Header />
+      <Header userType={props.userType} />
       <main css={mainChild}>{props.children}</main>
       <Footer />
     </div>
