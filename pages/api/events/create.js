@@ -1,9 +1,31 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { insertArticles, insertEvent } from '../../../util/database';
+import {
+  getRoleByToken,
+  insertArticles,
+  insertEvent,
+} from '../../../util/database';
 
 export default async function eventCreate(req, res) {
-  console.log(`req.body`, req.body);
+  console.log('req.body in eventCreate: ', req.body);
+  console.log('req.cookies in eventCreate: ', req.cookies);
+  // is there a session?
+  if (!req.cookies.sessionToken) {
+    res.status(403).send({
+      errors: [{ message: 'no session - not authorized' }],
+    });
+    return;
+  }
+
+  // role:
+  const sessionFromDB = await getRoleByToken(req.cookies.sessionToken);
+  if (sessionFromDB.role !== 1) {
+    res.status(403).send({
+      errors: [{ message: 'wrong role - not authorized' }],
+    });
+    return;
+  }
+
   const {
     eventTitle,
     leftLogo,

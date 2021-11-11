@@ -52,15 +52,9 @@ export default function Header(props) {
               <a>Guide</a>
             </Link>
           </section>
-          <section>
-            <Link href="/login">
-              <a>Login</a>
-            </Link>{' '}
-            /{' '}
-            <Link href="/register">
-              <a>Register</a>
-            </Link>
-          </section>
+          <Link href="/loginOrRegister">
+            <a>Login / Register</a>
+          </Link>
         </nav>
       </header>
     );
@@ -99,6 +93,9 @@ export default function Header(props) {
           <section css={centerStyles}>
             <Link href="/guide">
               <a>Guide</a>
+            </Link>
+            <Link href="/profile/somenumber">
+              <a>My Profile</a>
             </Link>
           </section>
 

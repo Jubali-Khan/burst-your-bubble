@@ -41,9 +41,21 @@ const textSectionStyles = css`
 
 export default function Reports(props) {
   const [reports, setReports] = useState(props.reports);
+  const [errors, setErrors] = useState([]);
+
+  function refreshPage() {
+    // useRouter is an alternative
+    window.location.reload();
+  }
   return (
-    <Layout>
+    <Layout userType={props.userType}>
       <h1>Reports</h1>
+      {useEffect(() => refreshPage, [errors])}
+      <h2>
+        {errors.map((error) => (
+          <li key={`err-${error}`}>{error.message}</li>
+        ))}
+      </h2>
       <section css={textSectionStyles}>
         <span className="col-10"></span>
         <span className="comment">COMMENT:</span>
@@ -54,6 +66,8 @@ export default function Reports(props) {
         {reports &&
           reports.map((report) => (
             <ReportInstance
+              setErrors={setErrors}
+              sessionToken={props.sessionToken}
               rep={report}
               reports={reports}
               setReports={setReports}
@@ -71,37 +85,44 @@ export async function getServerSideProps(context) {
     'http://localhost:3000/api/reports/handle',
   );
   const reports = await reportsResponse.json();
-  // console.log('reports in gSSP: ', reports);
 
   const commentsResponse = await fetch(
     'http://localhost:3000/api/comments/get',
   );
   const comments = await commentsResponse.json();
 
+  //
+  //
   // is admin?
-  const { isAdminSession } = await import('../../util/database');
+  const { getRoleByToken } = await import('../../util/database');
 
-  // No session?
   const sessionToken = context.req.cookies.sessionToken;
   console.log('sessionToken in gSSP in reports', sessionToken);
 
-  if (!sessionToken) {
+  const userType = await getRoleByToken(sessionToken);
+  console.log('userType in gSSP reports: ', userType);
+
+  if (!userType) {
     return {
       redirect: {
-        destination: '/login',
+        destination: '/loginOrRegister',
         permanent: false,
       },
     };
   }
-  //
 
-  const adminSession = await isAdminSession(sessionToken);
+  if (userType.role === 1) {
+    return {
+      props: {
+        userType: 'admin',
+        reports: reports,
+        comments: comments,
+        sessionToken: sessionToken,
+      },
+    };
+  }
 
-  console.log('adminSession in gSSP reports: ', adminSession);
-  // console.log('adminSession.role in gSSP create: ', adminSession.role);
-
-  // Not an admin adminSession?
-  if (!adminSession) {
+  if (userType.role === 2) {
     return {
       redirect: {
         destination: '/logout',
@@ -109,12 +130,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  //
-
   return {
-    props: {
-      reports: reports,
-      comments: comments,
-    },
+    props: {},
   };
 }

@@ -1,8 +1,8 @@
 import Layout from '../components/Layout';
 
-export default function Guide() {
+export default function Guide(props) {
   return (
-    <Layout>
+    <Layout userType={props.userType}>
       <h1>Guide</h1>
       <p>guide</p>
     </Layout>
@@ -10,10 +10,10 @@ export default function Guide() {
 }
 
 export async function getServerSideProps(context) {
-  const { getSessionAndRole } = await import('../util/database');
+  const { getRoleByToken } = await import('../util/database');
   const sessionToken = context.req.cookies.sessionToken;
-  const userType = await getSessionAndRole(sessionToken);
-  console.log('userType in gSSP guide: ', userType);
+  const userType = await getRoleByToken(sessionToken);
+  console.log('userType in gSSP index: ', userType);
 
   if (!userType) {
     // someone just browing, not admin nor user

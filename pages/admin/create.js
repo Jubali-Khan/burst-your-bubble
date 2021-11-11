@@ -1,40 +1,56 @@
+import { useEffect, useState } from 'react';
 import CreateEvent from '../../components/CreateEvent';
 import Layout from '../../components/Layout';
 
-export default function Create() {
+export default function Create(props) {
+  const [errors, setErrors] = useState([]);
+  function refreshPage() {
+    // useRouter is an alternative
+    window.location.reload();
+  }
   return (
-    <Layout>
+    <Layout userType={props.userType}>
       <h1>Create an event</h1>
-      <CreateEvent />
+      {useEffect(() => refreshPage, [errors])}
+      <div>
+        {errors.map((error) => (
+          <li key={`mess-${error}`}>{error.message}</li>
+        ))}
+      </div>
+      <CreateEvent setErrors={setErrors} />
     </Layout>
   );
 }
 
 export async function getServerSideProps(context) {
+  //
   // is admin?
-  const { isAdminSession } = await import('../../util/database');
+  const { getRoleByToken } = await import('../../util/database');
 
-  // No session?
   const sessionToken = context.req.cookies.sessionToken;
   console.log('sessionToken in gSSP in create', sessionToken);
 
-  if (!sessionToken) {
+  const userType = await getRoleByToken(sessionToken);
+  console.log('userType in gSSP create: ', userType);
+
+  if (!userType) {
     return {
       redirect: {
-        destination: '/login',
+        destination: '/loginOrRegister',
         permanent: false,
       },
     };
   }
-  //
 
-  const adminSession = await isAdminSession(sessionToken);
+  if (userType.role === 1) {
+    return {
+      props: {
+        userType: 'admin',
+      },
+    };
+  }
 
-  console.log('adminSession in gSSP create: ', adminSession);
-  // console.log('adminSession.role in gSSP create: ', adminSession.role);
-
-  // Not an admin adminSession?
-  if (!adminSession) {
+  if (userType.role === 2) {
     return {
       redirect: {
         destination: '/logout',
@@ -42,32 +58,8 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  //
 
   return {
     props: {},
   };
 }
-
-/*
-export async function getServerSideProps(context) {
-  // Add header session checker:
-  // is there a session?
-  // yes: is it admin or user?
-  // admin: send info (admin) over Layout to Header
-  // user: send info (user) over Layout to Header
-  // no: just browsin', basic header
-  const session = await getSessionAndRole(context.req.cookies.sessionToken);
-  console.log('session in _app: ', session);
-  if (!session) {
-    return {
-      props: {
-        session: 'browser',
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-}
-*/

@@ -171,14 +171,14 @@ INSERT INTO comment_reports
 */
 
 // AUTHENTICATION: LOGIN/REGISTER
-export async function getUserWPASSHASH(userName) {
+export async function getUserWPASSHASH(userEmail) {
   const [user] = await sql`
   SELECT
     *
   FROM
     users
   WHERE
-    user_name = ${userName}
+    user_email = ${userEmail}
   `;
   return camelcaseKeys(user);
 }
@@ -214,10 +214,24 @@ export async function insertUser(name, email, passhash) {
   VALUES
     (${name}, ${email}, ${passhash})
   RETURNING
+    id,
     user_name,
     user_email
   `;
-  return camelcaseKeys(user);
+  return camelcaseKeys(user[0]);
+}
+
+export async function getUsernameByID(id) {
+  const username = await sql`
+  SELECT
+    username
+  FROM
+    users
+  WHERE
+    users.id = ${id}
+  `;
+  console.log('username in getUsernamebyid: ', username);
+  return camelcaseKeys(username);
 }
 
 // SESSIONS
@@ -245,7 +259,7 @@ export async function deleteExtraSessions(userId) {
   return sessions.map((session) => camelcaseKeys(session));
 }
 
-export async function deleteSession(token) {
+export async function deleteSessionFromDB(token) {
   const sessions = await sql`
   DELETE FROM
     sessions
@@ -305,7 +319,7 @@ export async function isAdminSession(token) {
   return camelcaseKeys(session[0]);
 }
 
-export async function getSessionAndRole(token) {
+export async function getRoleByToken(token) {
   if (!token) return undefined;
   const session = await sql`
   SELECT

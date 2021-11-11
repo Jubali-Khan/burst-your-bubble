@@ -1,7 +1,12 @@
+import crypto from 'node:crypto';
 import { hashPassword } from '../../../util/auth';
+import { createSTC } from '../../../util/cookies';
 import {
+  deleteExpiredSessions,
+  deleteExtraSessions,
   getUserEmailWPASSHASH,
   getUsernameWPASSHASH,
+  insertSession,
   insertUser,
 } from '../../../util/database';
 
@@ -51,5 +56,22 @@ export default async function register(req, res) {
     return;
   }
 
-  res.status(200).send({ userInserted: userInserted });
+  // Sesh
+  // clean old sessions
+  deleteExpiredSessions();
+
+  // Create the record in the sessions table with a new token
+  const token = crypto.randomBytes(64).toString('base64');
+
+  const newSession = await insertSession(token, userInserted.id);
+
+  const sessionTokenCookie = createSTC(newSession.token);
+  //
+
+  // destructuring
+  const { userPasshash, ...user } = userInserted;
+  res
+    .status(200)
+    .setHeader('Set-Cookie', sessionTokenCookie)
+    .send({ user: user });
 }

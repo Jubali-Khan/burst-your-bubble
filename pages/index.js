@@ -16,9 +16,9 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const { getSessionAndRole } = await import('../util/database');
+  const { getRoleByToken } = await import('../util/database');
   const sessionToken = context.req.cookies.sessionToken;
-  const userType = await getSessionAndRole(sessionToken);
+  const userType = await getRoleByToken(sessionToken);
   console.log('userType in gSSP index: ', userType);
 
   if (!userType) {

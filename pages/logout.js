@@ -10,7 +10,7 @@ export async function getServerSideProps(context) {
 
   // if there is, delete it
   if (sessionToken) {
-    // fetch an api route called logout
+    // delete it from the DB
     await fetch(`${process.env.BASE_URL}/api/auth/logout`, {
       method: 'POST',
       headers: {
@@ -21,6 +21,7 @@ export async function getServerSideProps(context) {
       }),
     });
 
+    // delete it from the browser
     context.res.setHeader(
       'Set-Cookie',
       serialize('sessionToken', '', {

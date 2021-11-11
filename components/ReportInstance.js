@@ -56,6 +56,12 @@ export default function ReportInstance(props) {
     );
     const commentDeleted = await response.json();
     console.log('comment from deleteComment: ', commentDeleted);
+    if ('errors' in commentDeleted) {
+      // setErrors
+      props.setErrors(commentDeleted.errors);
+      return;
+    }
+    setCommentDeleted(true);
   }
 
   async function deleteReport(reportId) {
@@ -71,18 +77,23 @@ export default function ReportInstance(props) {
         }),
       },
     );
+    const reportDeleted = await response.json();
+    if ('errors' in reportDeleted) {
+      props.setErrors(reportDeleted.errors);
+      return;
+    }
     const newReports = props.reports.filter((report) => {
       return report.id !== props.rep.id;
     });
     props.setReports(newReports);
   }
 
-  const comment = props.comments.find(
-    (cmnt) => cmnt.id === props.rep.commentId,
-  );
-  console.log('comment:', comment);
-  console.log('props.comments:', props.comments);
-  console.log('props.rep:', props.rep);
+  // const comment = props.comments.find(
+  //   (cmnt) => cmnt.id === props.rep.commentId,
+  // );
+  // console.log('comment:', comment);
+  // console.log('props.comments:', props.comments);
+  // console.log('props.rep:', props.rep);
 
   // Reasons to report:
   // 1. offensive and/or disrespectful language
@@ -105,12 +116,13 @@ export default function ReportInstance(props) {
     <div css={reportContainer}>
       <section className="comment">
         {/* using the comment is no longer necessary, only the id is needed to delete the comment. props.rep.comment can be used instead! */}
-        {comment.userName} (userId: {comment.userId}) {comment.verbChoice}{' '}
-        {comment.argument}
+        {/* {comment.userName} (userId: {comment.userId}) {comment.verbChoice}{' '}
+        {comment.argument} */}
+        {props.rep.comment}
       </section>
       <hr />
       <section className="why">
-        {comment.userName} used {reportReason} (reported{' '}
+        {/* {comment.userName} */} User used {reportReason} (reported{' '}
         {props.rep.timesReported} times)
         {/* times reported and report reason logic needs to be implemented in the report functionality in the comment component and the corresponding tables need to be updated */}
       </section>
@@ -120,7 +132,9 @@ export default function ReportInstance(props) {
           delete report
         </button>
         <br />
-        <button onClick={() => deleteComment(comment.id, props.rep.id)}>
+        <button
+          onClick={() => deleteComment(props.rep.commentId, props.rep.id)}
+        >
           delete comment
         </button>
         {commentDeleted ? 'comment has been successfuly deleted' : ''}

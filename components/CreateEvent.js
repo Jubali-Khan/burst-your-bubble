@@ -37,7 +37,7 @@ const articlesStyles = css`
   }
 `;
 
-export default function CreateEvent() {
+export default function CreateEvent(props) {
   // State variables
   const [eventTitle, setEventTitle] = useState('');
 
@@ -55,8 +55,6 @@ export default function CreateEvent() {
 
   const [leftArticle, setLeftArticle] = useState('');
   const [rightArticle, setRightArticle] = useState('');
-
-  const [messages, setMessages] = useState([]);
 
   async function publishHandler() {
     // ping API /api/events/create
@@ -83,11 +81,10 @@ export default function CreateEvent() {
     const statusJson = await response.json();
 
     console.log('statusJson: ', statusJson);
-    // setMessages([statusJson]);
 
     // if there's an error in the response from the api ..
     if ('errors' in statusJson) {
-      setMessages(statusJson.errors);
+      props.setErrors(statusJson.errors);
       return;
     }
     // if everything's alright..
@@ -173,11 +170,6 @@ export default function CreateEvent() {
       <hr />
       <section id="publish">
         <button onClick={publishHandler}>PUBLISH</button>
-        <div>
-          {messages.map((message) => (
-            <li key={`mess-${message}`}>{message}</li>
-          ))}
-        </div>
       </section>
     </form>
   );
