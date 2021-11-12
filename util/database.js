@@ -63,7 +63,7 @@ export async function getEventByTitle(eventTitle) {
   WHERE
     event_title = ${eventTitle}
   `;
-  console.log('[event] in getEventByTitle: ', event);
+  console.log('event in getEventByTitle: ', event[0]);
   return camelcaseKeys(event[0]);
 }
 
@@ -89,8 +89,8 @@ export async function getArticlesByEventID(eventId) {
   WHERE
     event_id = ${eventId}
   `;
-  console.lof('articles in getArticlesByEventID:', articles);
-  return camelcaseKeys(articles[0]);
+  console.log('articles in getArticlesByEventID:', articles);
+  return camelcaseKeys(articles);
 }
 
 // REPORTS

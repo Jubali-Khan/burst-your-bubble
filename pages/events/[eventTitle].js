@@ -18,14 +18,58 @@ export default function EventPage() {
 }
 
 export async function getServerSideProps(context) {
-  const eventTitle = context.query.eventTitle.replaceAll('_', ' ');
-  console.log('eventTitle: ', eventTitle);
-  //   // get the event info from the database
-  //   // 1. event title, authors, links from events table
-  //   // 2. corresponding articles from articles table
-  //   // 3. corresponding comments from comments table
-  // check role and update header accordingly
   const { getRoleByToken } = await import('../../util/database');
+  const eventTitle = context.query.eventTitle.replaceAll('_', ' ');
+  // console.log('eventTitle: ', eventTitle);
+
+  const eventResponse = await fetch('http://localhost:3000/api/event/getInfo', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      eventTitle: eventTitle,
+    }),
+  });
+
+  const event = await eventResponse.json();
+  console.log('event in gSSP in [eventTitle]: ', event);
+  // if event isn't bringing right data ..?
+
+  const articlesResponse = await fetch(
+    'http://localhost:3000/api/event/getArticles',
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventId: event.id,
+      }),
+    },
+  );
+  const articles = await articlesResponse.json();
+  console.log('articles in gSSP in [eventTitle]: ', articles);
+  // if articles dont exist, show proper message on page or redirect
+
+  const commentsResponse = await fetch(
+    'http://localhost:3000/api/event/getComments',
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventId: event.id,
+      }),
+    },
+  );
+  const comments = await commentsResponse.json();
+  console.log('comments in gSSP in [eventTitle]: ', comments);
+  // No comments? no opinionComments!
+
+  // check role and update header accordingly
+
   const sessionToken = context.req.cookies.sessionToken;
   const userType = await getRoleByToken(sessionToken);
   console.log('userType in gSSP [eventTitle]: ', userType);
