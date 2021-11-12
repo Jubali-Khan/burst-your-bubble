@@ -44,7 +44,7 @@ export default async function login(req, res) {
   // Sesh
   // clean old sessions
   deleteExpiredSessions();
-  deleteExtraSessions(userWPASSHASH.id);
+  // deleteExtraSessions(userWPASSHASH.id); // causing weird problem where after login, the session is deleted from the db but remains in the browser and header doesn't change to admin/user header
 
   // Create the record in the sessions table with a new token
   const token = crypto.randomBytes(64).toString('base64');

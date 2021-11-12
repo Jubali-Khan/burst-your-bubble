@@ -53,6 +53,20 @@ export async function insertEvent(
   return camelcaseKeys(event[0]);
 }
 
+export async function getEventByTitle(eventTitle) {
+  // convert title to
+  const event = await sql`
+  SELECT
+    *
+  FROM
+    events
+  WHERE
+    event_title = ${eventTitle}
+  `;
+  console.log('[event] in getEventByTitle: ', event);
+  return camelcaseKeys(event[0]);
+}
+
 // ARTICLES
 export async function insertArticles(leftArt, rightArt, eventId) {
   const articlesEntry = await sql`
@@ -64,6 +78,19 @@ export async function insertArticles(leftArt, rightArt, eventId) {
     *
   `;
   return camelcaseKeys(articlesEntry[0]);
+}
+
+export async function getArticlesByEventID(eventId) {
+  const [articles] = await sql`
+  SELECT
+    *
+  FROM
+    articles
+  WHERE
+    event_id = ${eventId}
+  `;
+  console.lof('articles in getArticlesByEventID:', articles);
+  return camelcaseKeys(articles[0]);
 }
 
 // REPORTS
@@ -161,6 +188,19 @@ export async function deleteCommentByID(commentId) {
   return camelcaseKeys(commentDeleted[0]);
 }
 
+export async function getCommentsByEventID(eventId) {
+  const comments = await sql`
+  SELECT
+    *
+  FROM
+    comments
+  WHERE
+    event_id = ${eventId}
+  `;
+  console.log('comments in getCommentsByEventID: ', comments);
+  return comments.map((comment) => camelcaseKeys(comment));
+}
+
 /*
 insert into comments (user_id, user_name, verb_choice, argument, event_id) values (1, 'james', 'thinks', 'blahblah', 3);
 
@@ -168,6 +208,7 @@ INSERT INTO comment_reports
     (user_id, comment_id, comment, event_id, reported_for)
   VALUES
     (1, 1, 'user123 thinks blahblah', 3, 2);
+
 */
 
 // AUTHENTICATION: LOGIN/REGISTER

@@ -11,10 +11,11 @@ export default function Create(props) {
   return (
     <Layout userType={props.userType}>
       <h1>Create an event</h1>
-      {useEffect(() => refreshPage, [errors])}
+      {/* {useEffect(() => refreshPage, [errors])}
+      refresh only on certain errors*/}
       <div>
         {errors.map((error) => (
-          <li key={`mess-${error}`}>{error.message}</li>
+          <li key={`mess-${error.message}`}>{error.message}</li>
         ))}
       </div>
       <CreateEvent setErrors={setErrors} />

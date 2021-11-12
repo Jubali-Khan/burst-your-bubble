@@ -121,7 +121,7 @@ export async function getServerSideProps(context) {
   ) {
     return {
       redirect: {
-        destination: `https://${context.req.headers.host}/login`,
+        destination: `https://${context.req.headers.host}/loginOrRegister`,
         permanent: true,
       },
     };

@@ -39,22 +39,22 @@ const articlesStyles = css`
 
 export default function CreateEvent(props) {
   // State variables
-  const [eventTitle, setEventTitle] = useState('');
+  const [eventTitle, setEventTitle] = useState();
 
   const [leftLogo, setLeftLogo] = useState('');
-  const [leftLink, setLeftLink] = useState('');
-  const [leftHeadline, setLeftHeadline] = useState('');
-  const [leftAuthorS, setLeftAuthorS] = useState('');
+  const [leftLink, setLeftLink] = useState();
+  const [leftHeadline, setLeftHeadline] = useState();
+  const [leftAuthorS, setLeftAuthorS] = useState();
 
   const [rightLogo, setRightLogo] = useState('');
-  const [rightLink, setRightLink] = useState('');
-  const [rightHeadline, setRightHeadline] = useState('');
-  const [rightAuthorS, setRightAuthorS] = useState('');
+  const [rightLink, setRightLink] = useState();
+  const [rightHeadline, setRightHeadline] = useState();
+  const [rightAuthorS, setRightAuthorS] = useState();
 
   const [eventLink, setEventLink] = useState('');
 
-  const [leftArticle, setLeftArticle] = useState('');
-  const [rightArticle, setRightArticle] = useState('');
+  const [leftArticle, setLeftArticle] = useState();
+  const [rightArticle, setRightArticle] = useState();
 
   async function publishHandler() {
     // ping API /api/events/create

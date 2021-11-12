@@ -1,6 +1,6 @@
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -83,7 +83,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const { isSessionValid } = await import('../util/database');
+  const { isSessionValid } = await import('../../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;
   const session = await isSessionValid(sessionToken);

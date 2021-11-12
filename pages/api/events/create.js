@@ -41,6 +41,34 @@ export default async function eventCreate(req, res) {
     rightArticle,
   } = req.body;
 
+  console.log('eventTitle in api/create:', eventTitle);
+
+  const inputArray = [
+    eventTitle,
+    leftLogo,
+    leftLink,
+    leftHeadline,
+    leftAuthorS,
+    rightLogo,
+    rightLink,
+    rightHeadline,
+    rightAuthorS,
+    // eventLink,
+    leftArticle,
+    rightArticle,
+  ];
+
+  const undefinedElementIndex = inputArray.indexOf(undefined);
+
+  console.log('undefined element index: ', undefinedElementIndex);
+
+  if (undefinedElementIndex > -1) {
+    res.status(401).send({
+      errors: [{ message: 'Please fill all inputs with data' }],
+    });
+    return;
+  }
+
   // insert data into events table
   const event = await insertEvent(
     eventTitle,
