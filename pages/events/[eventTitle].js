@@ -4,13 +4,15 @@ import CommentSection from '../../components/CommentSection';
 import Event from '../../components/Event';
 import Layout from '../../components/Layout';
 
-export default function EventPage() {
+// need container styles
+
+export default function EventPage(props) {
   const [eventErrors, setEventErrors] = useState();
   const [articlesErrors, setArticlesErrors] = useState();
   const [commentsErrors, setCommentsErrors] = useState();
   return (
     <Layout>
-      <Event />
+      <Event event={props.event} />
       <Articles />
       <CommentSection />
     </Layout>
