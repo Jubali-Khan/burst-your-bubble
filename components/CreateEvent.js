@@ -51,12 +51,14 @@ export default function CreateEvent(props) {
   const [rightHeadline, setRightHeadline] = useState();
   const [rightAuthorS, setRightAuthorS] = useState();
 
-  const [eventLink, setEventLink] = useState('');
-
   const [leftArticle, setLeftArticle] = useState();
   const [rightArticle, setRightArticle] = useState();
 
   async function publishHandler() {
+    // set event link to title where empty spaces are replaced with underscores
+    const eventLink = eventTitle.replaceAll(' ', '_');
+    console.log('eventLink: ', eventLink);
+
     // ping API /api/events/create
     const response = await fetch('/api/events/create', {
       method: 'POST',

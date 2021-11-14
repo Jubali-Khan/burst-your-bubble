@@ -7,8 +7,8 @@ import {
 } from '../../../util/database';
 
 export default async function eventCreate(req, res) {
-  console.log('req.body in eventCreate: ', req.body);
-  console.log('req.cookies in eventCreate: ', req.cookies);
+  // console.log('req.body in eventCreate: ', req.body);
+  // console.log('req.cookies in eventCreate: ', req.cookies);
   // is there a session?
   if (!req.cookies.sessionToken) {
     res.status(403).send({
@@ -42,6 +42,7 @@ export default async function eventCreate(req, res) {
   } = req.body;
 
   console.log('eventTitle in api/create:', eventTitle);
+  console.log('eventLink in api/create:', eventLink);
 
   const inputArray = [
     eventTitle,
@@ -53,7 +54,7 @@ export default async function eventCreate(req, res) {
     rightLink,
     rightHeadline,
     rightAuthorS,
-    // eventLink,
+    eventLink,
     leftArticle,
     rightArticle,
   ];

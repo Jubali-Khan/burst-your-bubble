@@ -68,8 +68,8 @@ export async function getServerSideProps(context) {
   console.log('comments in gSSP in [eventTitle]: ', comments);
   // No comments? no opinionComments!
 
+  //
   // check role and update header accordingly
-
   const sessionToken = context.req.cookies.sessionToken;
   const userType = await getRoleByToken(sessionToken);
   console.log('userType in gSSP [eventTitle]: ', userType);
@@ -77,7 +77,11 @@ export async function getServerSideProps(context) {
   if (!userType) {
     // someone just browing, not admin nor user
     return {
-      props: {},
+      props: {
+        event: event,
+        articles: articles,
+        comments: comments,
+      },
     };
   }
 
@@ -85,6 +89,9 @@ export async function getServerSideProps(context) {
     return {
       props: {
         userType: 'admin',
+        event: event,
+        articles: articles,
+        comments: comments,
       },
     };
   }
@@ -93,6 +100,9 @@ export async function getServerSideProps(context) {
     return {
       props: {
         userType: 'user',
+        event: event,
+        articles: articles,
+        comments: comments,
       },
     };
   }
