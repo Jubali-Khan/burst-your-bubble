@@ -1,21 +1,26 @@
+import { css } from '@emotion/react';
 import CommentInput from './CommentInput';
 import OpinionComment from './OpinionComment';
 
+const containerStyles = css`
+  border: 1px solid black;
+  border-radius: 10px;
+
+  margin: 1% 6.1%;
+  padding: 1%;
+`;
+
 export default function CommentSection(props) {
   return (
-    <div>
-      CommentSection:
+    <div css={containerStyles}>
       {/* CommentSection:
       1. looping over the opinion comments
       2. showing commentInput */}
-      <ul>
-        <li>
+      {/* <li>
           <OpinionComment />
-        </li>
-        <li>
-          <CommentInput />
-        </li>
-      </ul>
+        </li> */}
+
+      <CommentInput />
     </div>
   );
 }

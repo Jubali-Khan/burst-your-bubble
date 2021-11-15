@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Markdown from 'markdown-to-jsx';
+import Image from 'next/image';
 import { useState } from 'react';
 
 const containerStyles = css`
@@ -10,6 +11,23 @@ const containerStyles = css`
   margin: 1% 4%;
   padding: 1%;
   overflow: hidden;
+`;
+
+const fontsSection = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  max-width: 7vw;
+  margin: 1%;
+
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 0.5%;
+  button {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+  }
 `;
 
 export default function Articles(props) {
@@ -74,10 +92,10 @@ export default function Articles(props) {
   `;
   return (
     <>
-      <section>
-        <div>change text size:</div>
-        <button onClick={textSizeIncrease}>+</button>
+      <section css={fontsSection}>
+        <Image src={'/../public/aA.jpg'} width="35px" height="30px" />
         <button onClick={textSizeDecrease}>-</button>
+        <button onClick={textSizeIncrease}>+</button>
       </section>
       <div css={containerStyles}>
         <article css={articleStyles}>
