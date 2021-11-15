@@ -13,8 +13,20 @@ const containerStyles = css`
   align-items: stretch;
   align-content: stretch;
 
-  border: 1px black solid;
+  background-color: #faf9f4;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  border: 1px solid #999;
   border-radius: 10px;
+  max-width: 80vw;
+
+  margin: 1% 6.2%;
+  padding: 1%;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 const titleStyles = css`
   margin: 0.6% 1%;
@@ -26,6 +38,11 @@ const newsInfoSectionStyles = css`
   justify-content: space-around;
 `;
 
+const newsSectionStyle = css`
+  margin: 1%;
+  max-width: 35vw;
+`;
+
 const firstDivStyle = css`
   display: flex;
   flex-direction: row;
@@ -33,6 +50,8 @@ const firstDivStyle = css`
 
   :hover {
     background-color: lightgray;
+    cursor: default;
+    border-radius: 5px;
   }
 `;
 
@@ -41,21 +60,25 @@ export default function Event(props) {
     <div css={containerStyles}>
       <section css={titleStyles}>{props.event.eventTitle}</section>
       <section css={newsInfoSectionStyles}>
-        <section id="LWnewsSection">
+        <section css={newsSectionStyle} id="LWnewsSection">
           <Link href={props.event.leftLink}>
-            <div css={firstDivStyle}>
-              <Image src="/../public/favicon.ico" width="50px" height="50px" />
-              <h4>{props.event.leftHeadline}</h4>
-            </div>
+            <a target="_blank">
+              <div css={firstDivStyle}>
+                {/* image */}
+                <h4>{props.event.leftHeadline}</h4>
+              </div>
+            </a>
           </Link>
           <div>By: {props.event.leftAuthorS}</div>
         </section>
-        <section id="RWnewsSection">
+        <section css={newsSectionStyle} id="RWnewsSection">
           <Link href={props.event.rightLink}>
-            <div css={firstDivStyle}>
-              <Image src="/../public/favicon.ico" width="50px" height="50px" />
-              <h4>{props.event.rightHeadline}</h4>
-            </div>
+            <a target="_blank">
+              <div css={firstDivStyle}>
+                {/* image */}
+                <h4>{props.event.rightHeadline}</h4>
+              </div>
+            </a>
           </Link>
           <div>By: {props.event.rightAuthorS}</div>
         </section>

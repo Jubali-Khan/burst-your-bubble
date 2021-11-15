@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { useState } from 'react';
 import Articles from '../../components/Articles';
 import CommentSection from '../../components/CommentSection';
@@ -5,6 +6,9 @@ import Event from '../../components/Event';
 import Layout from '../../components/Layout';
 
 // need container styles
+const divStyle = css`
+  margin: 2%;
+`;
 
 export default function EventPage(props) {
   const [eventErrors, setEventErrors] = useState();
@@ -12,9 +16,11 @@ export default function EventPage(props) {
   const [commentsErrors, setCommentsErrors] = useState();
   return (
     <Layout>
-      <Event event={props.event} />
-      <Articles />
-      <CommentSection />
+      <div css={divStyle}>
+        <Event event={props.event} />
+        <Articles articles={props.articles} />
+        <CommentSection />
+      </div>
     </Layout>
   );
 }
