@@ -14,12 +14,74 @@ export default function EventPage(props) {
   const [eventErrors, setEventErrors] = useState();
   const [articlesErrors, setArticlesErrors] = useState();
   const [commentsErrors, setCommentsErrors] = useState();
+  const [textSize, setTextSize] = useState('100%');
+  const [counter, setCounter] = useState(0);
+
+  function textSizeIncrease() {
+    if (counter > 5) {
+      return;
+    } else {
+      let tempValue = textSize;
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue.slice(0, -1);
+      // console.log('tempValue: ', tempValue);
+      tempValue = Number(tempValue);
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue + 10;
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue.toString();
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue.concat('%');
+      console.log('tempValue: ', tempValue);
+      setTextSize(tempValue);
+      setCounter(counter + 1);
+    }
+  }
+  function textSizeDecrease() {
+    if (counter <= -4) {
+      return;
+    } else {
+      let tempValue = textSize;
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue.slice(0, -1);
+      // console.log('tempValue: ', tempValue);
+      tempValue = Number(tempValue);
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue - 10;
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue.toString();
+      // console.log('tempValue: ', tempValue);
+      tempValue = tempValue.concat('%');
+      console.log('tempValue: ', tempValue);
+      setTextSize(tempValue);
+      setCounter(counter - 1);
+    }
+  }
   return (
     <Layout userType={props.userType}>
       <div css={divStyle}>
-        <Event event={props.event} />
-        <Articles articles={props.articles} />
-        <CommentSection userInfo={props.userInfo} event={props.event} />
+        <Event
+          event={props.event}
+          textSize={textSize}
+          setTextSize={setTextSize}
+          counter={counter}
+          setCounter={setCounter}
+        />
+        <Articles
+          articles={props.articles}
+          textSize={textSize}
+          setTextSize={setTextSize}
+          counter={counter}
+          setCounter={setCounter}
+        />
+        <CommentSection
+          userInfo={props.userInfo}
+          event={props.event}
+          textSize={textSize}
+          setTextSize={setTextSize}
+          counter={counter}
+          setCounter={setCounter}
+        />
       </div>
     </Layout>
   );

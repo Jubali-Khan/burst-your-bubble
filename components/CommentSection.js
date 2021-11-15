@@ -19,8 +19,11 @@ export default function CommentSection(props) {
       {/* <li>
           <OpinionComment />
         </li> */}
-
-      <CommentInput userInfo={props.userInfo} event={props.event} />
+      {props.userInfo ? (
+        <CommentInput userInfo={props.userInfo} event={props.event} />
+      ) : (
+        ''
+      )}
     </div>
   );
 }

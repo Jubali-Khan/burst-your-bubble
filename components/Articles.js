@@ -31,13 +31,11 @@ const fontsSection = css`
 `;
 
 export default function Articles(props) {
-  const [textSize, setTextSize] = useState('100%');
-  const [counter, setCounter] = useState(1);
   function textSizeIncrease() {
-    if (counter > 5) {
+    if (props.counter > 5) {
       return;
     } else {
-      let tempValue = textSize;
+      let tempValue = props.textSize;
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.slice(0, -1);
       // console.log('tempValue: ', tempValue);
@@ -49,15 +47,15 @@ export default function Articles(props) {
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.concat('%');
       console.log('tempValue: ', tempValue);
-      setTextSize(tempValue);
-      setCounter(counter + 1);
+      props.setTextSize(tempValue);
+      props.setCounter(props.counter + 1);
     }
   }
   function textSizeDecrease() {
-    if (counter <= -4) {
+    if (props.counter <= -4) {
       return;
     } else {
-      let tempValue = textSize;
+      let tempValue = props.textSize;
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.slice(0, -1);
       // console.log('tempValue: ', tempValue);
@@ -69,8 +67,8 @@ export default function Articles(props) {
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.concat('%');
       console.log('tempValue: ', tempValue);
-      setTextSize(tempValue);
-      setCounter(counter - 1);
+      props.setTextSize(tempValue);
+      props.setCounter(props.counter - 1);
     }
   }
 
@@ -86,7 +84,7 @@ export default function Articles(props) {
     border: 1px solid #999;
     border-radius: 5px;
 
-    font-size: ${textSize};
+    font-size: ${props.textSize};
 
     overflow: auto;
   `;

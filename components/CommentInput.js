@@ -40,35 +40,53 @@ const rowStyle = css`
 `;
 
 export default function CommentInput(props) {
-  const [userId, setUserId] = useState(props.userInfo.id || 0);
-  const [userName, setUserName] = useState(props.userName || '');
+  const userId = props.userInfo.id;
+  const userName = props.userInfo.userName;
+  const eventId = props.event.id;
 
-  const [verbChoice, setVerbChoice] = useState();
-  const [argument, setArgument] = useState();
-  const [conjChoice, setConjChoice] = useState('');
+  const [verbChoice, setVerbChoice] = useState('believe');
+  const [argument, setArgument] = useState('');
+
+  const [toggle, setToggle] = useState(false);
+  const [conjChoice, setConjChoice] = useState('because');
   const [premise, setPremise] = useState('');
 
-  const [display, setDisplay] = useState('none');
-  const [eventId, setEventId] = useState(props.event.id);
+  const [errors, setErrors] = useState([]);
+
+  let display = 'none';
+  if (!toggle) {
+    display = 'none';
+  } else if (toggle) {
+    display = 'block';
+  }
 
   async function postingHandler() {
-    const response = await fetch('http://localhost:3000/api/comments/create', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
+    const response = await fetch(
+      'http://localhost:3000/api/comments/createComment',
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          userName: userName,
+          verbChoice: verbChoice,
+          argument: argument,
+          conjChoice: conjChoice,
+          premise: premise,
+          eventId: eventId,
+          toggle: toggle,
+        }),
       },
-      body: JSON.stringify({
-        userId: userId,
-        userName: userName,
-        verbChoice: verbChoice,
-        argument: argument,
-        conjChoice: conjChoice,
-        premise: premise,
-        eventId: eventId,
-      }),
-    });
+    );
     const createdComment = await response.json();
     console.log('createdComment: ', createdComment);
+
+    if ('errors' in createdComment) {
+      setErrors(createdComment.errors);
+      return;
+    }
   }
 
   return (
@@ -85,10 +103,8 @@ export default function CommentInput(props) {
           >
             <option value="believe">believe</option>
             <option value="think">think</option>
-            <option value="agree that">agree that</option>
-            <option value="agree with">agree with</option>
-            <option value="disagree that">disagree that</option>
-            <option value="disagree with">disagree with</option>
+            <option value="agree">agree</option>
+            <option value="disagree">disagree</option>
           </select>
         </span>
         <span>
@@ -97,12 +113,22 @@ export default function CommentInput(props) {
             onChange={(e) => setArgument(e.currentTarget.value)}
           />
         </span>
-        <button className="add" onClick={() => setDisplay('block')}>
+        <button
+          className="add"
+          onClick={() => {
+            setToggle(!toggle);
+          }}
+        >
           +
         </button>
         <button className="post" onClick={postingHandler}>
           &#8617;
         </button>
+        <span>
+          {errors.map((err) => (
+            <p key={`${err.message}`}>{err.message}</p>
+          ))}
+        </span>
       </section>
       <section id="extraInput" style={{ display: `${display}` }}>
         <div>

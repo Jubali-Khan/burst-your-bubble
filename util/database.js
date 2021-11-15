@@ -201,6 +201,26 @@ export async function getCommentsByEventID(eventId) {
   return comments.map((comment) => camelcaseKeys(comment));
 }
 
+export async function insertComment(
+  userId,
+  userName,
+  verbChoice,
+  argument,
+  conjChoice,
+  premise,
+  eventId,
+) {
+  const insertedComment = await sql`
+    INSERT INTO comments
+      (user_id, user_name, verb_choice, argument, conj_choice, premise, event_id)
+    VALUES
+      (${userId}, ${userName}, ${verbChoice}, ${argument}, ${conjChoice}, ${premise}, ${eventId})
+    RETURNING
+      *
+    `;
+  console.log('insertedComment[0] in insertComment: ', insertedComment[0]);
+  return camelcaseKeys(insertedComment[0]);
+}
 /*
 insert into comments (user_id, user_name, verb_choice, argument, event_id) values (1, 'james', 'thinks', 'blahblah', 3);
 
