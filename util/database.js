@@ -89,7 +89,7 @@ export async function getArticlesByEventID(eventId) {
   WHERE
     event_id = ${eventId}
   `;
-  console.log('articles in getArticlesByEventID:', articles);
+  // console.log('articles in getArticlesByEventID:', articles);
   return camelcaseKeys(articles);
 }
 
@@ -197,7 +197,7 @@ export async function getCommentsByEventID(eventId) {
   WHERE
     event_id = ${eventId}
   `;
-  console.log('comments in getCommentsByEventID: ', comments);
+  // console.log('comments in getCommentsByEventID: ', comments);
   return comments.map((comment) => camelcaseKeys(comment));
 }
 
@@ -379,6 +379,23 @@ export async function getRoleByToken(token) {
     (sessions.user_id = users.id AND
     (users.role = 1 OR users.role = 2))
   `;
-  console.log('session in getSessionAndRole: ', session[0]);
+  // console.log('session in getSessionAndRole: ', session[0]);
   return camelcaseKeys(session[0]);
+}
+
+export async function getUserinfoByToken(token) {
+  const userInfo = await sql`
+    SELECT
+      users.id,
+      users.user_name,
+      sessions.user_id
+    FROM
+      users,
+      sessions
+    WHERE
+      sessions.token = ${token} AND
+      sessions.user_id = users.id
+    `;
+  console.log('userInfo in getUserinfoByToken: ', userInfo[0]);
+  return camelcaseKeys(userInfo[0]);
 }

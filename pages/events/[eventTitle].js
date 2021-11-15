@@ -15,18 +15,20 @@ export default function EventPage(props) {
   const [articlesErrors, setArticlesErrors] = useState();
   const [commentsErrors, setCommentsErrors] = useState();
   return (
-    <Layout>
+    <Layout userType={props.userType}>
       <div css={divStyle}>
         <Event event={props.event} />
         <Articles articles={props.articles} />
-        <CommentSection />
+        <CommentSection userInfo={props.userInfo} event={props.event} />
       </div>
     </Layout>
   );
 }
 
 export async function getServerSideProps(context) {
-  const { getRoleByToken } = await import('../../util/database');
+  const { getRoleByToken, getUserinfoByToken } = await import(
+    '../../util/database'
+  );
   const eventTitle = context.query.eventTitle.replaceAll('_', ' ');
   // console.log('eventTitle: ', eventTitle);
 
@@ -104,10 +106,14 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const userInfo = await getUserinfoByToken(sessionToken);
+  console.log('userInfo in gSSP [eventTitle]: ', userInfo);
+
   if (userType.role === 2) {
     return {
       props: {
         userType: 'user',
+        userInfo: userInfo,
         event: event,
         articles: articles,
         comments: comments,

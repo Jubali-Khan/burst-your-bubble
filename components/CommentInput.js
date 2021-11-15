@@ -12,10 +12,6 @@ const divStyle = css`
   border: 1px solid black;
   border-radius: 10px;
 
-  #extraInput {
-    display: none;
-  }
-
   span {
     margin: 0.5%;
   }
@@ -44,48 +40,88 @@ const rowStyle = css`
 `;
 
 export default function CommentInput(props) {
-  const [userId, setUserId] = useState();
-  const [userName, setUserName] = useState();
+  const [userId, setUserId] = useState(props.userInfo.id || 0);
+  const [userName, setUserName] = useState(props.userName || '');
 
   const [verbChoice, setVerbChoice] = useState();
   const [argument, setArgument] = useState();
   const [conjChoice, setConjChoice] = useState('');
   const [premise, setPremise] = useState('');
 
-  const [eventId, setEventId] = useState(); // N
+  const [display, setDisplay] = useState('none');
+  const [eventId, setEventId] = useState(props.event.id);
+
+  async function postingHandler() {
+    const response = await fetch('http://localhost:3000/api/comments/create', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: userId,
+        userName: userName,
+        verbChoice: verbChoice,
+        argument: argument,
+        conjChoice: conjChoice,
+        premise: premise,
+        eventId: eventId,
+      }),
+    });
+    const createdComment = await response.json();
+    console.log('createdComment: ', createdComment);
+  }
+
   return (
     <div css={divStyle}>
       <section css={rowStyle}>
         <Image src={'/../public/favicon.ico'} height="25px" width="25px" />
         <span>I</span>
         <span>
-          <select>
-            <option>believe</option>
-            <option>think</option>
-            <option>agree that</option>
-            <option>agree with</option>
-            <option>disagree that</option>
-            <option>disagree with</option>
+          <select
+            value={verbChoice}
+            onChange={(e) => {
+              setVerbChoice(e.currentTarget.value);
+            }}
+          >
+            <option value="believe">believe</option>
+            <option value="think">think</option>
+            <option value="agree that">agree that</option>
+            <option value="agree with">agree with</option>
+            <option value="disagree that">disagree that</option>
+            <option value="disagree with">disagree with</option>
           </select>
         </span>
         <span>
-          <input />
+          <input
+            value={argument}
+            onChange={(e) => setArgument(e.currentTarget.value)}
+          />
         </span>
-        <button className="add">+</button>
-        <button className="post">&#8617;</button>
+        <button className="add" onClick={() => setDisplay('block')}>
+          +
+        </button>
+        <button className="post" onClick={postingHandler}>
+          &#8617;
+        </button>
       </section>
-      <section id="extraInput">
+      <section id="extraInput" style={{ display: `${display}` }}>
         <div>
-          <select>
-            <option>because</option>
-            <option>considering</option>
-            <option>as</option>
-            <option>due to</option>
-            <option>since</option>
+          <select
+            value={conjChoice}
+            onChange={(e) => setConjChoice(e.currentTarget.value)}
+          >
+            <option value="because">because</option>
+            <option value="considering">considering</option>
+            <option value="as">as</option>
+            <option value="due to">due to</option>
+            <option value="since">since</option>
           </select>
         </div>
         <div>
-          <input />
+          <input
+            value={premise}
+            onChange={(e) => setPremise(e.currentTarget.value)}
+          />
         </div>
       </section>
     </div>

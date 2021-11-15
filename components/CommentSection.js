@@ -20,7 +20,7 @@ export default function CommentSection(props) {
           <OpinionComment />
         </li> */}
 
-      <CommentInput />
+      <CommentInput userInfo={props.userInfo} event={props.event} />
     </div>
   );
 }
