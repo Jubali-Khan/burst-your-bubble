@@ -1,7 +1,5 @@
 import { css } from '@emotion/react';
 import Markdown from 'markdown-to-jsx';
-import Image from 'next/image';
-import { useState } from 'react';
 
 const containerStyles = css`
   display: flex;

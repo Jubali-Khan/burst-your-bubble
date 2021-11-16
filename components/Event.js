@@ -2,7 +2,6 @@
 // component should show basic info pulled from the events table
 
 import { css } from '@emotion/react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 const newsInfoSectionStyles = css`

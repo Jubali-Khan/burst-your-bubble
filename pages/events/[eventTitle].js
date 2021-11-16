@@ -12,10 +12,12 @@ const divStyle = css`
 `;
 const fontsSection = css`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
-  max-width: 7vw;
+  max-width: 2vw;
   margin: 1%;
+  padding: 0.5%;
+  position: fixed;
 
   border: 1px solid grey;
   border-radius: 10px;
@@ -86,6 +88,7 @@ export default function EventPage(props) {
         <CommentSection
           userInfo={props.userInfo}
           event={props.event}
+          comments={props.comments}
           textSize={textSize}
         />
       </div>
@@ -143,7 +146,7 @@ export async function getServerSideProps(context) {
     },
   );
   const comments = await commentsResponse.json();
-  // console.log('comments in gSSP in [eventTitle]: ', comments);
+  console.log('comments in gSSP in [eventTitle]: ', comments);
   // No comments? no opinionComments!
 
   //

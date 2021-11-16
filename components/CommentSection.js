@@ -13,14 +13,17 @@ export default function CommentSection(props) {
     margin: 1% 6.1%;
     padding: 1%;
   `;
+
   return (
     <div css={containerStyles}>
-      {/* CommentSection:
-      1. looping over the opinion comments
-      2. showing commentInput */}
-      {/* <li>
-          <OpinionComment />
-        </li> */}
+      {props.comments.map((comment) => (
+        <OpinionComment
+          key={`${comment.id}`}
+          comment={comment}
+          userInfo={props.userInfo}
+        />
+      ))}
+
       {props.userInfo ? (
         <CommentInput userInfo={props.userInfo} event={props.event} />
       ) : (

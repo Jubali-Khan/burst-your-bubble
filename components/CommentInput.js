@@ -1,12 +1,11 @@
 import { css } from '@emotion/react';
-import { Button } from 'antd';
 import Image from 'next/image';
 import { useState } from 'react';
 
 const divStyle = css`
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
   font-family: Arial, Helvetica, sans-serif;
 
   max-height: 20vh;
@@ -32,9 +31,9 @@ const divStyle = css`
 
   .add {
     margin: 0.5%;
-    padding: 0.5%;
-
-    border-radius: 50%;
+    padding: 0.4%;
+    font-size: small;
+    border-radius: 5px;
 
     :hover {
       background-color: lightgray;
@@ -42,7 +41,8 @@ const divStyle = css`
   }
   .post {
     margin: 0.5%;
-    padding: 0.5%;
+    padding: 0.4%;
+    border-radius: 5px;
 
     :hover {
       background-color: lightgray;
@@ -61,7 +61,7 @@ export default function CommentInput(props) {
   const userName = props.userInfo.userName;
   const eventId = props.event.id;
 
-  const [verbChoice, setVerbChoice] = useState('believe');
+  const [verbChoice, setVerbChoice] = useState('believes');
   const [argument, setArgument] = useState('');
 
   const [toggle, setToggle] = useState(false);
@@ -117,10 +117,10 @@ export default function CommentInput(props) {
             setVerbChoice(e.currentTarget.value);
           }}
         >
-          <option value="believe">believe</option>
-          <option value="think">think</option>
-          <option value="agree">agree</option>
-          <option value="disagree">disagree</option>
+          <option value="believes">believe</option>
+          <option value="thinks">think</option>
+          <option value="agrees">agree</option>
+          <option value="disagrees">disagree</option>
         </select>
 
         <input
@@ -151,7 +151,7 @@ export default function CommentInput(props) {
             setToggle(!toggle);
           }}
         >
-          {display === 'none' ? '+' : '-'}
+          {display === 'none' ? '+PREMISE' : '-'}
         </button>
 
         <button className="post" onClick={postingHandler}>

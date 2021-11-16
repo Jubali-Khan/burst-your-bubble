@@ -1,6 +1,6 @@
 import { getRoleByToken, insertComment } from '../../../util/database';
 
-export default async function commentCreate(req, res) {
+export default async function createComment(req, res) {
   console.log('req.body in commentPoster: ', req.body);
   const sessionFromDB = await getRoleByToken(req.cookies.sessionToken);
   if (sessionFromDB.role !== 2) {
