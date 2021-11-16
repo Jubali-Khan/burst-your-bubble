@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import Image from 'next/image';
 import { useState } from 'react';
 import Articles from '../../components/Articles';
 import CommentSection from '../../components/CommentSection';
@@ -9,7 +10,22 @@ import Layout from '../../components/Layout';
 const divStyle = css`
   margin: 2%;
 `;
+const fontsSection = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  max-width: 7vw;
+  margin: 1%;
 
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 0.5%;
+  button {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+  }
+`;
 export default function EventPage(props) {
   const [eventErrors, setEventErrors] = useState();
   const [articlesErrors, setArticlesErrors] = useState();
@@ -59,28 +75,18 @@ export default function EventPage(props) {
   }
   return (
     <Layout userType={props.userType}>
+      <section css={fontsSection}>
+        <Image src={'/../public/aA.jpg'} width="35px" height="30px" />
+        <button onClick={textSizeDecrease}>-</button>
+        <button onClick={textSizeIncrease}>+</button>
+      </section>
       <div css={divStyle}>
-        <Event
-          event={props.event}
-          textSize={textSize}
-          setTextSize={setTextSize}
-          counter={counter}
-          setCounter={setCounter}
-        />
-        <Articles
-          articles={props.articles}
-          textSize={textSize}
-          setTextSize={setTextSize}
-          counter={counter}
-          setCounter={setCounter}
-        />
+        <Event event={props.event} textSize={textSize} />
+        <Articles articles={props.articles} textSize={textSize} />
         <CommentSection
           userInfo={props.userInfo}
           event={props.event}
           textSize={textSize}
-          setTextSize={setTextSize}
-          counter={counter}
-          setCounter={setCounter}
         />
       </div>
     </Layout>
@@ -105,7 +111,7 @@ export async function getServerSideProps(context) {
   });
 
   const event = await eventResponse.json();
-  console.log('event in gSSP in [eventTitle]: ', event);
+  // console.log('event in gSSP in [eventTitle]: ', event);
   // if event isn't bringing right data ..?
 
   const articlesResponse = await fetch(
@@ -121,7 +127,7 @@ export async function getServerSideProps(context) {
     },
   );
   const articles = await articlesResponse.json();
-  console.log('articles in gSSP in [eventTitle]: ', articles);
+  // console.log('articles in gSSP in [eventTitle]: ', articles);
   // if articles dont exist, show proper message on page or redirect
 
   const commentsResponse = await fetch(
@@ -137,7 +143,7 @@ export async function getServerSideProps(context) {
     },
   );
   const comments = await commentsResponse.json();
-  console.log('comments in gSSP in [eventTitle]: ', comments);
+  // console.log('comments in gSSP in [eventTitle]: ', comments);
   // No comments? no opinionComments!
 
   //
@@ -157,19 +163,20 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const userInfo = await getUserinfoByToken(sessionToken);
+  console.log('userInfo in gSSP [eventTitle]: ', userInfo);
+
   if (userType.role === 1) {
     return {
       props: {
         userType: 'admin',
+        userInfo: userInfo,
         event: event,
         articles: articles,
         comments: comments,
       },
     };
   }
-
-  const userInfo = await getUserinfoByToken(sessionToken);
-  console.log('userInfo in gSSP [eventTitle]: ', userInfo);
 
   if (userType.role === 2) {
     return {

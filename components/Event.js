@@ -5,33 +5,6 @@ import { css } from '@emotion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const containerStyles = css`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-  align-items: stretch;
-  align-content: stretch;
-
-  background-color: #faf9f4;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
-  border: 1px solid #999;
-  border-radius: 10px;
-  max-width: 80vw;
-
-  margin: 1% 6.2%;
-  padding: 1%;
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-`;
-const titleStyles = css`
-  margin: 0.6% 1%;
-`;
-
 const newsInfoSectionStyles = css`
   display: flex;
   flex-direction: row;
@@ -56,6 +29,34 @@ const firstDivStyle = css`
 `;
 
 export default function Event(props) {
+  const containerStyles = css`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: stretch;
+    align-content: stretch;
+
+    font-size: ${props.textSize};
+
+    background-color: #faf9f4;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    border: 1px solid #999;
+    border-radius: 10px;
+    max-width: 80vw;
+
+    margin: 1% 6.2%;
+    padding: 1%;
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  `;
+  const titleStyles = css`
+    margin: 0.6% 1%;
+  `;
   return (
     <div css={containerStyles}>
       <section css={titleStyles}>{props.event.eventTitle}</section>
