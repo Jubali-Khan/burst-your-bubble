@@ -221,6 +221,27 @@ export async function insertComment(
   console.log('insertedComment[0] in insertComment: ', insertedComment[0]);
   return camelcaseKeys(insertedComment[0]);
 }
+
+export async function updateCommentById(
+  id,
+  verbChoice,
+  argument,
+  conjChoice,
+  premise,
+) {
+  const updatedComment = await sql`
+  UPDATE
+    comments
+  SET
+    verb_choice = ${verbChoice},
+    argument = ${argument},
+    conj_choice = ${conjChoice},
+    premise = ${premise}
+  WHERE
+    comments.id = ${id}`;
+  console.log('updatedComment in DB: ', updatedComment);
+  return camelcaseKeys(updatedComment);
+}
 /*
 insert into comments (user_id, user_name, verb_choice, argument, event_id) values (1, 'james', 'thinks', 'blahblah', 3);
 

@@ -19,9 +19,10 @@ const fontsSection = css`
   padding: 0.5%;
   position: fixed;
 
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
   border: 1px solid grey;
   border-radius: 10px;
-  padding: 0.5%;
   button {
     width: 30px;
     height: 30px;
@@ -86,6 +87,7 @@ export default function EventPage(props) {
         <Event event={props.event} textSize={textSize} />
         <Articles articles={props.articles} textSize={textSize} />
         <CommentSection
+          userType={props.userType}
           userInfo={props.userInfo}
           event={props.event}
           comments={props.comments}

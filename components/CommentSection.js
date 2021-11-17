@@ -1,8 +1,11 @@
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import CommentInput from './CommentInput';
 import OpinionComment from './OpinionComment';
 
 export default function CommentSection(props) {
+  const [messages, setMessages] = useState([]);
+
   const containerStyles = css`
     border: 1px solid grey;
     border-radius: 10px;
@@ -15,20 +18,32 @@ export default function CommentSection(props) {
   `;
 
   return (
-    <div css={containerStyles}>
-      {props.comments.map((comment) => (
-        <OpinionComment
-          key={`${comment.id}`}
-          comment={comment}
-          userInfo={props.userInfo}
-        />
-      ))}
+    <>
+      <div>
+        {messages.map((err) => (
+          <span key={`${err.message}`}>{err.message}</span>
+        ))}
+      </div>
+      <div css={containerStyles}>
+        {props.comments.map((comment) => (
+          <OpinionComment
+            setMessages={setMessages}
+            key={`${comment.id}`}
+            comment={comment}
+            userInfo={props.userInfo}
+          />
+        ))}
 
-      {props.userInfo ? (
-        <CommentInput userInfo={props.userInfo} event={props.event} />
-      ) : (
-        <span>Please sign up to leave a comment</span>
-      )}
-    </div>
+        {props.userInfo ? (
+          <CommentInput
+            userInfo={props.userInfo}
+            event={props.event}
+            setMessages={setMessages}
+          />
+        ) : (
+          <span>Please sign up to leave a comment</span>
+        )}
+      </div>
+    </>
   );
 }

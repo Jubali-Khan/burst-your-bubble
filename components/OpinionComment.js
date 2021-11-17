@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const divStyle = css`
   display: flex;
@@ -61,7 +61,7 @@ const containerStyles = css`
   padding: 0.5%;
   border: 1px solid grey;
   border-radius: 5px;
-  background-color: #a3c9ff;
+  background-color: lightblue;
 
   display: flex;
   flex-direction: row;
@@ -77,7 +77,6 @@ export default function OpinionComment(props) {
   const [toggle, setToggle] = useState(false);
   const [conjChoice, setConjChoice] = useState(props.comment.conjChoice);
   const [premise, setPremise] = useState(props.comment.premise);
-  const [errors, setErrors] = useState([]);
 
   let display = 'none';
   if (!toggle) {
@@ -85,16 +84,53 @@ export default function OpinionComment(props) {
   } else if (toggle) {
     display = 'block';
   }
-  async function updateHandler() {
-    // ping an api route
-    // in the route look for the comment
-    // if the comment is there, update it with an update function
-    // if the comment isn't there, send a message to refresh the event page
-  }
+
+  // editToggle is used to change what OpinionComment returns
   const [editToggle, setEditToggle] = useState(false);
   function editHandler() {
     setEditToggle(!editToggle);
   }
+
+  function cancelHandler() {
+    setVerbChoice(props.comment.verbChoice);
+    setArgument(props.comment.argument);
+    setConjChoice(props.comment.conjChoice);
+    setPremise(props.comment.premise);
+  }
+
+  async function updateHandler() {
+    // ping an api route
+    const response = await fetch(
+      'http://localhost:3000/api/comments/updateComment',
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          commentId: props.comment.id,
+          userName: userName,
+          verbChoice: verbChoice,
+          argument: argument,
+          conjChoice: conjChoice,
+          premise: premise,
+          toggle: toggle,
+        }),
+      },
+    );
+    const update = await response.json();
+    console.log('response.status in OpinionComment: ', response.status);
+    if ('errors' in update) {
+      props.setMessages(update.errors);
+    }
+    if (response.status === 200) {
+      props.setMessages([{ message: 'comment updated successfully' }]);
+      setEditToggle(false);
+      return;
+    }
+  }
+
+  // If editToggle is false, then the edit button hasn't been clicked
   if (editToggle === false) {
     return (
       // logged in: owner
@@ -105,6 +141,8 @@ export default function OpinionComment(props) {
       </div>
     );
   }
+
+  // If editToggle is true, then the edit button has been clicked and the editing UI shows instead of the original UI
   if (editToggle === true) {
     return (
       <div css={divStyle}>
@@ -154,20 +192,23 @@ export default function OpinionComment(props) {
             {display === 'none' ? '+PREMISE' : '-'}
           </button>
 
-          <button className="post">UPDATE</button>
-          <button className="post" onClick={() => setEditToggle(false)}>
-            CANCEL
+          <button className="add" onClick={updateHandler}>
+            UPDATE
           </button>
-          <div>
-            {errors.map((err) => (
-              <p key={`${err.message}`}>{err.message}</p>
-            ))}
-          </div>
+          <button
+            className="post"
+            onClick={() => {
+              setEditToggle(false);
+              cancelHandler();
+            }}
+          >
+            &#10006;
+          </button>
         </form>
       </div>
     );
   }
 }
 /*
-
+small problem: adding info to the premise -> clicking on - because you don't want it no more -> the info being sent to the db anyway. - might need to reset the 2 fields.
 */

@@ -68,7 +68,7 @@ export default function CommentInput(props) {
   const [conjChoice, setConjChoice] = useState('because');
   const [premise, setPremise] = useState('');
 
-  const [errors, setErrors] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   let display = 'none';
   if (!toggle) {
@@ -101,7 +101,7 @@ export default function CommentInput(props) {
     console.log('createdComment: ', createdComment);
 
     if ('errors' in createdComment) {
-      setErrors(createdComment.errors);
+      props.setMessages(createdComment.errors);
       return;
     }
   }
@@ -157,11 +157,6 @@ export default function CommentInput(props) {
         <button className="post" onClick={postingHandler}>
           &#8617;
         </button>
-        <div>
-          {errors.map((err) => (
-            <p key={`${err.message}`}>{err.message}</p>
-          ))}
-        </div>
       </form>
     </div>
   );
