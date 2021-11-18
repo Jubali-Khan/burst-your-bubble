@@ -99,7 +99,7 @@ export async function getReports() {
   SELECT
     *
   FROM
-    comment_reports
+    reports
   `;
   return reports.map((report) => camelcaseKeys(report));
 }
@@ -112,7 +112,7 @@ export async function insertReport(
   reportedFor,
 ) {
   const reportInserted = await sql`
-  INSERT INTO comment_reports
+  INSERT INTO reports
     (user_id, comment_id, comment, event_id, reported_for)
   VALUES
     (${userId}, ${commentId}, ${comment}, ${eventId}, ${reportedFor})
@@ -125,7 +125,7 @@ export async function insertReport(
 export async function updateReport(reportId) {
   const updated = await sql`
   UPDATE
-    comment_reports
+    reports
   SET
     acted_on = true
   WHERE
@@ -139,7 +139,7 @@ export async function updateReport(reportId) {
 export async function deleteReportByID(reportId) {
   const deleted = await sql`
   DELETE FROM
-    comment_reports
+    reports
   WHERE
     id=${reportId}
   RETURNING
@@ -243,9 +243,9 @@ export async function updateCommentById(
   return camelcaseKeys(updatedComment);
 }
 /*
-insert into comments (user_id, user_name, verb_choice, argument, event_id) values (1, 'james', 'thinks', 'blahblah', 3);
+insert into comments (user_id, user_name, verb_choice, argument, event_id) values (3, 'user2', 'believes', 'blahblah blehbleh', 8);
 
-INSERT INTO comment_reports
+INSERT INTO reports
     (user_id, comment_id, comment, event_id, reported_for)
   VALUES
     (1, 1, 'user123 thinks blahblah', 3, 2);
@@ -255,10 +255,6 @@ INSERT INTO users
   VALUES
     ('admin', 'admin@admin.admin', '', 1);
 
-INSERT INTO users
-    (user_name, user_email, user_passhash)
-  VALUES
-    ('user1', 'user1@user1.user1', '');
 
 INSERT INTO roles
     (role)
