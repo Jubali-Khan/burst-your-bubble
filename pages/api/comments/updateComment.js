@@ -14,6 +14,7 @@ export default async function updateComment(req, res) {
     return;
   }
 
+  // authorization:
   // role:
   const sessionFromDB = await getRoleByToken(req.cookies.sessionToken);
   if (sessionFromDB.role !== 2) {
@@ -22,6 +23,7 @@ export default async function updateComment(req, res) {
     });
     return;
   }
+  // check if it's the user's own comment
 
   // was all necessary info sent over?
   const {

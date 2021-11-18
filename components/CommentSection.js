@@ -27,10 +27,11 @@ export default function CommentSection(props) {
       <div css={containerStyles}>
         {props.comments.map((comment) => (
           <OpinionComment
+            userType={props.userType}
+            userInfo={props.userInfo}
             setMessages={setMessages}
             key={`${comment.id}`}
             comment={comment}
-            userInfo={props.userInfo}
           />
         ))}
 

@@ -250,6 +250,25 @@ INSERT INTO comment_reports
   VALUES
     (1, 1, 'user123 thinks blahblah', 3, 2);
 
+INSERT INTO users
+    (user_name, user_email, user_passhash, role)
+  VALUES
+    ('admin', 'admin@admin.admin', '', 1);
+
+INSERT INTO users
+    (user_name, user_email, user_passhash)
+  VALUES
+    ('user1', 'user1@user1.user1', '');
+
+INSERT INTO roles
+    (role)
+  VALUES
+    ('admin');
+
+INSERT INTO roles
+    (role)
+  VALUES
+    ('user');
 */
 
 // AUTHENTICATION: LOGIN/REGISTER

@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -61,7 +62,7 @@ const containerStyles = css`
   padding: 0.5%;
   border: 1px solid grey;
   border-radius: 5px;
-  background-color: lightblue;
+  background-color: #e0c782;
 
   display: flex;
   flex-direction: row;
@@ -69,7 +70,10 @@ const containerStyles = css`
 `;
 
 export default function OpinionComment(props) {
+  const router = useRouter();
   console.log('props.comment: ', props.comment);
+  console.log('props.userInfo: ', props.userInfo);
+  console.log('props.userType: ', props.userType);
   const [userName, setUserName] = useState(props.comment.userName);
   const [verbChoice, setVerbChoice] = useState(props.comment.verbChoice);
   const [argument, setArgument] = useState(props.comment.argument);
@@ -130,6 +134,40 @@ export default function OpinionComment(props) {
     }
   }
 
+  async function reportHandler() {
+    // ping reportHandler
+    /*
+    const response = await fetch('http://localhost:3000/api/reports/create', {
+      method: 'POST',
+      headers: {
+        'Content-type':'application/json'
+      },
+      body: JSON.stringify({
+        userId,
+        commentId,
+        comment,
+        eventId,
+        reportedFor,
+      })
+    })
+    */
+  }
+
+  function redirect() {
+    router.push('/loginOrRegister'); // needs a returnTo !!
+  }
+
+  if (props.userType === undefined) {
+    return (
+      <div css={containerStyles}>
+        {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
+        {premise !== '' ? premise : ''}
+        <button onClick={redirect}>REPORT</button>
+      </div>
+    );
+  }
+
+  // Someone's logged in: (fist if can be removed and its content moved under the following conditional)
   // If editToggle is false, then the edit button hasn't been clicked
   if (editToggle === false) {
     return (
@@ -137,7 +175,11 @@ export default function OpinionComment(props) {
       <div css={containerStyles}>
         {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
         {premise !== '' ? premise : ''}
-        <button onClick={editHandler}>EDIT</button>
+        {props.comment.userId === props.userInfo.id ? (
+          <button onClick={editHandler}>EDIT</button>
+        ) : (
+          <button>REPORT</button>
+        )}
       </div>
     );
   }
