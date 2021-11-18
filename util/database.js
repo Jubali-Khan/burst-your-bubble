@@ -104,6 +104,19 @@ export async function getReports() {
   return reports.map((report) => camelcaseKeys(report));
 }
 
+export async function getReportByCID(commentId) {
+  const report = await sql`
+  SELECT
+    *
+  FROM
+    reports
+  WHERE
+    comment_id=${commentId}
+  `;
+  console.log('report[0] in DB: ', report[0]);
+  return camelcaseKeys(report[0]);
+}
+
 export async function insertReport(
   userId,
   commentId,
@@ -115,14 +128,14 @@ export async function insertReport(
   INSERT INTO reports
     (user_id, comment_id, comment, event_id, reported_for)
   VALUES
-    (${userId}, ${commentId}, ${comment}, ${eventId}, ${reportedFor})
+    (${userId}, ${commentId}, ${comment}, ${eventId}, '{${reportedFor}}')
   RETURNING
     *
   `;
   return camelcaseKeys(reportInserted[0]);
 }
 
-export async function updateReport(reportId) {
+export async function updateActedOnToT(reportId) {
   const updated = await sql`
   UPDATE
     reports
@@ -136,6 +149,36 @@ export async function updateReport(reportId) {
   return camelcaseKeys(updated);
 }
 
+// unnecessary
+export async function updateActedOnToF(reportId) {
+  const updated = await sql`
+  UPDATE
+    reports
+  SET
+    acted_on = false
+  WHERE
+    id = ${reportId}
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(updated);
+}
+
+export async function updateTimesReported(reportId) {
+  const updated = await sql`
+  UPDATE
+    reports
+  SET
+    times_reported = times_reported + 1
+  WHERE
+    id = ${reportId}
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(updated);
+}
+//
+
 export async function deleteReportByID(reportId) {
   const deleted = await sql`
   DELETE FROM
@@ -147,10 +190,23 @@ export async function deleteReportByID(reportId) {
   `;
   return camelcaseKeys(deleted);
 }
-// update report functions needed to increase the number of times_reported (in report button functionality) & to switch acted_on (admin side, deleteHandler or notify handler)
 
-// delete report function
-// delete comment function
+export async function addReasons(reportId, newReasons) {
+  console.log('reportId in DB: ', reportId);
+  console.log('newReasons in DB: ', newReasons);
+  const updatedReport = await sql`
+  UPDATE
+    reports
+  SET
+    reported_for = ARRAY[${newReasons}],
+    times_reported = times_reported + 1,
+    acted_on = false
+  WHERE
+    id = ${reportId}
+  `;
+  console.log('updatedReport in DB: ', updatedReport);
+  return camelcaseKeys(updatedReport);
+}
 
 // COMMENTS
 export async function getCommentByID(commentId) {
@@ -248,7 +304,7 @@ insert into comments (user_id, user_name, verb_choice, argument, event_id) value
 INSERT INTO reports
     (user_id, comment_id, comment, event_id, reported_for)
   VALUES
-    (1, 1, 'user123 thinks blahblah', 3, 2);
+    (2, 9, 'user1 agrees that donald trump is orange', 7, '{2}');
 
 INSERT INTO users
     (user_name, user_email, user_passhash, role)

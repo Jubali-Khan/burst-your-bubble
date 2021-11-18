@@ -136,6 +136,8 @@ export default function OpinionComment(props) {
 
   async function reportHandler() {
     // ping reportHandler
+    const response = await fetch('http://localhost:3000/api/reports/create');
+
     /*
     const response = await fetch('http://localhost:3000/api/reports/create', {
       method: 'POST',
@@ -178,7 +180,7 @@ export default function OpinionComment(props) {
         {props.comment.userId === props.userInfo.id ? (
           <button onClick={editHandler}>EDIT</button>
         ) : (
-          <button>REPORT</button>
+          <button onClick={reportHandler}>REPORT</button>
         )}
       </div>
     );
