@@ -128,10 +128,11 @@ export async function insertReport(
   INSERT INTO reports
     (user_id, comment_id, comment, event_id, reported_for)
   VALUES
-    (${userId}, ${commentId}, ${comment}, ${eventId}, '{${reportedFor}}')
+    (${userId}, ${commentId}, ${comment}, ${eventId}, ARRAY[${reportedFor}])
   RETURNING
     *
   `;
+  console.log('reportInserted in DB: ', reportInserted);
   return camelcaseKeys(reportInserted[0]);
 }
 
@@ -191,6 +192,7 @@ export async function deleteReportByID(reportId) {
   return camelcaseKeys(deleted);
 }
 
+// updateReasons might be a better name
 export async function addReasons(reportId, newReasons) {
   console.log('reportId in DB: ', reportId);
   console.log('newReasons in DB: ', newReasons);

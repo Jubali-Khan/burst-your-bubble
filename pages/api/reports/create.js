@@ -6,12 +6,23 @@ import {
 } from '../../../util/database';
 
 export default async function createReport(req, res) {
+  console.log('req.body in createReport: ', req.body);
+  const { userId, commentId, comment, eventId, reportedFor } = req.body;
+
+  // is there a session?
+  if (!req.cookies.sessionToken) {
+    res.status(401).send({
+      errors: [{ message: 'no session - not authorized' }],
+    });
+    return;
+  }
+
   //authorization comes here
 
   // is a comment with this id in comments table?
-  const comment = await getCommentByID(9);
+  const commentInDB = await getCommentByID(commentId);
   // no -> error
-  if (!comment) {
+  if (!commentInDB) {
     res.status(400).send({
       errors: [
         { message: "the comment you're trying to report no longer exists" },
@@ -20,16 +31,16 @@ export default async function createReport(req, res) {
     return;
   }
   // yes -> is this comment already in reports table?
-  const report = await getReportByCID(9);
+  const report = await getReportByCID(commentId);
   console.log('report in createReport: ', report);
   // if no -> add it to the table (insert new report)
   if (!report) {
     const insertedReport = await insertReport(
-      req.body.userId,
-      req.body.commentId,
-      req.body.comment,
-      req.body.eventId,
-      req.body.reportedFor,
+      userId,
+      commentId,
+      comment,
+      eventId,
+      Number(reportedFor),
     );
     res.status(200).send(insertedReport);
     return;
@@ -37,12 +48,14 @@ export default async function createReport(req, res) {
 
   // if yes -> is it being reported for a reason already in the table?
 
-  const inReport = report.reportedFor.find(req.body.reportedFor);
+  const inReport = report.reportedFor.find(
+    (element) => element === Number(reportedFor),
+  );
 
-  // no = new reason -> add reason number to reportedFor array
+  // no = new reason -> add reason number to reported_for array
   if (!inReport) {
-    // add reason number to reportedFor
-    const newReportedFor = [...report.reportedFor, req.body.reportedFor];
+    // add reason number to reported_for
+    const newReportedFor = [...report.reportedFor, Number(reportedFor)];
     const updatedReport = await addReasons(report.id, newReportedFor);
     res.status(200).send(updatedReport);
     return;
@@ -53,5 +66,4 @@ export default async function createReport(req, res) {
     res.status(200).send(updatedReport);
     return;
   }
-  res.status(200).send(report);
 }

@@ -50,6 +50,7 @@ const divStyle = css`
     }
   }
 `;
+
 const rowStyle = css`
   display: flex;
   flex-direction: row;
@@ -58,30 +59,45 @@ const rowStyle = css`
 `;
 
 const containerStyles = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
   margin: 1%;
   padding: 0.5%;
   border: 1px solid grey;
   border-radius: 5px;
   background-color: #e0c782;
+`;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+const borderAndShadow = css`
+  margin: 1%;
+  padding: 0.5%;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: #e0c782;
 `;
 
 export default function OpinionComment(props) {
   const router = useRouter();
+
   console.log('props.comment: ', props.comment);
   console.log('props.userInfo: ', props.userInfo);
   console.log('props.userType: ', props.userType);
+
   const [userName, setUserName] = useState(props.comment.userName);
   const [verbChoice, setVerbChoice] = useState(props.comment.verbChoice);
   const [argument, setArgument] = useState(props.comment.argument);
 
-  const [toggle, setToggle] = useState(false);
   const [conjChoice, setConjChoice] = useState(props.comment.conjChoice);
   const [premise, setPremise] = useState(props.comment.premise);
 
+  const [reportedFor, setReportedFor] = useState('1');
+
+  // editToggle is used to change what OpinionComment returns
+  const [editToggle, setEditToggle] = useState(false);
+
+  const [toggle, setToggle] = useState(false); // Used for both EDIT, or REPORT
   let display = 'none';
   if (!toggle) {
     display = 'none';
@@ -89,13 +105,25 @@ export default function OpinionComment(props) {
     display = 'block';
   }
 
-  // editToggle is used to change what OpinionComment returns
-  const [editToggle, setEditToggle] = useState(false);
-  function editHandler() {
-    setEditToggle(!editToggle);
+  //
+  function redirect() {
+    router.push('/loginOrRegister'); // needs a returnTo !!
   }
 
-  function cancelHandler() {
+  if (props.userType === undefined) {
+    return (
+      <div css={containerStyles}>
+        {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
+        {premise !== '' ? premise : ''}
+        <button onClick={redirect}>REPORT</button>
+      </div>
+    );
+  }
+  //
+
+  //
+  // Someone's logged in:
+  function cancelEditHandler() {
     setVerbChoice(props.comment.verbChoice);
     setArgument(props.comment.argument);
     setConjChoice(props.comment.conjChoice);
@@ -135,58 +163,79 @@ export default function OpinionComment(props) {
   }
 
   async function reportHandler() {
-    // ping reportHandler
-    const response = await fetch('http://localhost:3000/api/reports/create');
+    // create commen to be inserted into report
+    let reportedComment;
+    if (premise !== '') {
+      reportedComment =
+        userName +
+        ' ' +
+        verbChoice +
+        ' ' +
+        argument +
+        ' ' +
+        conjChoice +
+        ' ' +
+        premise;
+    } else {
+      reportedComment = userName + ' ' + verbChoice + ' ' + argument + ' ';
+    }
 
-    /*
     const response = await fetch('http://localhost:3000/api/reports/create', {
       method: 'POST',
       headers: {
-        'Content-type':'application/json'
+        'Content-type': 'application/json',
       },
       body: JSON.stringify({
-        userId,
-        commentId,
-        comment,
-        eventId,
-        reportedFor,
-      })
-    })
-    */
+        userId: props.comment.userId,
+        commentId: props.comment.id,
+        comment: reportedComment,
+        eventId: props.comment.eventId,
+        reportedFor: reportedFor,
+      }),
+    });
+    const createdReport = await response.json();
+    console.log('createdReport: ', createdReport);
+
+    if ('errors' in createdReport) {
+      props.setMessages(createdReport.errors);
+      return;
+    }
   }
 
-  function redirect() {
-    router.push('/loginOrRegister'); // needs a returnTo !!
-  }
-
-  if (props.userType === undefined) {
-    return (
-      <div css={containerStyles}>
-        {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
-        {premise !== '' ? premise : ''}
-        <button onClick={redirect}>REPORT</button>
-      </div>
-    );
-  }
-
-  // Someone's logged in: (fist if can be removed and its content moved under the following conditional)
-  // If editToggle is false, then the edit button hasn't been clicked
+  // original UI for the user's comment
   if (editToggle === false) {
     return (
-      // logged in: owner
-      <div css={containerStyles}>
-        {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
-        {premise !== '' ? premise : ''}
-        {props.comment.userId === props.userInfo.id ? (
-          <button onClick={editHandler}>EDIT</button>
-        ) : (
-          <button onClick={reportHandler}>REPORT</button>
-        )}
-      </div>
+      <>
+        <div css={containerStyles}>
+          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
+          {premise !== '' ? premise : ''}
+          {props.comment.userId === props.userInfo.id ? (
+            <button onClick={() => setEditToggle(!editToggle)}>EDIT</button>
+          ) : (
+            <button onClick={() => setToggle(!toggle)}>REPORT</button>
+          )}
+        </div>
+        <div>
+          <div style={{ display: display }}>
+            <hr />
+            report for{' '}
+            <select
+              value={reportedFor}
+              onChange={(e) => setReportedFor(e.currentTarget.value)}
+            >
+              <option value="1">offensive or disrespectful language</option>
+              <option value="2">hate language</option>
+              <option value="3">spam</option>
+              <option value="4">incompliance with comment guidelines</option>
+            </select>
+            <button onClick={reportHandler}>DONE</button>
+          </div>
+        </div>
+      </>
     );
   }
 
-  // If editToggle is true, then the edit button has been clicked and the editing UI shows instead of the original UI
+  // editing UI for the user's comment
   if (editToggle === true) {
     return (
       <div css={divStyle}>
@@ -243,7 +292,7 @@ export default function OpinionComment(props) {
             className="post"
             onClick={() => {
               setEditToggle(false);
-              cancelHandler();
+              cancelEditHandler();
             }}
           >
             &#10006;

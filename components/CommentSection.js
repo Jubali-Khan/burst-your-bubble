@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import Link from 'next/link';
 import { useState } from 'react';
 import CommentInput from './CommentInput';
 import OpinionComment from './OpinionComment';
@@ -42,7 +43,10 @@ export default function CommentSection(props) {
             setMessages={setMessages}
           />
         ) : (
-          <span>Please sign up to leave a comment</span>
+          <span>
+            Please <Link href="/loginOrRegister">login or register</Link> to
+            leave a comment
+          </span>
         )}
       </div>
     </>
