@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import Head from 'next/head';
+import { useState } from 'react';
 import Layout from '../../components/Layout';
 import ReportInstance from '../../components/ReportInstance';
 
@@ -10,9 +11,16 @@ const reportsContainer = css`
   padding: 1%;
 
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+  button {
+    width: 150px;
+    height: 25px;
+    margin: 4%auto;
+  }
 `;
 
 const textSectionStyles = css`
+  margin-bottom: 1.5%;
   .col-10 {
     float: left;
     width: 14%;
@@ -22,47 +30,51 @@ const textSectionStyles = css`
   .comment {
     float: left;
     width: 36%;
-    margin-top: 0.5%;
     margin-bottom: 0.5%;
+    font-weight: bold;
   }
   .why {
     float: left;
-    width: 31%;
-    margin-top: 0.5%;
+    width: 32%;
     margin-bottom: 0.5%;
+    font-weight: bold;
   }
   .actions {
     float: left;
-    width: 19%;
-    margin-top: 0.5%;
+    width: 16%;
     margin-bottom: 0.5%;
+    font-weight: bold;
   }
 `;
 
 export default function Reports(props) {
   const [reports, setReports] = useState(props.reports);
   const [errors, setErrors] = useState([]);
-
+  const [messages, setMessages] = useState('');
   function refreshPage() {
     // useRouter is an alternative
     window.location.reload();
   }
   return (
     <Layout userType={props.userType}>
+      <Head>
+        <title>Reports</title>
+      </Head>
       <h1>Reports</h1>
-      {useEffect(() => refreshPage, [errors])}
       <h2>
         {errors.map((error) => (
           <li key={`err-${error}`}>{error.message}</li>
         ))}
       </h2>
-      <section css={textSectionStyles}>
-        <span className="col-10"></span>
-        <span className="comment">COMMENT:</span>
-        <span className="why">WHY:</span>
-        <span className="actions">ACTIONS:</span>
-      </section>
+      <h2>{messages}</h2>
+
       <section css={reportsContainer}>
+        <section css={textSectionStyles}>
+          <span className="col-10"></span>
+          <span className="comment">COMMENT:</span>
+          <span className="why">WHY:</span>
+          <span className="actions">DELETE:</span>
+        </section>
         {reports &&
           reports.map((report) => (
             <ReportInstance
@@ -72,6 +84,7 @@ export default function Reports(props) {
               reports={reports}
               setReports={setReports}
               comments={props.comments}
+              setMessages={setMessages}
               key={`repInst-${report.id}`}
             />
           ))}

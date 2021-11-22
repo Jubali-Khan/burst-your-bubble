@@ -44,32 +44,6 @@ export default async function eventCreate(req, res) {
   console.log('eventTitle in api/create:', eventTitle);
   console.log('eventLink in api/create:', eventLink);
 
-  const inputArray = [
-    eventTitle,
-    leftLogo,
-    leftLink,
-    leftHeadline,
-    leftAuthorS,
-    rightLogo,
-    rightLink,
-    rightHeadline,
-    rightAuthorS,
-    eventLink,
-    leftArticle,
-    rightArticle,
-  ];
-
-  const undefinedElementIndex = inputArray.indexOf(undefined);
-
-  console.log('undefined element index: ', undefinedElementIndex);
-
-  if (undefinedElementIndex > -1) {
-    res.status(401).send({
-      errors: [{ message: 'Please fill all inputs with data' }],
-    });
-    return;
-  }
-
   // insert data into events table
   const event = await insertEvent(
     eventTitle,
@@ -105,7 +79,8 @@ export default async function eventCreate(req, res) {
     typeof status.event === 'undefined' ||
     typeof status.article === 'undefined'
   ) {
-    res.status(401).send({
+    console.log('from within the last if');
+    res.status(400).send({
       errors: [{ message: "Event info or articles couldn't be inserted" }],
     });
     return;

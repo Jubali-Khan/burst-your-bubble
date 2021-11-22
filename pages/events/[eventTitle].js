@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
 import Articles from '../../components/Articles';
@@ -30,9 +31,6 @@ const fontsSection = css`
   }
 `;
 export default function EventPage(props) {
-  const [eventErrors, setEventErrors] = useState();
-  const [articlesErrors, setArticlesErrors] = useState();
-  const [commentsErrors, setCommentsErrors] = useState();
   const [textSize, setTextSize] = useState('100%');
   const [counter, setCounter] = useState(0);
 
@@ -78,6 +76,9 @@ export default function EventPage(props) {
   }
   return (
     <Layout userType={props.userType}>
+      <Head>
+        <title>{props.event.eventTitle}</title>
+      </Head>
       <section css={fontsSection}>
         <Image src={'/../public/aA.jpg'} width="35px" height="30px" />
         <button onClick={textSizeDecrease}>-</button>
@@ -116,7 +117,7 @@ export async function getServerSideProps(context) {
   });
 
   const event = await eventResponse.json();
-  // console.log('event in gSSP in [eventTitle]: ', event);
+  console.log('event in gSSP in [eventTitle]: ', event);
   // if event isn't bringing right data ..?
 
   const articlesResponse = await fetch(

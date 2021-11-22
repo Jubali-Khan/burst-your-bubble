@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import Markdown from 'markdown-to-jsx';
+import { useState } from 'react';
 
 const reportContainer = css`
   border: 1px grey solid;
@@ -25,10 +25,12 @@ const reportContainer = css`
   .comment {
     text-align: center;
     margin: auto;
+    width: 20%;
   }
   .why {
-    text-align: center;
+    text-align: left;
     margin: auto;
+    width: 26%;
   }
 
   .buttons {
@@ -38,8 +40,7 @@ const reportContainer = css`
 `;
 
 export default function ReportInstance(props) {
-  const [commentDeleted, setCommentDeleted] = useState(false);
-
+  const [deactivateComment, setDeactivatedComment] = useState(false);
   async function deleteComment(commentId, reportId) {
     const response = await fetch(
       'http://localhost:3000/api/reports/deleteComment',
@@ -60,8 +61,10 @@ export default function ReportInstance(props) {
       // setErrors
       props.setErrors(commentDeleted.errors);
       return;
+    } else {
+      props.setMessages('Comment deleted successfuly!');
+      setDeactivatedComment(true);
     }
-    setCommentDeleted(true);
   }
 
   async function deleteReport(reportId) {
@@ -88,56 +91,52 @@ export default function ReportInstance(props) {
     props.setReports(newReports);
   }
 
-  // const comment = props.comments.find(
-  //   (cmnt) => cmnt.id === props.rep.commentId,
-  // );
-  // console.log('comment:', comment);
-  // console.log('props.comments:', props.comments);
-  // console.log('props.rep:', props.rep);
-
   // Reasons to report:
   // 1. offensive and/or disrespectful language
   // 2. hate language
   // 3. spam, scam or fraud
   // 4. incompliance with comment guidelines
-
-  let reportReason;
-  if (props.rep.reportedFor === 1) {
-    reportReason = 'offensive and/or disrespectful language';
-  } else if (props.rep.reportedFor === 2) {
-    reportReason = 'hate language';
-  } else if (props.rep.reportedFor === 3) {
-    reportReason = 'spam, scam or fraud';
-  } else if (props.rep.reportedFor === 4) {
-    reportReason = 'incompliance with comment guidelines';
-  }
-
+  const reportCodes = props.rep.reportedFor;
+  console.log('typeof reportCodes: ', typeof reportCodes);
+  console.log(' reportCodes: ', reportCodes);
+  let reportReasons = '';
+  reportCodes.find((entry) => entry === 1) !== undefined
+    ? (reportReasons = '1. offensive and/or disrespectful language')
+    : console.log(' ');
+  reportCodes.find((entry) => entry === 2) !== undefined
+    ? (reportReasons = reportReasons + '\n2. hate language')
+    : console.log(' ');
+  reportCodes.find((entry) => entry === 3) !== undefined
+    ? (reportReasons = reportReasons + '\n3. spam or scam')
+    : console.log(' ');
+  reportCodes.find((entry) => entry === 4) !== undefined
+    ? (reportReasons =
+        reportReasons + '\n4. incompliance with comment guidelines')
+    : console.log(' ');
+  console.log(props.rep.timesReported);
   return (
     <div css={reportContainer}>
-      <section className="comment">
-        {/* using the comment is no longer necessary, only the id is needed to delete the comment. props.rep.comment can be used instead! */}
-        {/* {comment.userName} (userId: {comment.userId}) {comment.verbChoice}{' '}
-        {comment.argument} */}
-        {props.rep.comment}
-      </section>
+      <section className="comment">{props.rep.comment}</section>
       <hr />
       <section className="why">
-        {/* {comment.userName} */} User used {reportReason} (reported{' '}
-        {props.rep.timesReported} times)
-        {/* times reported and report reason logic needs to be implemented in the report functionality in the comment component and the corresponding tables need to be updated */}
+        {props.rep.timesReported > 1
+          ? `reported ${props.rep.timesReported} times for:`
+          : `reported ${props.rep.timesReported} time for:`}
+        <Markdown>{reportReasons}</Markdown>
       </section>
       <hr />
       <section className="buttons">
-        <button onClick={() => deleteReport(props.rep.id)}>
-          delete report
-        </button>
+        <button onClick={() => deleteReport(props.rep.id)}>report</button>
         <br />
-        <button
-          onClick={() => deleteComment(props.rep.commentId, props.rep.id)}
-        >
-          delete comment
-        </button>
-        {commentDeleted ? 'comment has been successfuly deleted' : ''}
+        {deactivateComment ? (
+          <button disabled>comment</button>
+        ) : (
+          <button
+            onClick={() => deleteComment(props.rep.commentId, props.rep.id)}
+          >
+            comment
+          </button>
+        )}
       </section>
     </div>
   );

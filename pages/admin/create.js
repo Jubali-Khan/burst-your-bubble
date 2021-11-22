@@ -1,24 +1,29 @@
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import CreateEvent from '../../components/CreateEvent';
 import Layout from '../../components/Layout';
 
 export default function Create(props) {
   const [errors, setErrors] = useState([]);
+  const [refreshToggle, setRefreshToggle] = useState(false);
   function refreshPage() {
     // useRouter is an alternative
     window.location.reload();
   }
+
   return (
     <Layout userType={props.userType}>
+      <Head>
+        <title>Create Event Page</title>
+      </Head>
       <h1>Create an event</h1>
-      {/* {useEffect(() => refreshPage, [errors])}
-      refresh only on certain errors*/}
       <div>
-        {errors.map((error) => (
-          <li key={`mess-${error.message}`}>{error.message}</li>
-        ))}
+        {errors &&
+          errors.map((error) => (
+            <li key={`mess-${error.message}`}>{error.message}</li>
+          ))}
       </div>
-      <CreateEvent setErrors={setErrors} />
+      <CreateEvent setErrors={setErrors} setRefreshToggle={setRefreshToggle} />
     </Layout>
   );
 }

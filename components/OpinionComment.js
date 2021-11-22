@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const divStyle = css`
   display: flex;
@@ -23,13 +23,32 @@ const divStyle = css`
   }
 
   select {
-    margin: auto 0.5%;
+    margin: 0.5%;
+    border: 1px solid grey;
+    border-radius: 5px;
+
+    width: 15%;
+    height: 23px;
   }
   input {
-    margin: 0.5% 1.5%;
-    width: 40%;
-  }
+    margin: 0.5%;
+    border: 1px solid grey;
+    border-radius: 5px;
 
+    width: 30%;
+    height: 19px;
+  }
+  button {
+    margin: 1%;
+    background-color: white;
+    border: 1px solid grey;
+    border-radius: 5px;
+
+    height: 23px;
+    :hover {
+      background-color: #c5d0d5;
+    }
+  }
   .add {
     margin: 0.5%;
     padding: 0.4%;
@@ -40,7 +59,7 @@ const divStyle = css`
       background-color: lightgray;
     }
   }
-  .post {
+  .cancel {
     margin: 0.5%;
     padding: 0.4%;
     border-radius: 5px;
@@ -62,12 +81,6 @@ const containerStyles = css`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
-  margin: 1%;
-  padding: 0.5%;
-  border: 1px solid grey;
-  border-radius: 5px;
-  background-color: #e0c782;
 `;
 
 const borderAndShadow = css`
@@ -75,7 +88,17 @@ const borderAndShadow = css`
   padding: 0.5%;
   border: 1px solid grey;
   border-radius: 5px;
-  background-color: #e0c782;
+  background-color: #f6f2e9;
+
+  button {
+    background-color: white;
+    border: 1px solid grey;
+    border-radius: 5px;
+
+    :hover {
+      background-color: #c5d0d5;
+    }
+  }
 `;
 
 export default function OpinionComment(props) {
@@ -98,6 +121,7 @@ export default function OpinionComment(props) {
   const [editToggle, setEditToggle] = useState(false);
 
   const [toggle, setToggle] = useState(false); // Used for both EDIT, or REPORT
+  let [bgcolor, setBgcolor] = useState('white');
   let display = 'none';
   if (!toggle) {
     display = 'none';
@@ -112,10 +136,12 @@ export default function OpinionComment(props) {
 
   if (props.userType === undefined) {
     return (
-      <div css={containerStyles}>
-        {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
-        {premise !== '' ? premise : ''}
-        <button onClick={redirect}>REPORT</button>
+      <div css={borderAndShadow} style={{ fontWeight: 'bold' }}>
+        <div css={containerStyles}>
+          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
+          {premise !== '' ? premise : ''}
+          <button onClick={redirect}>REPORT</button>
+        </div>
       </div>
     );
   }
@@ -151,11 +177,10 @@ export default function OpinionComment(props) {
       },
     );
     const update = await response.json();
-    console.log('response.status in OpinionComment: ', response.status);
+
     if ('errors' in update) {
       props.setMessages(update.errors);
-    }
-    if (response.status === 200) {
+    } else if (response.status === 200) {
       props.setMessages([{ message: 'comment updated successfully' }]);
       setEditToggle(false);
       return;
@@ -199,39 +224,57 @@ export default function OpinionComment(props) {
     if ('errors' in createdReport) {
       props.setMessages(createdReport.errors);
       return;
+    } else if (response.status === 200) {
+      setToggle(!toggle);
+      setBgcolor('lightgreen');
     }
   }
 
   // original UI for the user's comment
   if (editToggle === false) {
     return (
-      <>
+      <div css={borderAndShadow}>
         <div css={containerStyles}>
-          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}
+          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
           {premise !== '' ? premise : ''}
           {props.comment.userId === props.userInfo.id ? (
-            <button onClick={() => setEditToggle(!editToggle)}>EDIT</button>
+            <button
+              className="editB"
+              onClick={() => setEditToggle(!editToggle)}
+            >
+              EDIT
+            </button>
           ) : (
-            <button onClick={() => setToggle(!toggle)}>REPORT</button>
+            <button
+              style={{ backgroundColor: bgcolor }}
+              className="reportB"
+              onClick={() => setToggle(!toggle)}
+            >
+              {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
+            </button>
           )}
         </div>
         <div>
-          <div style={{ display: display }}>
-            <hr />
-            report for{' '}
-            <select
-              value={reportedFor}
-              onChange={(e) => setReportedFor(e.currentTarget.value)}
-            >
-              <option value="1">offensive or disrespectful language</option>
-              <option value="2">hate language</option>
-              <option value="3">spam</option>
-              <option value="4">incompliance with comment guidelines</option>
-            </select>
-            <button onClick={reportHandler}>DONE</button>
-          </div>
+          {toggle === false ? (
+            ''
+          ) : (
+            <div>
+              <hr />
+              report for{' '}
+              <select
+                value={reportedFor}
+                onChange={(e) => setReportedFor(e.currentTarget.value)}
+              >
+                <option value="1">offensive or disrespectful language</option>
+                <option value="2">hate language</option>
+                <option value="3">spam</option>
+                <option value="4">incompliance with comment guidelines</option>
+              </select>
+              <button onClick={reportHandler}>DONE</button>
+            </div>
+          )}
         </div>
-      </>
+      </div>
     );
   }
 
@@ -277,7 +320,6 @@ export default function OpinionComment(props) {
           />
 
           <button
-            className="add"
             onClick={() => {
               setToggle(!toggle);
             }}
@@ -285,11 +327,8 @@ export default function OpinionComment(props) {
             {display === 'none' ? '+PREMISE' : '-'}
           </button>
 
-          <button className="add" onClick={updateHandler}>
-            UPDATE
-          </button>
+          <button onClick={updateHandler}>UPDATE</button>
           <button
-            className="post"
             onClick={() => {
               setEditToggle(false);
               cancelEditHandler();

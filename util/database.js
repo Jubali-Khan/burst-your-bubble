@@ -300,6 +300,7 @@ export async function updateCommentById(
   console.log('updatedComment in DB: ', updatedComment);
   return camelcaseKeys(updatedComment);
 }
+
 /*
 insert into comments (user_id, user_name, verb_choice, argument, event_id) values (3, 'user2', 'believes', 'blahblah blehbleh', 8);
 

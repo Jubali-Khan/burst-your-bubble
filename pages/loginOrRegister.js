@@ -1,6 +1,53 @@
+import { css } from '@emotion/react';
 import { useRouter } from 'next/dist/client/router';
+import Head from 'next/head';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+
+const formStyles = css`
+  border: 1px solid white;
+  border-radius: 15px;
+  padding: 1% 2% 2% 2%;
+  margin: 3% 41%;
+
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-color: #c5ccd5;
+  text-align: center;
+
+  div {
+    margin: 5% auto;
+  }
+
+  input {
+    margin: 0.5%;
+    border: 1px solid grey;
+    border-radius: 5px;
+
+    width: 200px;
+    height: 25px;
+  }
+
+  button {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+
+    :hover {
+      background-color: #c5d0d5;
+    }
+  }
+  .loginB {
+    margin-top: 10%;
+    margin-bottom: 5%;
+    width: 150px;
+    height: 25px;
+  }
+  .registerB {
+    margin-top: 5%;
+    width: 150px;
+    height: 25px;
+  }
+`;
 
 export default function LoginOrReg() {
   const [userEmail, setUserEmail] = useState('');
@@ -61,52 +108,73 @@ export default function LoginOrReg() {
   }
   return (
     <Layout>
+      <Head>
+        <title>Login or Register</title>
+      </Head>
       <form
+        css={formStyles}
         onSubmit={(event) => {
           event.preventDefault();
-          // login
-          // register
-          // no
         }}
       >
-        <label>
-          Email:
-          <input
-            type="email"
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.currentTarget.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
-          />
-        </label>
-        <button onClick={() => loginHandler()}>login</button>
-        <br />
-        <button onClick={() => registerHandler()}>register</button>
+        <div>
+          <div
+            style={{
+              border: '1px solid white',
+              borderRadius: '5px',
+              padding: '4%',
+              display: displaySV,
+            }}
+          >
+            {errors.length > 1
+              ? errors.map((error) => (
+                  <div key={`err-msg-${error.message}`}>{error.message}</div>
+                ))
+              : 'Please add a username too!'}
+          </div>
+          <label>
+            Email:
+            <input
+              type="email"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.currentTarget.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.currentTarget.value)}
+            />
+          </label>
+        </div>
         <section style={{ display: displaySV }}>
-          <hr />
-          Please add a username too!
-          <br />
           <label>
             Username:
             <input
+              style={{
+                margin: '0.5%',
+                border: '1px solid grey',
+                borderRadius: '5px',
+                height: '25px',
+                width: '200px',
+              }}
               value={userName}
               onChange={(e) => setUserName(e.currentTarget.value)}
             />
           </label>
         </section>
+        <button className="loginB" onClick={() => loginHandler()}>
+          login
+        </button>
+
+        <button className="registerB" onClick={() => registerHandler()}>
+          register
+        </button>
       </form>
-      <div>
-        {errors.map((error) => (
-          <div key={`err-msg-${error.message}`}>{error.message}</div>
-        ))}
-      </div>
     </Layout>
   );
 }

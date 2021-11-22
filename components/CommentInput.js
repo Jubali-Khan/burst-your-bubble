@@ -11,7 +11,7 @@ const divStyle = css`
   max-height: 20vh;
   background-color: white;
   padding: 1%;
-  margin: 0.5%;
+  margin: 2% 0.5% 0.5% 0.5%;
 
   border: 1px solid grey;
   border-radius: 10px;
@@ -22,17 +22,28 @@ const divStyle = css`
   }
 
   select {
-    margin: auto 0.5%;
+    margin: 0.5%;
+    border: 1px solid grey;
+    border-radius: 5px;
+
+    width: 20%;
+    height: 25px;
   }
   input {
-    margin: 0.5% 1.5%;
-    width: 40%;
+    margin: 0.5%;
+    border: 1px solid grey;
+    border-radius: 5px;
+
+    width: 30%;
+    height: 21px;
   }
 
   .add {
-    margin: 0.5%;
+    width: 100px;
+    height: 25px;
     padding: 0.4%;
-    font-size: small;
+    background-color: white;
+    border: 1px solid grey;
     border-radius: 5px;
 
     :hover {
@@ -41,7 +52,11 @@ const divStyle = css`
   }
   .post {
     margin: 0.5%;
+    width: 100px;
+    height: 25px;
     padding: 0.4%;
+    background-color: white;
+    border: 1px solid grey;
     border-radius: 5px;
 
     :hover {
@@ -103,13 +118,13 @@ export default function CommentInput(props) {
     if ('errors' in createdComment) {
       props.setMessages(createdComment.errors);
       return;
+    } else {
     }
   }
 
   return (
     <div css={divStyle}>
       <form css={rowStyle} onSubmit={(e) => e.preventDefault()}>
-        <Image src={'/../public/favicon.ico'} height="25px" width="25px" />
         <span>I</span>
         <select
           value={verbChoice}
@@ -155,7 +170,7 @@ export default function CommentInput(props) {
         </button>
 
         <button className="post" onClick={postingHandler}>
-          &#8617;
+          ENTER
         </button>
       </form>
     </div>

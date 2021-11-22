@@ -6,33 +6,90 @@ const footerStyles = css`
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: stretch;
-  align-content: stretch;
 
   position: absolute;
   bottom: 0;
-  width: 98vw;
+  width: 94vw;
 
   background-color: lightblue;
   border-radius: 10px;
   margin: 1%;
   padding: 1% 1.5%;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  div {
+    display: inline;
+  }
 `;
 
 export default function Footer(props) {
-  return (
-    <footer css={footerStyles}>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
+  console.log('props.userType in Footer: ', props.userType);
+  if (!props.userType) {
+    return (
+      <footer css={footerStyles}>
+        {/* Not logged in */}
+        <div>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/guide">
+            <a>Guide</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/loginOrRegister">
+            <a>Login / Register</a>
+          </Link>
+        </div>
+      </footer>
+    );
+  }
+  if (props.userType === 'admin') {
+    return (
+      <footer css={footerStyles}>
+        {/* // Logged in as admin */}
+        <div>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+        </div>
 
-      <Link href="/guide">
-        <a>Guide</a>
-      </Link>
-
-      <Link href="/login">
-        <a>Log In / Sign Up</a>
-      </Link>
-    </footer>
-  );
+        <div>
+          <Link href="/logout">
+            <a>Log Out</a>
+          </Link>
+        </div>
+      </footer>
+    );
+  }
+  if (props.userType === 'user') {
+    return (
+      <footer css={footerStyles}>
+        {/* Logged in as user*/}
+        <div>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/guide">
+            <a>Guide</a>
+          </Link>
+          <Link href="/profile/somenumber">
+            <a>My Profile</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/logout">
+            <a>Log Out</a>
+          </Link>
+        </div>
+      </footer>
+    );
+  }
 }

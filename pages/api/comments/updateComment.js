@@ -17,13 +17,13 @@ export default async function updateComment(req, res) {
   // authorization:
   // role:
   const sessionFromDB = await getRoleByToken(req.cookies.sessionToken);
+  console.log('sessionFromDB in updateComment: ', sessionFromDB);
   if (sessionFromDB.role !== 2) {
     res.status(401).send({
       errors: [{ message: 'wrong role - not authorized' }],
     });
     return;
   }
-  // check if it's the user's own comment
 
   // was all necessary info sent over?
   const {

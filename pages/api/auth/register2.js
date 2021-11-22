@@ -18,7 +18,7 @@ export default async function register(req, res) {
     });
     return;
   }
-
+  // maybe before this add an email validation step
   // is username already in DB (duplicate sign up)?
   const userName = req.body.username;
   const userNameExists = await getUsernameWPASSHASH(userName);

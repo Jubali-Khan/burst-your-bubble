@@ -6,8 +6,8 @@ const navStyles = css`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: stretch;
-  align-content: stretch;
+  font-weight: bold;
+
   background-color: lightblue;
   border-radius: 10px;
   margin: 1%;

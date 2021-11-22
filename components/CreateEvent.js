@@ -55,6 +55,23 @@ export default function CreateEvent(props) {
   const [rightArticle, setRightArticle] = useState();
 
   async function publishHandler() {
+    const inputArray = [
+      eventTitle,
+      leftLogo,
+      leftLink,
+      leftHeadline,
+      leftAuthorS,
+      rightLogo,
+      rightLink,
+      rightHeadline,
+      rightAuthorS,
+      leftArticle,
+      rightArticle,
+    ];
+    const undefinedElementIndex = inputArray.indexOf(undefined);
+    if (undefinedElementIndex > -1) {
+      return;
+    }
     // set event link to title where empty spaces are replaced with underscores
     const eventLink = eventTitle.replaceAll(' ', '_');
     console.log('eventLink: ', eventLink);
@@ -81,15 +98,18 @@ export default function CreateEvent(props) {
       }),
     });
     const statusJson = await response.json();
-
     console.log('statusJson: ', statusJson);
 
     // if there's an error in the response from the api ..
     if ('errors' in statusJson) {
       props.setErrors(statusJson.errors);
+      // if (response.status === 403) {
+      //   props.setRefreshToggle(true);
+      // }
       return;
     }
-    // if everything's alright..
+    console.log('statusJson.event: ', statusJson.event);
+    props.setErrors('Event created successfully!');
   }
 
   return (

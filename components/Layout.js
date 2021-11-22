@@ -11,7 +11,6 @@ const layoutStyles = css`
   padding-bottom: 100px; /* height of your footer */
 
   font-family: 'Inter';
-  font-weight: bold;
 `;
 
 const mainChild = css`
@@ -28,13 +27,13 @@ export default function Layout(props) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@600"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600"
           rel="stylesheet"
         />
       </Head>
       <Header userType={props.userType} />
       <main css={mainChild}>{props.children}</main>
-      <Footer />
+      <Footer userType={props.userType} />
     </div>
   );
 }

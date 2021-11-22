@@ -10,7 +10,8 @@ export default function CommentSection(props) {
   const containerStyles = css`
     border: 1px solid grey;
     border-radius: 10px;
-    background-color: #faf9f4;
+    background-color: white;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
     font-size: ${props.textSize};
 
@@ -43,10 +44,10 @@ export default function CommentSection(props) {
             setMessages={setMessages}
           />
         ) : (
-          <span>
+          <div style={{ textAlign: 'center', marginTop: '1.5%' }}>
             Please <Link href="/loginOrRegister">login or register</Link> to
             leave a comment
-          </span>
+          </div>
         )}
       </div>
     </>

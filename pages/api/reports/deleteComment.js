@@ -27,7 +27,7 @@ export default async function deleteCommentHandler(req, res) {
   // error checking: is comment still in db to begin with? flowchart of possible outcomes would be helpful
   const reportUpdated = await updateActedOnToT(req.body.report_id);
   const commentDeleted = await deleteCommentByID(req.body.comment_id);
-  // console.log('commentDeleted:', commentDeleted);
+  console.log('commentDeleted:', commentDeleted);
   if (!commentDeleted) {
     res.status(400).json({
       errors: [{ message: 'comment not found' }],

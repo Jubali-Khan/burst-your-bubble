@@ -1,8 +1,12 @@
+import Head from 'next/head';
 import Layout from '../components/Layout';
 
 export default function Guide(props) {
   return (
     <Layout userType={props.userType}>
+      <Head>
+        <title>Guide</title>
+      </Head>
       <h1>Guide</h1>
       <p>guide</p>
     </Layout>
