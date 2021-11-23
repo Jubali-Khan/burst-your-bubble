@@ -67,6 +67,16 @@ export async function getEventByTitle(eventTitle) {
   return camelcaseKeys(event[0]);
 }
 
+export async function getEvents() {
+  const events = await sql`
+  SELECT
+    *
+  FROM
+    events
+  `;
+  return events.map((event) => camelcaseKeys(event));
+}
+
 // ARTICLES
 export async function insertArticles(leftArt, rightArt, eventId) {
   const articlesEntry = await sql`

@@ -55,11 +55,19 @@ export default function ReportInstance(props) {
         }),
       },
     );
+    if (response.status === 403) {
+      console.log('response status is 403');
+      props.setRefresher(true);
+    }
+
     const commentDeleted = await response.json();
     console.log('comment from deleteComment: ', commentDeleted);
     if ('errors' in commentDeleted) {
       // setErrors
-      props.setErrors(commentDeleted.errors);
+      if (response.status === 400) {
+        props.setErrors(commentDeleted.errors);
+        return;
+      }
       return;
     } else {
       props.setMessages('Comment deleted successfuly!');
@@ -80,9 +88,17 @@ export default function ReportInstance(props) {
         }),
       },
     );
+    if (response.status === 403) {
+      console.log('response status is 403');
+      props.setRefresher(true);
+    }
+
     const reportDeleted = await response.json();
     if ('errors' in reportDeleted) {
-      props.setErrors(reportDeleted.errors);
+      if (response.status === 400) {
+        props.setErrors(reportDeleted.errors);
+        return;
+      }
       return;
     }
     const newReports = props.reports.filter((report) => {

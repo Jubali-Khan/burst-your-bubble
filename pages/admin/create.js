@@ -5,7 +5,7 @@ import Layout from '../../components/Layout';
 
 export default function Create(props) {
   const [errors, setErrors] = useState([]);
-  const [refreshToggle, setRefreshToggle] = useState(false);
+  const [refresher, setRefresher] = useState(false);
   function refreshPage() {
     // useRouter is an alternative
     window.location.reload();
@@ -18,12 +18,13 @@ export default function Create(props) {
       </Head>
       <h1>Create an event</h1>
       <div>
+        {useEffect(() => refreshPage, [refresher])}
         {errors &&
           errors.map((error) => (
             <li key={`mess-${error.message}`}>{error.message}</li>
           ))}
       </div>
-      <CreateEvent setErrors={setErrors} setRefreshToggle={setRefreshToggle} />
+      <CreateEvent setErrors={setErrors} setRefresher={setRefresher} />
     </Layout>
   );
 }

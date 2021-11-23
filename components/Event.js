@@ -1,86 +1,81 @@
-// component should be clickable in both news info sections to redirect to their links
-// component should show basic info pulled from the events table
-
 import { css } from '@emotion/react';
 import Link from 'next/link';
 
-const newsInfoSectionStyles = css`
+const containerStyles = css`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  flex-wrap: nowrap;
   justify-content: space-around;
-`;
+  align-items: stretch;
+  align-content: stretch;
 
-const newsSectionStyle = css`
-  margin: 1%;
-  max-width: 35vw;
-`;
+  background-color: #faf9f4;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
-const firstDivStyle = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  border: 1px solid #999;
+  border-radius: 10px;
+  max-width: 80vw;
 
-  :hover {
-    background-color: lightgray;
-    cursor: default;
-    border-radius: 5px;
+  margin: 1% 6.2%;
+  padding: 1%;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    :hover {
+      background-color: #f7ecd2;
+      border-radius: 10px;
+      text-decoration: underline;
+    }
+  }
+  a[target='_blank']::after {
+    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+    margin: 0px 3px 0px 5px;
   }
 `;
 
+const titleStyles = css`
+  margin: 0.6% 1%;
+`;
+
+const subTitleStyles = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const rowStyles = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: left;
+`;
+
 export default function Event(props) {
-  const containerStyles = css`
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: stretch;
-    align-content: stretch;
-
-    font-size: ${props.textSize};
-
-    background-color: #faf9f4;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
-    border: 1px solid #999;
-    border-radius: 10px;
-    max-width: 80vw;
-
-    margin: 1% 6.2%;
-    padding: 1%;
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-  `;
-  const titleStyles = css`
-    margin: 0.6% 1%;
-  `;
   return (
-    <div css={containerStyles}>
-      <section css={titleStyles}>{props.event.eventTitle}</section>
-      <section css={newsInfoSectionStyles}>
-        <section css={newsSectionStyle} id="LWnewsSection">
-          <Link href={props.event.leftLink}>
-            <a target="_blank">
-              <div css={firstDivStyle}>
+    <div css={containerStyles} style={{ fontSize: `${props.textSize}` }}>
+      <h4 css={titleStyles}>{props.event.eventTitle}</h4>
+      <section css={subTitleStyles}>
+        <section css={subTitleStyles}>
+          <div css={rowStyles}>
+            <Link href={props.event.eventLink}>
+              <a style={{ width: '45%', fontStyle: 'italic' }} target="_blank">
                 {/* image */}
-                <h4>{props.event.leftHeadline}</h4>
-              </div>
-            </a>
-          </Link>
-          <div>By: {props.event.leftAuthorS}</div>
-        </section>
-        <section css={newsSectionStyle} id="RWnewsSection">
-          <Link href={props.event.rightLink}>
-            <a target="_blank">
-              <div css={firstDivStyle}>
+                <p>{props.event.leftHeadline}</p>
+              </a>
+            </Link>
+            <Link href={props.event.eventLink}>
+              <a style={{ width: '45%', fontStyle: 'italic' }} target="_blank">
                 {/* image */}
-                <h4>{props.event.rightHeadline}</h4>
-              </div>
-            </a>
-          </Link>
-          <div>By: {props.event.rightAuthorS}</div>
+                <p>{props.event.rightHeadline}</p>
+              </a>
+            </Link>
+          </div>
+          <div css={rowStyles}>
+            <div style={{ width: '45%' }}>By: {props.event.leftAuthorS}</div>
+
+            <div style={{ width: '45%' }}>By: {props.event.rightAuthorS}</div>
+          </div>
         </section>
       </section>
     </div>

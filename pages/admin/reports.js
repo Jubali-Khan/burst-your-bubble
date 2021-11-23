@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import ReportInstance from '../../components/ReportInstance';
 
@@ -50,6 +50,7 @@ const textSectionStyles = css`
 export default function Reports(props) {
   const [reports, setReports] = useState(props.reports);
   const [errors, setErrors] = useState([]);
+  const [refresher, setRefresher] = useState(false);
   const [messages, setMessages] = useState('');
   function refreshPage() {
     // useRouter is an alternative
@@ -62,6 +63,7 @@ export default function Reports(props) {
       </Head>
       <h1>Reports</h1>
       <h2>
+        {useEffect(() => refreshPage, [refresher])}
         {errors.map((error) => (
           <li key={`err-${error}`}>{error.message}</li>
         ))}
@@ -85,6 +87,7 @@ export default function Reports(props) {
               setReports={setReports}
               comments={props.comments}
               setMessages={setMessages}
+              setRefresher={setRefresher}
               key={`repInst-${report.id}`}
             />
           ))}

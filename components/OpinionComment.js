@@ -120,13 +120,21 @@ export default function OpinionComment(props) {
   // editToggle is used to change what OpinionComment returns
   const [editToggle, setEditToggle] = useState(false);
 
-  const [toggle, setToggle] = useState(false); // Used for both EDIT, or REPORT
+  const [editView, setEditView] = useState(false);
   let [bgcolor, setBgcolor] = useState('white');
-  let display = 'none';
-  if (!toggle) {
-    display = 'none';
-  } else if (toggle) {
-    display = 'block';
+  let premisesDisplay = 'none';
+  if (!editView) {
+    premisesDisplay = 'none';
+  } else if (editView) {
+    premisesDisplay = 'block';
+  }
+
+  const [reportView, setReportView] = useState(false);
+  let reportingDisplay = 'none';
+  if (!reportView) {
+    reportingDisplay = 'none';
+  } else if (reportView) {
+    reportingDisplay = 'block';
   }
 
   //
@@ -172,7 +180,7 @@ export default function OpinionComment(props) {
           argument: argument,
           conjChoice: conjChoice,
           premise: premise,
-          toggle: toggle,
+          toggle: editView,
         }),
       },
     );
@@ -225,7 +233,7 @@ export default function OpinionComment(props) {
       props.setMessages(createdReport.errors);
       return;
     } else if (response.status === 200) {
-      setToggle(!toggle);
+      setReportView(!reportView);
       setBgcolor('lightgreen');
     }
   }
@@ -248,14 +256,14 @@ export default function OpinionComment(props) {
             <button
               style={{ backgroundColor: bgcolor }}
               className="reportB"
-              onClick={() => setToggle(!toggle)}
+              onClick={() => setReportView(!reportView)}
             >
               {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
             </button>
           )}
         </div>
         <div>
-          {toggle === false ? (
+          {reportView === false ? (
             ''
           ) : (
             <div>
@@ -303,7 +311,7 @@ export default function OpinionComment(props) {
           />
 
           <select
-            style={{ display: `${display}` }}
+            style={{ display: `${premisesDisplay}` }}
             value={conjChoice}
             onChange={(e) => setConjChoice(e.currentTarget.value)}
           >
@@ -314,17 +322,17 @@ export default function OpinionComment(props) {
             <option value="since">since</option>
           </select>
           <input
-            style={{ display: `${display}` }}
+            style={{ display: `${premisesDisplay}` }}
             value={premise}
             onChange={(e) => setPremise(e.currentTarget.value)}
           />
 
           <button
             onClick={() => {
-              setToggle(!toggle);
+              setEditView(!editView);
             }}
           >
-            {display === 'none' ? '+PREMISE' : '-'}
+            {premisesDisplay === 'none' ? '+PREMISE' : '-'}
           </button>
 
           <button onClick={updateHandler}>UPDATE</button>

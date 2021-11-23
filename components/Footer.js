@@ -11,6 +11,8 @@ const footerStyles = css`
   bottom: 0;
   width: 94vw;
 
+  font-weight: bold;
+
   background-color: lightblue;
   border-radius: 10px;
   margin: 1%;
@@ -80,6 +82,7 @@ export default function Footer(props) {
           <Link href="/guide">
             <a>Guide</a>
           </Link>
+          <br />
           <Link href="/profile/somenumber">
             <a>My Profile</a>
           </Link>

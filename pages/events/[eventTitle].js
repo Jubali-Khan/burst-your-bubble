@@ -91,6 +91,7 @@ export default function EventPage(props) {
           userType={props.userType}
           userInfo={props.userInfo}
           event={props.event}
+          eventTitle={props.eventTitle}
           comments={props.comments}
           textSize={textSize}
         />
@@ -163,6 +164,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         event: event,
+        eventTitle: eventTitle,
         articles: articles,
         comments: comments,
       },
@@ -178,6 +180,7 @@ export async function getServerSideProps(context) {
         userType: 'admin',
         userInfo: userInfo,
         event: event,
+        eventTitle: eventTitle,
         articles: articles,
         comments: comments,
       },
@@ -190,6 +193,7 @@ export async function getServerSideProps(context) {
         userType: 'user',
         userInfo: userInfo,
         event: event,
+        eventTitle: eventTitle,
         articles: articles,
         comments: comments,
       },

@@ -97,15 +97,20 @@ export default function CreateEvent(props) {
         rightArticle,
       }),
     });
+    if (response.status === 403) {
+      console.log('response status is 403');
+      props.setRefresher(true);
+    }
     const statusJson = await response.json();
     console.log('statusJson: ', statusJson);
 
     // if there's an error in the response from the api ..
     if ('errors' in statusJson) {
-      props.setErrors(statusJson.errors);
-      // if (response.status === 403) {
-      //   props.setRefreshToggle(true);
-      // }
+      if (response.status === 400) {
+        console.log('response status is 400');
+        props.setErrors(statusJson.errors);
+        return;
+      }
       return;
     }
     console.log('statusJson.event: ', statusJson.event);

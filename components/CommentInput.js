@@ -75,6 +75,7 @@ export default function CommentInput(props) {
   const userId = props.userInfo.id;
   const userName = props.userInfo.userName;
   const eventId = props.event.id;
+  console.log('props.comments in CommentInput:', props.comments);
 
   const [verbChoice, setVerbChoice] = useState('believes');
   const [argument, setArgument] = useState('');
@@ -82,8 +83,6 @@ export default function CommentInput(props) {
   const [toggle, setToggle] = useState(false);
   const [conjChoice, setConjChoice] = useState('because');
   const [premise, setPremise] = useState('');
-
-  const [messages, setMessages] = useState([]);
 
   let display = 'none';
   if (!toggle) {
@@ -119,6 +118,7 @@ export default function CommentInput(props) {
       props.setMessages(createdComment.errors);
       return;
     } else {
+      props.setComments([...props.comments, createdComment]);
     }
   }
 

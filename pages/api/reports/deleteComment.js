@@ -5,8 +5,8 @@ import {
 } from '../../../util/database';
 
 export default async function deleteCommentHandler(req, res) {
-  console.log('req.body in ddeleteCommentHandler: ', req.body);
-  console.log('req.cookies in deleteCommentHandler: ', req.cookies);
+  // console.log('req.body in ddeleteCommentHandler: ', req.body);
+  // console.log('req.cookies in deleteCommentHandler: ', req.cookies);
   // is there a session?
   if (!req.cookies.sessionToken) {
     res.status(403).send({
