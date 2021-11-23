@@ -29,6 +29,8 @@ function connectOneTimeToDatabase() {
 // Connect to PostgreSQL
 const sql = connectOneTimeToDatabase();
 
+//  comments.user_id,
+// comments.event_id,
 // EVENTS
 export async function insertEvent(
   eventTitle,
@@ -65,6 +67,30 @@ export async function getEventByTitle(eventTitle) {
   `;
   console.log('event in getEventByTitle: ', event[0]);
   return camelcaseKeys(event[0]);
+}
+export async function getEventsByUserID(UserID) {
+  const events = await sql`
+  SELECT
+    events.id,
+    events.event_title,
+    events.left_logo,
+    events.left_link,
+    events.left_headline,
+    events.left_author_s,
+    events.right_logo,
+    events.right_link,
+    events.right_headline,
+    events.right_author_s,
+    events.event_link
+  FROM
+    comments,
+    events
+  WHERE
+    comments.event_id = events.id AND
+    comments.user_id = ${UserID} LIMIT 1
+  `;
+  console.log('events in DB: ', events);
+  return events.map((event) => camelcaseKeys(event));
 }
 
 export async function getEvents() {

@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
   if (!userType) {
     return {
       redirect: {
-        destination: '/loginOrRegister',
+        destination: '/loginOrRegister', // still needs a returnTo
         permanent: false,
       },
     };
