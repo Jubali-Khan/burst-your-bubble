@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -72,6 +73,8 @@ const rowStyle = css`
 `;
 
 export default function CommentInput(props) {
+  const router = useRouter();
+  const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
   const userId = props.userInfo.id;
   const userName = props.userInfo.userName;
   const eventId = props.event.id;
@@ -89,6 +92,10 @@ export default function CommentInput(props) {
     display = 'none';
   } else if (toggle) {
     display = 'block';
+  }
+  function redirectToLoginOrReg() {
+    router.push(returnToLink);
+    return;
   }
 
   async function postingHandler() {
@@ -111,6 +118,10 @@ export default function CommentInput(props) {
         }),
       },
     );
+    if (response.status === 403) {
+      redirectToLoginOrReg();
+      return;
+    }
     const createdComment = await response.json();
     console.log('createdComment: ', createdComment);
 

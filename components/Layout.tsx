@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { ReactNode } from 'react';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -19,13 +20,18 @@ const mainChild = css`
   margin: 2%;
 `;
 
-export default function Layout(props) {
+type Props = {
+  userType: string | undefined;
+  children: ReactNode;
+};
+
+export default function Layout(props: Props) {
   console.log('props.userType in Layout: ', props.userType);
   return (
     <div css={layoutStyles}>
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600"
           rel="stylesheet"

@@ -37,7 +37,11 @@ const centerStyles = css`
   justify-content: space-around;
 `;
 
-export default function Header(props) {
+type Props = {
+  userType: string | undefined;
+};
+
+export default function Header(props: Props) {
   console.log('props.userType in Header: ', props.userType);
   if (!props.userType) {
     return (
@@ -82,28 +86,26 @@ export default function Header(props) {
       </header>
     );
   }
-  if (props.userType === 'user') {
-    return (
-      <header>
-        {/* Logged in as user*/}
-        <nav css={navStyles}>
-          <Link href="/">
-            <a>Home</a>
+  return (
+    <header>
+      {/* Logged in as user*/}
+      <nav css={navStyles}>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
+        <section css={centerStyles}>
+          <Link href="/guide">
+            <a>Guide</a>
           </Link>
-          <section css={centerStyles}>
-            <Link href="/guide">
-              <a>Guide</a>
-            </Link>
-            <Link href="/profile/somenumber">
-              <a>My Profile</a>
-            </Link>
-          </section>
+          <Link href="/profile/somenumber">
+            <a>My Profile</a>
+          </Link>
+        </section>
 
-          <Link href="/logout">
-            <a>Log Out</a>
-          </Link>
-        </nav>
-      </header>
-    );
-  }
+        <Link href="/logout">
+          <a>Log Out</a>
+        </Link>
+      </nav>
+    </header>
+  );
 }

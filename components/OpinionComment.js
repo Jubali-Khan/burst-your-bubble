@@ -104,7 +104,7 @@ const borderAndShadow = css`
 export default function OpinionComment(props) {
   const router = useRouter();
 
-  console.log('props.comment: ', props.comment);
+  // console.log('props.comment: ', props.comment);
   console.log('props.userInfo: ', props.userInfo);
   console.log('props.userType: ', props.userType);
 
@@ -295,69 +295,68 @@ export default function OpinionComment(props) {
     );
   }
 
-  // editing UI for the user's comment
-  if (editToggle === true) {
-    return (
-      <div css={divStyle}>
-        <form css={rowStyle} onSubmit={(e) => e.preventDefault()}>
-          <Image src={'/../public/favicon.ico'} height="25px" width="25px" />
-          <span>I</span>
-          <select
-            value={verbChoice}
-            onChange={(e) => {
-              setVerbChoice(e.currentTarget.value);
-            }}
-          >
-            <option value="believes">believe</option>
-            <option value="thinks">think</option>
-            <option value="agrees">agree</option>
-            <option value="disagrees">disagree</option>
-          </select>
+  // editing UI for the user's comment (editToggle is true)
+  return (
+    <div css={divStyle}>
+      <form css={rowStyle} onSubmit={(e) => e.preventDefault()}>
+        <Image src={'/../public/favicon.ico'} height="25px" width="25px" />
+        <span>I</span>
+        <select
+          value={verbChoice}
+          onChange={(e) => {
+            setVerbChoice(e.currentTarget.value);
+          }}
+        >
+          <option value="believes">believe</option>
+          <option value="thinks">think</option>
+          <option value="agrees">agree</option>
+          <option value="disagrees">disagree</option>
+        </select>
 
-          <input
-            value={argument}
-            onChange={(e) => setArgument(e.currentTarget.value)}
-          />
+        <input
+          value={argument}
+          onChange={(e) => setArgument(e.currentTarget.value)}
+        />
 
-          <select
-            style={{ display: `${premisesDisplay}` }}
-            value={conjChoice}
-            onChange={(e) => setConjChoice(e.currentTarget.value)}
-          >
-            <option value="because">because</option>
-            <option value="considering">considering</option>
-            <option value="as">as</option>
-            <option value="due to">due to</option>
-            <option value="since">since</option>
-          </select>
-          <input
-            style={{ display: `${premisesDisplay}` }}
-            value={premise}
-            onChange={(e) => setPremise(e.currentTarget.value)}
-          />
+        <select
+          style={{ display: `${premisesDisplay}` }}
+          value={conjChoice}
+          onChange={(e) => setConjChoice(e.currentTarget.value)}
+        >
+          <option value="because">because</option>
+          <option value="considering">considering</option>
+          <option value="as">as</option>
+          <option value="due to">due to</option>
+          <option value="since">since</option>
+        </select>
+        <input
+          style={{ display: `${premisesDisplay}` }}
+          value={premise}
+          onChange={(e) => setPremise(e.currentTarget.value)}
+        />
 
-          <button
-            onClick={() => {
-              setEditView(!editView);
-            }}
-          >
-            {premisesDisplay === 'none' ? '+PREMISE' : '-'}
-          </button>
+        <button
+          onClick={() => {
+            setEditView(!editView);
+          }}
+        >
+          {premisesDisplay === 'none' ? '+PREMISE' : '-'}
+        </button>
 
-          <button onClick={updateHandler}>UPDATE</button>
-          <button
-            onClick={() => {
-              setEditToggle(false);
-              cancelEditHandler();
-            }}
-          >
-            &#10006;
-          </button>
-        </form>
-      </div>
-    );
-  }
+        <button onClick={updateHandler}>UPDATE</button>
+        <button
+          onClick={() => {
+            setEditToggle(false);
+            cancelEditHandler();
+          }}
+        >
+          &#10006;
+        </button>
+      </form>
+    </div>
+  );
 }
+
 /*
 small problem: adding info to the premise -> clicking on - because you don't want it no more -> the info being sent to the db anyway. - might need to reset the 2 fields.
 */

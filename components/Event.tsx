@@ -50,10 +50,27 @@ const rowStyles = css`
   justify-content: space-around;
   text-align: left;
 `;
+type EventType = {
+  id: number;
+  eventTitle: string;
+  leftLogo: string;
+  leftLink: string;
+  leftHeadline: string;
+  leftAuthorS: string;
+  rightLogo: string;
+  rightLink: string;
+  rightHeadline: string;
+  rightAuthorS: string;
+  eventLink: string;
+};
+type Props = {
+  event: EventType;
+  textSize: string;
+};
 
-export default function Event(props) {
+export default function Event(props: Props) {
   return (
-    <div css={containerStyles} style={{ fontSize: `${props.textSize}` }}>
+    <div css={containerStyles} style={{ fontSize: props.textSize }}>
       <h4 css={titleStyles}>{props.event.eventTitle}</h4>
       <section css={subTitleStyles}>
         <section css={subTitleStyles}>

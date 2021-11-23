@@ -10,7 +10,7 @@ export default async function getComments(req, res) {
   console.log('req.body.eventId:', req.body.eventId);
 
   const comments = await getCommentsByEventID(req.body.eventId);
-  console.log('comments in api getComments: ', comments);
+  // console.log('comments in api getComments: ', comments);
 
   // comments are being return {count: 0, ...} when the query isn't finding anything, why is that?
   if (!comments) {

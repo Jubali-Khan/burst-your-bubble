@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CommentInput from './CommentInput';
 import OpinionComment from './OpinionComment';
 
@@ -14,8 +14,47 @@ const containerStyles = css`
   padding: 1%;
 `;
 
-export default function CommentSection(props) {
-  const [messages, setMessages] = useState([]);
+type EventType = {
+  id: number;
+  eventTitle: string;
+  leftLogo: string;
+  leftLink: string;
+  leftHeadline: string;
+  leftAuthorS: string;
+  rightLogo: string;
+  rightLink: string;
+  rightHeadline: string;
+  rightAuthorS: string;
+  eventLink: string;
+};
+type Comment = {
+  id: number;
+  userId: number;
+  userName: string;
+  verbChoice: string;
+  argument: string;
+  conjChoice?: string;
+  premise?: string;
+  eventId: number;
+};
+type UserInfo = {
+  id: number;
+  userName: string;
+  userId: number;
+};
+type Props = {
+  userType: string | undefined;
+  userInfo: UserInfo | undefined;
+  event: EventType;
+  eventTitle: string;
+  comments: Comment[];
+  textSize: string;
+};
+type Err = {
+  message?: string;
+}[];
+export default function CommentSection(props: Props) {
+  const [messages, setMessages] = useState<Err>([]);
   const [comments, setComments] = useState(props.comments);
   console.log('comments SV: ', comments);
   const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
@@ -26,7 +65,7 @@ export default function CommentSection(props) {
           <span key={`${err.message}`}>{err.message}</span>
         ))}
       </div>
-      <div css={containerStyles} style={{ fontSize: `${props.textSize}` }}>
+      <div css={containerStyles} style={{ fontSize: props.textSize }}>
         {comments.map((comment) => (
           <OpinionComment
             userType={props.userType}

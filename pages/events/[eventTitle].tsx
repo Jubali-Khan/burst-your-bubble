@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -30,7 +31,51 @@ const fontsSection = css`
     font-size: 1.2em;
   }
 `;
-export default function EventPage(props) {
+
+type EventType = {
+  id: number;
+  eventTitle: string;
+  leftLogo: string;
+  leftLink: string;
+  leftHeadline: string;
+  leftAuthorS: string;
+  rightLogo: string;
+  rightLink: string;
+  rightHeadline: string;
+  rightAuthorS: string;
+  eventLink: string;
+};
+type Comment = {
+  id: number;
+  userId: number;
+  userName: string;
+  verbChoice: string;
+  argument: string;
+  conjChoice?: string;
+  premise?: string;
+  eventId: number;
+};
+type UserInfo = {
+  id: number;
+  userName: string;
+  userId: number;
+};
+type ArticlesType = {
+  id: number;
+  leftArt: string;
+  rightArt: string;
+  eventId: number;
+};
+type Props = {
+  userType: string | undefined;
+  userInfo: UserInfo | undefined;
+  event: EventType;
+  eventTitle: string;
+  articles: ArticlesType;
+  comments: Comment[];
+};
+
+export default function EventPage(props: Props) {
   const [textSize, setTextSize] = useState('100%');
   const [counter, setCounter] = useState(0);
 
@@ -38,7 +83,7 @@ export default function EventPage(props) {
     if (counter > 5) {
       return;
     } else {
-      let tempValue = textSize;
+      let tempValue: string | number = textSize;
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.slice(0, -1);
       // console.log('tempValue: ', tempValue);
@@ -58,7 +103,7 @@ export default function EventPage(props) {
     if (counter <= -4) {
       return;
     } else {
-      let tempValue = textSize;
+      let tempValue: string | number = textSize;
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.slice(0, -1);
       // console.log('tempValue: ', tempValue);
@@ -80,7 +125,7 @@ export default function EventPage(props) {
         <title>{props.event.eventTitle}</title>
       </Head>
       <section css={fontsSection}>
-        <Image src={'/../public/aA.jpg'} width="35px" height="30px" />
+        <Image src="/../public/aA.jpg" width="35px" height="30px" />
         <button onClick={textSizeDecrease}>-</button>
         <button onClick={textSizeIncrease}>+</button>
       </section>
@@ -100,11 +145,12 @@ export default function EventPage(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { getRoleByToken, getUserinfoByToken } = await import(
     '../../util/database'
   );
-  const eventTitle = context.query.eventTitle.replaceAll('_', ' ');
+  // type EventTitle = string | undefined;
+  const eventTitle: string = context.query.eventTitle?.replaceAll('_', ' ');
   // console.log('eventTitle: ', eventTitle);
 
   const eventResponse = await fetch('http://localhost:3000/api/event/getInfo', {
@@ -150,7 +196,7 @@ export async function getServerSideProps(context) {
     },
   );
   const comments = await commentsResponse.json();
-  console.log('comments in gSSP in [eventTitle]: ', comments);
+  // console.log('comments in gSSP in [eventTitle]: ', comments);
   // No comments? no opinionComments!
 
   //

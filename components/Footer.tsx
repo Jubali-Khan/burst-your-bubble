@@ -27,7 +27,11 @@ const footerStyles = css`
   }
 `;
 
-export default function Footer(props) {
+type Props = {
+  userType: string | undefined;
+};
+
+export default function Footer(props: Props) {
   console.log('props.userType in Footer: ', props.userType);
   if (!props.userType) {
     return (
@@ -69,30 +73,28 @@ export default function Footer(props) {
       </footer>
     );
   }
-  if (props.userType === 'user') {
-    return (
-      <footer css={footerStyles}>
-        {/* Logged in as user*/}
-        <div>
-          <Link href="/">
-            <a>Home</a>
-          </Link>
-        </div>
-        <div>
-          <Link href="/guide">
-            <a>Guide</a>
-          </Link>
-          <br />
-          <Link href="/profile/somenumber">
-            <a>My Profile</a>
-          </Link>
-        </div>
-        <div>
-          <Link href="/logout">
-            <a>Log Out</a>
-          </Link>
-        </div>
-      </footer>
-    );
-  }
+  return (
+    <footer css={footerStyles}>
+      {/* Logged in as user*/}
+      <div>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
+      </div>
+      <div>
+        <Link href="/guide">
+          <a>Guide</a>
+        </Link>
+        <br />
+        <Link href="/profile/somenumber">
+          <a>My Profile</a>
+        </Link>
+      </div>
+      <div>
+        <Link href="/logout">
+          <a>Log Out</a>
+        </Link>
+      </div>
+    </footer>
+  );
 }

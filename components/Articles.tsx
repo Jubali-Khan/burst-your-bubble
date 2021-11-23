@@ -26,13 +26,23 @@ const articleStyles = css`
   overflow: auto;
 `;
 
-export default function Articles(props) {
+type Props = {
+  articles: {
+    id: number;
+    leftArt: string;
+    rightArt: string;
+    eventId: number;
+  };
+  textSize: string;
+};
+
+export default function Articles(props: Props) {
   return (
     <div css={containerStyles}>
-      <article css={articleStyles} style={{ fontSize: `${props.textSize}` }}>
+      <article css={articleStyles} style={{ fontSize: props.textSize }}>
         <Markdown>{props.articles.leftArt}</Markdown>
       </article>
-      <article css={articleStyles} style={{ fontSize: `${props.textSize}` }}>
+      <article css={articleStyles} style={{ fontSize: props.textSize }}>
         <Markdown>{props.articles.rightArt}</Markdown>
       </article>
     </div>

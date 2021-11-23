@@ -38,7 +38,24 @@ const rowStyles = css`
   text-align: left;
 `;
 
-export default function IndexEvent(props) {
+type Event = {
+  id: number;
+  eventTitle: string;
+  leftLogo: string;
+  leftLink: string;
+  leftHeadline: string;
+  leftAuthorS: string;
+  rightLogo: string;
+  rightLink: string;
+  rightHeadline: string;
+  rightAuthorS: string;
+  eventLink: string;
+};
+type Props = {
+  event: Event;
+};
+
+export default function IndexEvent(props: Props) {
   return (
     <div css={containerStyles}>
       <h4 css={titleStyles}>{props.event.eventTitle}</h4>
