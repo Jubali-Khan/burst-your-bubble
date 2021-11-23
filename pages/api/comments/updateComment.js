@@ -8,7 +8,7 @@ export default async function updateComment(req, res) {
   console.log('req.body in updateComment:  ', req.body);
   // is there a session?
   if (!req.cookies.sessionToken) {
-    res.status(401).send({
+    res.status(403).send({
       errors: [{ message: 'no session - not authorized' }],
     });
     return;
@@ -19,7 +19,7 @@ export default async function updateComment(req, res) {
   const sessionFromDB = await getRoleByToken(req.cookies.sessionToken);
   console.log('sessionFromDB in updateComment: ', sessionFromDB);
   if (sessionFromDB.role !== 2) {
-    res.status(401).send({
+    res.status(403).send({
       errors: [{ message: 'wrong role - not authorized' }],
     });
     return;

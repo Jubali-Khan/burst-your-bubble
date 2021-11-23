@@ -77,8 +77,11 @@ export default function LoginOrReg() {
       setErrors(loginJSON.errors);
       return;
     }
-
-    router.push('/'); // redirect to profile
+    const destination =
+      typeof router.query.returnTo === 'string' && router.query.returnTo
+        ? router.query.returnTo
+        : `/`;
+    router.push(destination); // redirect to profile
   }
   async function registerHandler() {
     if (displaySV === 'none') {

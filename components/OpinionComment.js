@@ -137,9 +137,11 @@ export default function OpinionComment(props) {
     reportingDisplay = 'block';
   }
 
+  const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
   //
-  function redirect() {
-    router.push('/loginOrRegister'); // needs a returnTo !!
+  function redirectToLoginOrReg() {
+    router.push(returnToLink);
+    return;
   }
 
   if (props.userType === undefined) {
@@ -148,7 +150,7 @@ export default function OpinionComment(props) {
         <div css={containerStyles}>
           {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
           {premise !== '' ? premise : ''}
-          <button onClick={redirect}>REPORT</button>
+          <button onClick={redirectToLoginOrReg}>REPORT</button>
         </div>
       </div>
     );
@@ -188,6 +190,10 @@ export default function OpinionComment(props) {
 
     if ('errors' in update) {
       props.setMessages(update.errors);
+      if (response.status === 403) {
+        redirectToLoginOrReg();
+      }
+      return;
     } else if (response.status === 200) {
       props.setMessages([{ message: 'comment updated successfully' }]);
       setEditToggle(false);
@@ -231,6 +237,9 @@ export default function OpinionComment(props) {
 
     if ('errors' in createdReport) {
       props.setMessages(createdReport.errors);
+      if (response.status === 403) {
+        redirectToLoginOrReg();
+      }
       return;
     } else if (response.status === 200) {
       setReportView(!reportView);

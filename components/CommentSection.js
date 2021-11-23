@@ -18,7 +18,7 @@ export default function CommentSection(props) {
   const [messages, setMessages] = useState([]);
   const [comments, setComments] = useState(props.comments);
   console.log('comments SV: ', comments);
-
+  const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
   return (
     <>
       <div>
@@ -34,6 +34,7 @@ export default function CommentSection(props) {
             setMessages={setMessages}
             key={`${comment.id}`}
             comment={comment}
+            eventTitle={props.eventTitle}
           />
         ))}
 
@@ -47,9 +48,8 @@ export default function CommentSection(props) {
           />
         ) : (
           <div style={{ textAlign: 'center', marginTop: '1.5%' }}>
-            Please{' '}
-            <Link href={/loginOrRegister/returnTo=`${props.eventTitle}`}>login or register</Link> to
-            leave a comment
+            Please <Link href={returnToLink}>login or register</Link> to leave a
+            comment
           </div>
         )}
       </div>
