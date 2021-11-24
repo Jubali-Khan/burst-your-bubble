@@ -426,6 +426,20 @@ export async function getUsernameByID(id) {
   return camelcaseKeys(username);
 }
 
+export async function updateUserInfo(email, username, userId) {
+  const updatedUser = await sql`
+  UPDATE
+    users
+  SET
+    user_email = ${email},
+    user_name = ${username}
+  WHERE
+    id = ${userId}
+`;
+  console.log('updatedUser in DB: ', updatedUser);
+  return camelcaseKeys(updatedUser);
+}
+
 // SESSIONS
 export async function deleteExpiredSessions() {
   const sessions = await sql`
@@ -539,6 +553,7 @@ export async function getUserinfoByToken(token) {
     SELECT
       users.id,
       users.user_name,
+      users.user_email,
       sessions.user_id
     FROM
       users,

@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -54,7 +55,39 @@ const formStyles = css`
   }
 `;
 export default function UserPage(props) {
+  const router = useRouter();
   const [events, setEvents] = useState(props.events || []);
+  const [updateToggle, setUpdateToggle] = useState(false);
+
+  const [email, setEmail] = useState(props.userInfo.userEmail);
+  const [userName, setUserName] = useState(props.userInfo.userName);
+  const [message, setMessage] = useState([]);
+
+  async function doneHandler() {
+    const response = await fetch('http://localhost:3000/api/profiles/update', {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        userName: userName,
+        userId: props.userInfo.userId,
+      }),
+    });
+    if (response.status === 403) {
+      router.push(`loginOrRegister?returnTo=profile/${props.userInfo.userId}`);
+      return;
+    }
+    if (response.status === 405) {
+      setMessage('not enough info was provided');
+      return;
+    }
+    if (response.status === 200) {
+      setUpdateToggle(false);
+      return;
+    }
+  }
   return (
     <Layout>
       <form
@@ -63,47 +96,80 @@ export default function UserPage(props) {
           event.preventDefault();
         }}
       >
-        <div>
-          <div
-            style={{
-              border: '1px solid white',
-              borderRadius: '5px',
-              padding: '4%',
-            }}
-          >
-            {/* {errors.length > 1
-              ? errors.map((error) => (
-                  <div key={`err-msg-${error.message}`}>{error.message}</div>
-                ))
-              : 'Please add a username too!'} */}
-          </div>
-          <label>
-            Email:
-            <input disabled />
-          </label>
-        </div>
-
-        <section style={{ display: 'block' }}>
-          <label>
-            Username:
-            <input
-              style={{
-                margin: '0.5%',
-                border: '1px solid grey',
-                borderRadius: '5px',
-                height: '25px',
-                width: '200px',
-              }}
-              disabled
-            />
-          </label>
-        </section>
-        {/* 1) update onclick -> done & cancel buttons
-        done -> updates info and switches back to update
-        cancel -> switches back to update  */}
-        <button className="updateB">update</button>
-
-        <button className="cancelB">cancel</button>
+        {updateToggle ? (
+          <>
+            <div>
+              {message.length > 1 ? (
+                <div
+                  key={`err-msg-${message}`}
+                  style={{
+                    border: '1px solid white',
+                    borderRadius: '5px',
+                    padding: '4%',
+                  }}
+                >
+                  <div>{message}</div>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+            <section>
+              <label>
+                Email:
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                  placeholder={email}
+                />
+              </label>
+              <label>
+                Username:
+                <input
+                  value={userName}
+                  onChange={(e) => setUserName(e.currentTarget.value)}
+                  placeholder={userName}
+                />
+              </label>
+              <button
+                className="updateB"
+                onClick={() => {
+                  setUpdateToggle(false);
+                  setEmail(props.userInfo.userEmail);
+                  setUserName(props.userInfo.userName);
+                  setMessage('');
+                }}
+              >
+                CANCEL
+              </button>
+              <button onClick={doneHandler} className="updateB">
+                DONE
+              </button>
+            </section>
+          </>
+        ) : (
+          <>
+            <div></div>
+            <section>
+              <label>
+                Email:
+                <input disabled placeholder={email} />
+              </label>
+              <label>
+                Username:
+                <input disabled placeholder={userName} />
+              </label>
+              <button
+                className="updateB"
+                onClick={() => {
+                  setUpdateToggle(true);
+                }}
+              >
+                UPDATE
+              </button>
+            </section>
+          </>
+        )}
       </form>{' '}
       <hr />
       <div>
@@ -129,19 +195,23 @@ export default function UserPage(props) {
 }
 
 export async function getServerSideProps(context) {
-  const { getRoleByToken, getEventsByUserID } = await import(
-    '../../util/database'
-  );
+  const { getRoleByToken, getEventsByUserID, getUserinfoByToken } =
+    await import('../../util/database');
+
   const sessionToken = context.req.cookies.sessionToken;
   const userType = await getRoleByToken(sessionToken);
   console.log('userType in gSSP [userId]: ', userType);
   console.log('context.query.userId in gSSP [userId]: ', context.query.userId);
+
   const userId = context.query.userId;
+
+  const userInfo = await getUserinfoByToken(sessionToken);
+  console.log('userInfo in gSSP [userId]: ', userInfo);
 
   if (!userType) {
     return {
       redirect: {
-        destination: '/loginOrRegister', // still needs a returnTo
+        destination: '/loginOrRegister',
         permanent: false,
       },
     };
@@ -155,6 +225,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
   const events = await getEventsByUserID(userId);
   console.log('events in gSSP [userId]', events);
   if (userType.role === 2) {
@@ -169,6 +240,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         userType: 'user',
+        userInfo: userInfo,
         events: events,
       },
     };
