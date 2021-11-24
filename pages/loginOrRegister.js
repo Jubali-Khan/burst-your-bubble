@@ -61,7 +61,8 @@ export default function LoginOrReg() {
 
   async function loginHandler() {
     console.log('in loginHandler');
-    const response = await fetch(`${process.env.BASE_URL}/api/auth/login2`, {
+    console.log('{process.env.BASE_URL}: ', process.env.BASE_URL);
+    const response = await fetch(`/api/auth/login2`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -89,7 +90,7 @@ export default function LoginOrReg() {
       return;
     }
     console.log('in registerHandler');
-    const response = await fetch(`${process.env.BASE_URL}/api/auth/register2`, {
+    const response = await fetch(`/api/auth/register2`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
