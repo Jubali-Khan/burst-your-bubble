@@ -26,9 +26,14 @@ const footerStyles = css`
     display: inline;
   }
 `;
-
+type UserInfo = {
+  id: number;
+  userName: string;
+  userId: number;
+};
 type Props = {
   userType: string | undefined;
+  userInfo: UserInfo | undefined;
 };
 
 export default function Footer(props: Props) {
@@ -73,6 +78,9 @@ export default function Footer(props: Props) {
       </footer>
     );
   }
+
+  const profileLink = `/profile/${props.userInfo?.userId}`;
+
   return (
     <footer css={footerStyles}>
       {/* Logged in as user*/}
@@ -86,7 +94,7 @@ export default function Footer(props: Props) {
           <a>Guide</a>
         </Link>
         <br />
-        <Link href="/profile/somenumber">
+        <Link href={profileLink}>
           <a>My Profile</a>
         </Link>
       </div>

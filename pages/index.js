@@ -14,7 +14,7 @@ export default function Home(props) {
   console.log('props.events: ', props.events);
   return (
     <div css={homePage}>
-      <Layout userType={props.userType}>
+      <Layout userType={props.userType} userInfo={props.userInfo}>
         <Head>
           <title>Home Page</title>
         </Head>
@@ -34,10 +34,13 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const { getRoleByToken, getEvents } = await import('../util/database');
+  const { getRoleByToken, getEvents, getUserinfoByToken } = await import(
+    '../util/database'
+  );
   const sessionToken = context.req.cookies.sessionToken;
   const userType = await getRoleByToken(sessionToken);
   console.log('userType in gSSP index: ', userType);
+  const userInfo = await getUserinfoByToken(sessionToken);
 
   const events = await getEvents();
 
@@ -63,6 +66,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         userType: 'user',
+        userInfo: userInfo,
         events: events,
       },
     };

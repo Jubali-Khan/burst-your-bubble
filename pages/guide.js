@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 
 export default function Guide(props) {
   return (
-    <Layout userType={props.userType}>
+    <Layout userType={props.userType} userInfo={props.userInfo}>
       <Head>
         <title>Guide</title>
       </Head>
@@ -14,7 +14,9 @@ export default function Guide(props) {
 }
 
 export async function getServerSideProps(context) {
-  const { getRoleByToken } = await import('../util/database');
+  const { getRoleByToken, getUserinfoByToken } = await import(
+    '../util/database'
+  );
   const sessionToken = context.req.cookies.sessionToken;
   const userType = await getRoleByToken(sessionToken);
   console.log('userType in gSSP index: ', userType);
@@ -33,11 +35,13 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  const userInfo = await getUserinfoByToken(sessionToken);
 
   if (userType.role === 2) {
     return {
       props: {
         userType: 'user',
+        userInfo: userInfo,
       },
     };
   }

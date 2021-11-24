@@ -36,13 +36,19 @@ const centerStyles = css`
   text-align: center;
   justify-content: space-around;
 `;
-
+type UserInfo = {
+  id: number;
+  userName: string;
+  userId: number;
+};
 type Props = {
   userType: string | undefined;
+  userInfo: UserInfo | undefined;
 };
 
 export default function Header(props: Props) {
   console.log('props.userType in Header: ', props.userType);
+  console.log('props.userInfo in Header: ', props.userInfo);
   if (!props.userType) {
     return (
       <header>
@@ -86,6 +92,7 @@ export default function Header(props: Props) {
       </header>
     );
   }
+  const profileLink = `/profile/${props.userInfo?.userId}`;
   return (
     <header>
       {/* Logged in as user*/}
@@ -97,7 +104,7 @@ export default function Header(props: Props) {
           <Link href="/guide">
             <a>Guide</a>
           </Link>
-          <Link href="/profile/somenumber">
+          <Link href={profileLink}>
             <a>My Profile</a>
           </Link>
         </section>

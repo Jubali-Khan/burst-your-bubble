@@ -120,7 +120,7 @@ export default function EventPage(props: Props) {
     }
   }
   return (
-    <Layout userType={props.userType}>
+    <Layout userType={props.userType} userInfo={props.userInfo}>
       <Head>
         <title>{props.event.eventTitle}</title>
       </Head>

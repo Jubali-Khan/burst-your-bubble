@@ -19,9 +19,14 @@ const mainChild = css`
   position: relative;
   margin: 2%;
 `;
-
+type UserInfo = {
+  id: number;
+  userName: string;
+  userId: number;
+};
 type Props = {
   userType: string | undefined;
+  userInfo: UserInfo | undefined;
   children: ReactNode;
 };
 
@@ -37,9 +42,9 @@ export default function Layout(props: Props) {
           rel="stylesheet"
         />
       </Head>
-      <Header userType={props.userType} />
+      <Header userType={props.userType} userInfo={props.userInfo} />
       <main css={mainChild}>{props.children}</main>
-      <Footer userType={props.userType} />
+      <Footer userType={props.userType} userInfo={props.userInfo} />
     </div>
   );
 }

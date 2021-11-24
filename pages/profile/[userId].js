@@ -89,7 +89,7 @@ export default function UserPage(props) {
     }
   }
   return (
-    <Layout>
+    <Layout userType={props.userType} userInfo={props.userInfo}>
       <form
         css={formStyles}
         onSubmit={(event) => {
