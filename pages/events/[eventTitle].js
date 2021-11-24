@@ -40,7 +40,7 @@ export default function EventPage(props) {
     if (counter > 5) {
       return;
     } else {
-      let tempValue: string | number = textSize;
+      let tempValue = textSize;
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.slice(0, -1);
       // console.log('tempValue: ', tempValue);
@@ -60,7 +60,7 @@ export default function EventPage(props) {
     if (counter <= -4) {
       return;
     } else {
-      let tempValue: string | number = textSize;
+      let tempValue = textSize;
       // console.log('tempValue: ', tempValue);
       tempValue = tempValue.slice(0, -1);
       // console.log('tempValue: ', tempValue);
@@ -102,7 +102,7 @@ export default function EventPage(props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const { getRoleByToken, getUserinfoByToken } = await import(
     '../../util/database'
   );
