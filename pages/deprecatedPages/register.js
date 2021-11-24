@@ -15,7 +15,7 @@ export default function Register() {
         onSubmit={async (event) => {
           event.preventDefault();
           const response = await fetch(
-            'http://localhost:3000/api/auth/register',
+            `${process.env.BASE_URL}/api/auth/register`,
             {
               method: 'POST',
               headers: {

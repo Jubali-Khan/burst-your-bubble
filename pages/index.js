@@ -20,7 +20,7 @@ export default function Home(props) {
         </Head>
         {props.events.map((eve) => (
           <Link
-            href={`http://localhost:3000/events/${eve.eventLink}`}
+            href={`${process.env.BASE_URL}/events/${eve.eventLink}`}
             key={`event-${eve.id}`}
           >
             <a>

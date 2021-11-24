@@ -43,7 +43,7 @@ export default function ReportInstance(props) {
   const [deactivateComment, setDeactivatedComment] = useState(false);
   async function deleteComment(commentId, reportId) {
     const response = await fetch(
-      'http://localhost:3000/api/reports/deleteComment',
+      `${process.env.BASE_URL}/api/reports/deleteComment`,
       {
         method: 'DELETE',
         headers: {
@@ -77,7 +77,7 @@ export default function ReportInstance(props) {
 
   async function deleteReport(reportId) {
     const response = await fetch(
-      'http://localhost:3000/api/reports/deleteReport',
+      `${process.env.BASE_URL}/api/reports/deleteReport`,
       {
         method: 'DELETE',
         headers: {

@@ -169,7 +169,7 @@ export default function OpinionComment(props) {
   async function updateHandler() {
     // ping an api route
     const response = await fetch(
-      'http://localhost:3000/api/comments/updateComment',
+      `${process.env.BASE_URL}/api/comments/updateComment`,
       {
         method: 'PATCH',
         headers: {
@@ -219,7 +219,7 @@ export default function OpinionComment(props) {
       reportedComment = userName + ' ' + verbChoice + ' ' + argument + ' ';
     }
 
-    const response = await fetch('http://localhost:3000/api/reports/create', {
+    const response = await fetch(`${process.env.BASE_URL}/api/reports/create`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',

@@ -64,17 +64,20 @@ export default function UserPage(props) {
   const [message, setMessage] = useState([]);
 
   async function doneHandler() {
-    const response = await fetch('http://localhost:3000/api/profiles/update', {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json',
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/profiles/update`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          userName: userName,
+          userId: props.userInfo.userId,
+        }),
       },
-      body: JSON.stringify({
-        email: email,
-        userName: userName,
-        userId: props.userInfo.userId,
-      }),
-    });
+    );
     if (response.status === 403) {
       router.push(`loginOrRegister?returnTo=profile/${props.userInfo.userId}`);
       return;
@@ -177,7 +180,7 @@ export default function UserPage(props) {
         {events.length >= 1
           ? events.map((event) => (
               <Link
-                href={`http://localhost:3000/events/${event.eventLink}`}
+                href={`${process.env.BASE_URL}/events/${event.eventLink}`}
                 key={`event-${event.id}`}
               >
                 <a

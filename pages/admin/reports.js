@@ -98,12 +98,12 @@ export default function Reports(props) {
 
 export async function getServerSideProps(context) {
   const reportsResponse = await fetch(
-    'http://localhost:3000/api/reports/handle',
+    `${process.env.BASE_URL}/api/reports/handle`,
   );
   const reports = await reportsResponse.json();
 
   const commentsResponse = await fetch(
-    'http://localhost:3000/api/comments/get',
+    `${process.env.BASE_URL}/api/comments/get`,
   );
   const comments = await commentsResponse.json();
 

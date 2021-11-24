@@ -100,7 +100,7 @@ export default function CommentInput(props) {
 
   async function postingHandler() {
     const response = await fetch(
-      'http://localhost:3000/api/comments/createComment',
+      `${process.env.BASE_URL}/api/comments/createComment`,
       {
         method: 'POST',
         headers: {

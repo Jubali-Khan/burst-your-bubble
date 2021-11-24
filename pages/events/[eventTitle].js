@@ -110,22 +110,25 @@ export async function getServerSideProps(context) {
   const eventTitle = context.query.eventTitle?.replaceAll('_', ' ');
   // console.log('eventTitle: ', eventTitle);
 
-  const eventResponse = await fetch('http://localhost:3000/api/event/getInfo', {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
+  const eventResponse = await fetch(
+    `${process.env.BASE_URL}/api/event/getInfo`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventTitle: eventTitle,
+      }),
     },
-    body: JSON.stringify({
-      eventTitle: eventTitle,
-    }),
-  });
+  );
 
   const event = await eventResponse.json();
   console.log('event in gSSP in [eventTitle]: ', event);
   // if event isn't bringing right data ..?
 
   const articlesResponse = await fetch(
-    'http://localhost:3000/api/event/getArticles',
+    `${process.env.BASE_URL}/api/event/getArticles`,
     {
       method: 'POST',
       headers: {
@@ -141,7 +144,7 @@ export async function getServerSideProps(context) {
   // if articles dont exist, show proper message on page or redirect
 
   const commentsResponse = await fetch(
-    'http://localhost:3000/api/event/getComments',
+    `${process.env.BASE_URL}/api/event/getComments`,
     {
       method: 'POST',
       headers: {

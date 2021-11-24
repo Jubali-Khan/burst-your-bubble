@@ -13,16 +13,19 @@ export default function Login() {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          const response = await fetch('http://localhost:3000/api/auth/login', {
-            method: 'POST',
-            headers: {
-              'Content-type': 'application/json',
+          const response = await fetch(
+            `${process.env.BASE_URL}/api/auth/login`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                username: username,
+                password: password,
+              }),
             },
-            body: JSON.stringify({
-              username: username,
-              password: password,
-            }),
-          });
+          );
           const loginJSON = await response.json();
 
           if ('errors' in loginJSON) {
