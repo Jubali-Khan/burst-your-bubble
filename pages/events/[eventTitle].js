@@ -32,50 +32,7 @@ const fontsSection = css`
   }
 `;
 
-type EventType = {
-  id: number;
-  eventTitle: string;
-  leftLogo: string;
-  leftLink: string;
-  leftHeadline: string;
-  leftAuthorS: string;
-  rightLogo: string;
-  rightLink: string;
-  rightHeadline: string;
-  rightAuthorS: string;
-  eventLink: string;
-};
-type Comment = {
-  id: number;
-  userId: number;
-  userName: string;
-  verbChoice: string;
-  argument: string;
-  conjChoice?: string;
-  premise?: string;
-  eventId: number;
-};
-type UserInfo = {
-  id: number;
-  userName: string;
-  userId: number;
-};
-type ArticlesType = {
-  id: number;
-  leftArt: string;
-  rightArt: string;
-  eventId: number;
-};
-type Props = {
-  userType: string | undefined;
-  userInfo: UserInfo | undefined;
-  event: EventType;
-  eventTitle: string;
-  articles: ArticlesType;
-  comments: Comment[];
-};
-
-export default function EventPage(props: Props) {
+export default function EventPage(props) {
   const [textSize, setTextSize] = useState('100%');
   const [counter, setCounter] = useState(0);
 
@@ -150,7 +107,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     '../../util/database'
   );
   // type EventTitle = string | undefined;
-  const eventTitle: string = context.query.eventTitle?.replaceAll('_', ' ');
+  const eventTitle = context.query.eventTitle?.replaceAll('_', ' ');
   // console.log('eventTitle: ', eventTitle);
 
   const eventResponse = await fetch('http://localhost:3000/api/event/getInfo', {
