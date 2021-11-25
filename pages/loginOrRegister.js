@@ -103,7 +103,7 @@ export default function LoginOrReg() {
       }),
     });
     const regJSON = await response.json();
-
+    console.log('regJSON: ', regJSON);
     if ('errors' in regJSON) {
       setRegErrors(regJSON.errors);
       return;
@@ -134,7 +134,7 @@ export default function LoginOrReg() {
               display: displayRegErrors,
             }}
           >
-            {regErrors.length > 1
+            {regErrors.length >= 1
               ? regErrors.map((error) => (
                   <div key={`err-msg-${error.message}`}>{error.message}</div>
                 ))

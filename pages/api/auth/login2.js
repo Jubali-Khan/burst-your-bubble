@@ -61,17 +61,3 @@ export default async function login(req, res) {
     .setHeader('Set-Cookie', sessionTokenCookie)
     .send({ user: user });
 }
-
-/*
-login api route functions (for login):
-  - getUserWPASSHASH (to get the user row from users table)
-  - hashPassword (to hash the given password)
-  - verifyPassword (to see if the hashed password is the same as the one )
-(for sessions):
-  - deleteExpiredSessions() (X)
-  - crypto to create a token (X)
-  - insertSession (X)
-  - createSRSTC + cookie library (X)
-  - gSSP on page (to redirect) (X)
-    - isSessionValid (X)
-*/

@@ -13,7 +13,7 @@ import {
 export default async function register(req, res) {
   // Are all fields occupied
   if (!req.body.username || !req.body.password || !req.body.useremail) {
-    res.send({
+    res.status(401).send({
       errors: [{ message: 'Please input an email, username and password' }],
     });
     return;
