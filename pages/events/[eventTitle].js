@@ -106,8 +106,14 @@ export async function getServerSideProps(context) {
   const { getRoleByToken, getUserinfoByToken } = await import(
     '../../util/database'
   );
+
+  const searchFor = '_';
+  const replaceWith = ' ';
   // type EventTitle = string | undefined;
-  const eventTitle = context.query.eventTitle.replaceAll('_', ' ');
+  // const eventTitle = context.query.eventTitle?.replaceAll('_', ' ');
+  const eventTitle = context.query.eventTitle
+    .split(searchFor)
+    .join(replaceWith);
   // console.log('eventTitle: ', eventTitle);
 
   const eventResponse = await fetch(
