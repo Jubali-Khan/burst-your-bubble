@@ -30,6 +30,20 @@ export default function Create(props) {
 }
 
 export async function getServerSideProps(context) {
+  console.log('gSSP in create');
+  // Redirect from HTTP to HTTPS on Heroku
+  if (
+    context.req.headers.host &&
+    context.req.headers['x-forwarded-proto'] &&
+    context.req.headers['x-forwarded-proto'] !== 'https'
+  ) {
+    return {
+      redirect: {
+        destination: `https://${context.req.headers.host}/admin/create`,
+        permanent: true,
+      },
+    };
+  }
   //
   // is admin?
   const { getRoleByToken } = await import('../../util/database');

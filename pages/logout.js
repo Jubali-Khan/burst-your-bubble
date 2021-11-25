@@ -3,6 +3,20 @@ export default function Logout() {
 }
 
 export async function getServerSideProps(context) {
+  console.log('gSSP in logout');
+  // Redirect from HTTP to HTTPS on Heroku
+  if (
+    context.req.headers.host &&
+    context.req.headers['x-forwarded-proto'] &&
+    context.req.headers['x-forwarded-proto'] !== 'https'
+  ) {
+    return {
+      redirect: {
+        destination: `https://${context.req.headers.host}/logout`,
+        permanent: true,
+      },
+    };
+  }
   const { serialize } = await import('cookie');
 
   // get the token from the browser:
