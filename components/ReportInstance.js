@@ -42,19 +42,16 @@ const reportContainer = css`
 export default function ReportInstance(props) {
   const [deactivateComment, setDeactivatedComment] = useState(false);
   async function deleteComment(commentId, reportId) {
-    const response = await fetch(
-      `${process.env.BASE_URL}/api/reports/deleteComment`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          comment_id: commentId,
-          report_id: reportId,
-        }),
+    const response = await fetch(`/api/reports/deleteComment`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
       },
-    );
+      body: JSON.stringify({
+        comment_id: commentId,
+        report_id: reportId,
+      }),
+    });
     if (response.status === 403) {
       console.log('response status is 403');
       props.setRefresher(true);
@@ -76,18 +73,15 @@ export default function ReportInstance(props) {
   }
 
   async function deleteReport(reportId) {
-    const response = await fetch(
-      `${process.env.BASE_URL}/api/reports/deleteReport`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          report_id: reportId,
-        }),
+    const response = await fetch(`/api/reports/deleteReport`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
       },
-    );
+      body: JSON.stringify({
+        report_id: reportId,
+      }),
+    });
     if (response.status === 403) {
       console.log('response status is 403');
       props.setRefresher(true);
