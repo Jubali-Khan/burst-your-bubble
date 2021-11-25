@@ -127,6 +127,10 @@ export default function CommentInput(props) {
       return;
     } else {
       props.setComments([...props.comments, createdComment]);
+      setVerbChoice('believes');
+      setArgument('');
+      setConjChoice('because');
+      setPremise('');
     }
   }
 

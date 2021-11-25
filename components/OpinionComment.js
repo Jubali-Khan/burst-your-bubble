@@ -120,7 +120,7 @@ export default function OpinionComment(props) {
   // editToggle is used to change what OpinionComment returns
   const [editToggle, setEditToggle] = useState(false);
 
-  const [editView, setEditView] = useState(false);
+  const [editView, setEditView] = useState(premise === '' ? false : true);
   let [bgcolor, setBgcolor] = useState('white');
   let premisesDisplay = 'none';
   if (!editView) {
