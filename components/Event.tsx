@@ -75,13 +75,13 @@ export default function Event(props: Props) {
       <section css={subTitleStyles}>
         <section css={subTitleStyles}>
           <div css={rowStyles}>
-            <Link href={props.event.eventLink}>
+            <Link href={props.event.leftLink}>
               <a style={{ width: '45%', fontStyle: 'italic' }} target="_blank">
                 {/* image */}
                 <p>{props.event.leftHeadline}</p>
               </a>
             </Link>
-            <Link href={props.event.eventLink}>
+            <Link href={props.event.rightLink}>
               <a style={{ width: '45%', fontStyle: 'italic' }} target="_blank">
                 {/* image */}
                 <p>{props.event.rightHeadline}</p>

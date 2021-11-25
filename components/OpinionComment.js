@@ -168,24 +168,21 @@ export default function OpinionComment(props) {
 
   async function updateHandler() {
     // ping an api route
-    const response = await fetch(
-      `${process.env.BASE_URL}/api/comments/updateComment`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          commentId: props.comment.id,
-          userName: userName,
-          verbChoice: verbChoice,
-          argument: argument,
-          conjChoice: conjChoice,
-          premise: premise,
-          toggle: editView,
-        }),
+    const response = await fetch(`/api/comments/updateComment`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
       },
-    );
+      body: JSON.stringify({
+        commentId: props.comment.id,
+        userName: userName,
+        verbChoice: verbChoice,
+        argument: argument,
+        conjChoice: conjChoice,
+        premise: premise,
+        toggle: editView,
+      }),
+    });
     const update = await response.json();
 
     if ('errors' in update) {
@@ -219,7 +216,7 @@ export default function OpinionComment(props) {
       reportedComment = userName + ' ' + verbChoice + ' ' + argument + ' ';
     }
 
-    const response = await fetch(`${process.env.BASE_URL}/api/reports/create`, {
+    const response = await fetch(`/api/reports/create`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',

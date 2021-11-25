@@ -99,25 +99,22 @@ export default function CommentInput(props) {
   }
 
   async function postingHandler() {
-    const response = await fetch(
-      `${process.env.BASE_URL}/api/comments/createComment`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: userId,
-          userName: userName,
-          verbChoice: verbChoice,
-          argument: argument,
-          conjChoice: conjChoice,
-          premise: premise,
-          eventId: eventId,
-          toggle: toggle,
-        }),
+    const response = await fetch(`/api/comments/createComment`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
       },
-    );
+      body: JSON.stringify({
+        userId: userId,
+        userName: userName,
+        verbChoice: verbChoice,
+        argument: argument,
+        conjChoice: conjChoice,
+        premise: premise,
+        eventId: eventId,
+        toggle: toggle,
+      }),
+    });
     if (response.status === 403) {
       redirectToLoginOrReg();
       return;
