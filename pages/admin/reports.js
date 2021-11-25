@@ -98,19 +98,7 @@ export default function Reports(props) {
 
 export async function getServerSideProps(context) {
   console.log('gSSP in reports');
-  // Redirect from HTTP to HTTPS on Heroku
-  if (
-    context.req.headers.host &&
-    context.req.headers['x-forwarded-proto'] &&
-    context.req.headers['x-forwarded-proto'] !== 'https'
-  ) {
-    return {
-      redirect: {
-        destination: `https://${context.req.headers.host}/admin/reports`,
-        permanent: true,
-      },
-    };
-  }
+
   const reportsResponse = await fetch(
     `${process.env.BASE_URL}/api/reports/handle`,
   );
