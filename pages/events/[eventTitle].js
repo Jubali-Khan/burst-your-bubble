@@ -107,7 +107,7 @@ export async function getServerSideProps(context) {
     '../../util/database'
   );
   // type EventTitle = string | undefined;
-  const eventTitle = context.query.eventTitle?.replaceAll('_', ' ');
+  const eventTitle = context.query.eventTitle.replaceAll('_', ' ');
   // console.log('eventTitle: ', eventTitle);
 
   const eventResponse = await fetch(
