@@ -442,6 +442,18 @@ export async function updateUserInfo(email, username, userId) {
   console.log('updatedUser in DB: ', updatedUser);
   return camelcaseKeys(updatedUser);
 }
+export async function updateUserInfoInComments(username, userId) {
+  const updatedUser = await sql`
+  UPDATE
+    comments
+  SET
+    user_name = ${username}
+  WHERE
+    comments.user_id = ${userId}
+`;
+  console.log('updatedUser in uUIICs: ', updatedUser);
+  return camelcaseKeys(updatedUser);
+}
 
 // SESSIONS
 export async function deleteExpiredSessions() {

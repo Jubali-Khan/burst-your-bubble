@@ -1,4 +1,8 @@
-import { getRoleByToken, updateUserInfo } from '../../../util/database';
+import {
+  getRoleByToken,
+  updateUserInfo,
+  updateUserInfoInComments,
+} from '../../../util/database';
 
 export default async function update(req, res) {
   console.log('req.body in update api: ', req.body);
@@ -32,6 +36,7 @@ export default async function update(req, res) {
 
   const updatedUser = await updateUserInfo(email, userName, userId);
   console.log('updatedUser in API', updatedUser);
+  const updatedUserICs = await updateUserInfoInComments(userName, userId);
 
   res.status(200).send(updatedUser);
 }
