@@ -19,10 +19,7 @@ export default function Home(props) {
           <title>Home Page</title>
         </Head>
         {props.events.map((eve) => (
-          <Link
-            href={`${process.env.BASE_URL}/events/${eve.eventLink}`}
-            key={`event-${eve.id}`}
-          >
+          <Link href={`/events/${eve.eventLink}`} key={`event-${eve.id}`}>
             <a>
               <IndexEvent event={eve} />
             </a>
