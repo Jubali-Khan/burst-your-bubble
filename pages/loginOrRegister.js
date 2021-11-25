@@ -53,15 +53,15 @@ export default function LoginOrReg() {
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
-  const [displaySV, setDisplaySV] = useState('none');
+  const [displayRegErrors, setDisplayRegErrors] = useState('none');
+  const [displayLoginErrors, setDisplayLoginErrors] = useState('none');
 
-  const [errors, setErrors] = useState([]);
+  const [regErrors, setRegErrors] = useState([]);
+  const [loginErrors, setLoginErrors] = useState([]);
 
   const router = useRouter();
 
   async function loginHandler() {
-    console.log('in loginHandler');
-    console.log('{process.env.BASE_URL}: ', process.env.BASE_URL);
     const response = await fetch(`/api/auth/login2`, {
       method: 'POST',
       headers: {
@@ -75,18 +75,19 @@ export default function LoginOrReg() {
     const loginJSON = await response.json();
 
     if ('errors' in loginJSON) {
-      setErrors(loginJSON.errors);
+      setLoginErrors(loginJSON.errors);
+      setDisplayLoginErrors('block');
       return;
     }
     const destination =
       typeof router.query.returnTo === 'string' && router.query.returnTo
         ? router.query.returnTo
         : `/`;
-    router.push(destination); // redirect to profile
+    router.push(destination);
   }
   async function registerHandler() {
-    if (displaySV === 'none') {
-      setDisplaySV('block');
+    if (displayRegErrors === 'none') {
+      setDisplayRegErrors('block');
       return;
     }
     console.log('in registerHandler');
@@ -104,11 +105,14 @@ export default function LoginOrReg() {
     const regJSON = await response.json();
 
     if ('errors' in regJSON) {
-      setErrors(regJSON.errors);
+      setRegErrors(regJSON.errors);
       return;
     }
-
-    router.push('/'); // redirect to profile
+    const destination =
+      typeof router.query.returnTo === 'string' && router.query.returnTo
+        ? router.query.returnTo
+        : `/`;
+    router.push(destination);
   }
   return (
     <Layout>
@@ -127,14 +131,26 @@ export default function LoginOrReg() {
               border: '1px solid white',
               borderRadius: '5px',
               padding: '4%',
-              display: displaySV,
+              display: displayRegErrors,
             }}
           >
-            {errors.length > 1
-              ? errors.map((error) => (
+            {regErrors.length > 1
+              ? regErrors.map((error) => (
                   <div key={`err-msg-${error.message}`}>{error.message}</div>
                 ))
               : 'Please add a username too!'}
+          </div>
+          <div
+            style={{
+              border: '1px solid white',
+              borderRadius: '5px',
+              padding: '4%',
+              display: displayLoginErrors,
+            }}
+          >
+            {loginErrors.map((error) => (
+              <div key={`err-msg-${error.message}`}>{error.message}</div>
+            ))}
           </div>
           <label>
             Email:
@@ -155,7 +171,7 @@ export default function LoginOrReg() {
             />
           </label>
         </div>
-        <section style={{ display: displaySV }}>
+        <section style={{ display: displayRegErrors }}>
           <label>
             Username:
             <input

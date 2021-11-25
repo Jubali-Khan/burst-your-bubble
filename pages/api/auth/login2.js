@@ -22,7 +22,7 @@ export default async function login(req, res) {
 
   if (!userWPASSHASH) {
     res.status(401).send({
-      errors: [{ message: 'Email or password incorrect' }],
+      errors: [{ message: 'Email or password incorrect!' }],
     });
     return;
   }
@@ -35,7 +35,7 @@ export default async function login(req, res) {
   console.log('isPassword: ', isPassword);
   if (!isPassword) {
     res.status(401).send({
-      errors: [{ message: 'Email or password incorrect' }],
+      errors: [{ message: 'Email or password incorrect!' }],
     });
     return;
   }
