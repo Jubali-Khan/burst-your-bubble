@@ -13,14 +13,14 @@ const homePage = css`
 export default function Home(props) {
   console.log('props.events: ', props.events);
   return (
-    <div css={homePage}>
+    <div css={homePage} data-cy="homeContent">
       <Layout userType={props.userType} userInfo={props.userInfo}>
         <Head>
           <title>Home Page</title>
         </Head>
         {props.events.map((eve) => (
           <Link href={`/events/${eve.eventLink}`} key={`event-${eve.id}`}>
-            <a>
+            <a data-cy={`${eve.id}`}>
               <IndexEvent event={eve} />
             </a>
           </Link>

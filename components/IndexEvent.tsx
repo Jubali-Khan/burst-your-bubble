@@ -57,7 +57,7 @@ type Props = {
 
 export default function IndexEvent(props: Props) {
   return (
-    <div css={containerStyles}>
+    <div css={containerStyles} data-cy="event">
       <h4 css={titleStyles}>{props.event.eventTitle}</h4>
       <section css={subTitleStyles}>
         <div css={rowStyles}>

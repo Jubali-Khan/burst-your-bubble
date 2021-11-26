@@ -158,6 +158,7 @@ export default function LoginOrReg() {
               type="email"
               value={userEmail}
               onChange={(e) => setUserEmail(e.currentTarget.value)}
+              data-cy="email-input"
             />
           </label>
         </div>
@@ -168,6 +169,7 @@ export default function LoginOrReg() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.currentTarget.value)}
+              data-cy="password-input"
             />
           </label>
         </div>
@@ -184,14 +186,23 @@ export default function LoginOrReg() {
               }}
               value={userName}
               onChange={(e) => setUserName(e.currentTarget.value)}
+              data-cy="username-input"
             />
           </label>
         </section>
-        <button className="loginB" onClick={() => loginHandler()}>
+        <button
+          className="loginB"
+          data-cy="login"
+          onClick={() => loginHandler()}
+        >
           login
         </button>
 
-        <button className="registerB" onClick={() => registerHandler()}>
+        <button
+          className="registerB"
+          data-cy="register"
+          onClick={() => registerHandler()}
+        >
           register
         </button>
       </form>

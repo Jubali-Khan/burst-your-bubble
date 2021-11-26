@@ -55,15 +55,15 @@ export default function Header(props: Props) {
         {/* Not logged in */}
         <nav css={navStyles}>
           <Link href="/">
-            <a>Home</a>
+            <a data-cy="home">Home</a>
           </Link>
           <section css={centerStyles}>
             <Link href="/guide">
-              <a>Guide</a>
+              <a data-cy="guide">Guide</a>
             </Link>
           </section>
           <Link href="/loginOrRegister">
-            <a>Login / Register</a>
+            <a data-cy="loginOrRegister">Login / Register</a>
           </Link>
         </nav>
       </header>
@@ -75,18 +75,18 @@ export default function Header(props: Props) {
         {/* // Logged in as admin */}
         <nav css={navStyles}>
           <Link href="/">
-            <a>Home</a>
+            <a data-cy="home">Home</a>
           </Link>
           <section css={adminCenterStyles}>
             <Link href="/admin/create">
-              <a>Create Event</a>
+              <a data-cy="create">Create Event</a>
             </Link>
             <Link href="/admin/reports">
-              <a>Reports</a>
+              <a data-cy="reports">Reports</a>
             </Link>
           </section>
           <Link href="/logout">
-            <a>Log Out</a>
+            <a data-cy="logout">Log Out</a>
           </Link>
         </nav>
       </header>
@@ -98,19 +98,19 @@ export default function Header(props: Props) {
       {/* Logged in as user*/}
       <nav css={navStyles}>
         <Link href="/">
-          <a>Home</a>
+          <a data-cy="home">Home</a>
         </Link>
         <section css={centerStyles}>
           <Link href="/guide">
-            <a>Guide</a>
+            <a data-cy="guide">Guide</a>
           </Link>
           <Link href={profileLink}>
-            <a>My Profile</a>
+            <a data-cy="myProfile">My Profile</a>
           </Link>
         </section>
 
         <Link href="/logout">
-          <a>Log Out</a>
+          <a data-cy="logout">Log Out</a>
         </Link>
       </nav>
     </header>

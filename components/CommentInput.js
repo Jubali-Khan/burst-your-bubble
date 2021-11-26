@@ -143,6 +143,7 @@ export default function CommentInput(props) {
           onChange={(e) => {
             setVerbChoice(e.currentTarget.value);
           }}
+          data-cy="verbChoice"
         >
           <option value="believes">believe</option>
           <option value="thinks">think</option>
@@ -153,6 +154,7 @@ export default function CommentInput(props) {
         <input
           value={argument}
           onChange={(e) => setArgument(e.currentTarget.value)}
+          data-cy="argumentInput"
         />
 
         <select
@@ -177,6 +179,7 @@ export default function CommentInput(props) {
           onClick={() => {
             setToggle(!toggle);
           }}
+          data-cy="addPremise"
         >
           {display === 'none' ? '+PREMISE' : '-'}
         </button>
