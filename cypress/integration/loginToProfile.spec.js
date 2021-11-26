@@ -1,4 +1,4 @@
-describe('Navigate', () => {
+describe('Login', () => {
   it('should navigate to user profile page over login / register page from home page', () => {
     cy.visit('http://localhost:3000');
 
