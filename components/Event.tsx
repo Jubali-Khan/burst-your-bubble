@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const containerStyles = css`
@@ -76,14 +77,34 @@ export default function Event(props: Props) {
         <section css={subTitleStyles}>
           <div css={rowStyles}>
             <Link href={props.event.leftLink}>
-              <a style={{ width: '45%', fontStyle: 'italic' }} target="_blank">
-                {/* image */}
+              <a
+                style={{
+                  width: '45%',
+                  fontStyle: 'italic',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  textAlign: 'left',
+                }}
+                target="_blank"
+              >
+                <Image src={props.event.leftLogo} width="50px" height="50px" />
                 <p>{props.event.leftHeadline}</p>
               </a>
             </Link>
             <Link href={props.event.rightLink}>
-              <a style={{ width: '45%', fontStyle: 'italic' }} target="_blank">
-                {/* image */}
+              <a
+                style={{
+                  width: '45%',
+                  fontStyle: 'italic',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  textAlign: 'left',
+                }}
+                target="_blank"
+              >
+                <Image src={props.event.rightLogo} width="50px" height="50px" />
                 <p>{props.event.rightHeadline}</p>
               </a>
             </Link>

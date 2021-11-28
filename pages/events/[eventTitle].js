@@ -82,7 +82,11 @@ export default function EventPage(props) {
         <title>{props.event.eventTitle}</title>
       </Head>
       <section css={fontsSection}>
-        <Image src="/../public/aA.jpg" width="35px" height="30px" />
+        <Image
+          src="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125823/aA_j4zfq8.jpg"
+          width="35px"
+          height="30px"
+        />
         <button onClick={textSizeDecrease}>-</button>
         <button onClick={textSizeIncrease}>+</button>
       </section>

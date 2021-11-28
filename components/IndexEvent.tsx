@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import Image from 'next/image';
 
 const containerStyles = css`
   display: flex;
@@ -36,6 +37,9 @@ const rowStyles = css`
   flex-direction: row;
   justify-content: space-around;
   text-align: left;
+  img {
+    min-height: 50%;
+  }
 `;
 
 type Event = {
@@ -61,11 +65,11 @@ export default function IndexEvent(props: Props) {
       <h4 css={titleStyles}>{props.event.eventTitle}</h4>
       <section css={subTitleStyles}>
         <div css={rowStyles}>
-          {/* image */}
+          <Image src={props.event.leftLogo} width="50px" height="50px" />
           <p style={{ width: '45%', fontStyle: 'italic' }}>
             {props.event.leftHeadline}
           </p>
-          {/* image */}
+          <Image src={props.event.rightLogo} width="50px" height="50px" />{' '}
           <p style={{ width: '45%', fontStyle: 'italic' }}>
             {props.event.rightHeadline}
           </p>

@@ -41,12 +41,16 @@ export default function CreateEvent(props) {
   // State variables
   const [eventTitle, setEventTitle] = useState();
 
-  const [leftLogo, setLeftLogo] = useState('');
+  const [leftLogo, setLeftLogo] = useState(
+    'https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/nytimes-logo-3_qy44aq.png',
+  );
   const [leftLink, setLeftLink] = useState();
   const [leftHeadline, setLeftHeadline] = useState();
   const [leftAuthorS, setLeftAuthorS] = useState();
 
-  const [rightLogo, setRightLogo] = useState('');
+  const [rightLogo, setRightLogo] = useState(
+    'https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/nytimes-logo-3_qy44aq.png',
+  );
   const [rightLink, setRightLink] = useState();
   const [rightHeadline, setRightHeadline] = useState();
   const [rightAuthorS, setRightAuthorS] = useState();
@@ -134,7 +138,43 @@ export default function CreateEvent(props) {
         />
       </section>
       <section id="headlines" css={headlinesSectionStyles}>
-        <Image src="/../public/favicon.ico" width="100px" height="80px" />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '60px',
+            height: '60px',
+            margin: 'auto',
+          }}
+        >
+          <select
+            value={leftLogo}
+            onChange={(e) => setLeftLogo(e.currentTarget.value)}
+          >
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/nytimes-logo-3_qy44aq.png">
+              NYT
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/Washington-Post_anmuvo.png">
+              WP
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/cnn_sbrt9r.png">
+              CNN
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/theguardian_logo_circ-170x170_kfxb3q.png">
+              Guardian
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126020/android-chrome-192x192_n8buqf.png">
+              WJS
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125844/daf73323b61005dc2b002a2ce3512e4f_c9iwu3.jpg">
+              Fox
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125843/20120509022502_National_Public_Radio_logo.svg_coh0gc.png">
+              NPR
+            </option>
+          </select>
+          <Image src={leftLogo} width="100px" height="80px" />
+        </div>
         <div css={headlineInfoStyle}>
           <input
             value={leftLink}
@@ -155,7 +195,43 @@ export default function CreateEvent(props) {
             required
           />
         </div>
-        <Image src="/../public/favicon.ico" width="100px" height="80px" />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '60px',
+            height: '60px',
+            margin: 'auto',
+          }}
+        >
+          <select
+            value={rightLogo}
+            onChange={(e) => setRightLogo(e.currentTarget.value)}
+          >
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/nytimes-logo-3_qy44aq.png">
+              NYT{' '}
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/Washington-Post_anmuvo.png">
+              WP{' '}
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/cnn_sbrt9r.png">
+              CNN
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126200/theguardian_logo_circ-170x170_kfxb3q.png">
+              Guardian
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638126020/android-chrome-192x192_n8buqf.png">
+              WSJ
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125844/daf73323b61005dc2b002a2ce3512e4f_c9iwu3.jpg">
+              Fox
+            </option>
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125843/20120509022502_National_Public_Radio_logo.svg_coh0gc.png">
+              NPR
+            </option>
+          </select>
+          <Image src={rightLogo} width="100px" height="80px" />
+        </div>
         <div css={headlineInfoStyle}>
           <input
             value={rightLink}
