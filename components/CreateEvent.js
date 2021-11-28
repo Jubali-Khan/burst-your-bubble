@@ -169,7 +169,7 @@ export default function CreateEvent(props) {
             <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125844/daf73323b61005dc2b002a2ce3512e4f_c9iwu3.jpg">
               Fox
             </option>
-            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125843/20120509022502_National_Public_Radio_logo.svg_coh0gc.png">
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638130892/npr-logo-square_tfu18o.webp">
               NPR
             </option>
           </select>
@@ -226,7 +226,7 @@ export default function CreateEvent(props) {
             <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125844/daf73323b61005dc2b002a2ce3512e4f_c9iwu3.jpg">
               Fox
             </option>
-            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638125843/20120509022502_National_Public_Radio_logo.svg_coh0gc.png">
+            <option value="https://res.cloudinary.com/dvnaeajid/image/upload/v1638130892/npr-logo-square_tfu18o.webp">
               NPR
             </option>
           </select>
@@ -255,8 +255,6 @@ export default function CreateEvent(props) {
       </section>
       <hr />
       <section id="articles" css={articlesStyles}>
-        {/* <input placeholder="Add left article" />
-        <input placeholder="Add right article" /> */}
         <textarea
           value={leftArticle}
           onChange={(e) => setLeftArticle(e.currentTarget.value)}

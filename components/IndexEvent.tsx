@@ -36,10 +36,8 @@ const rowStyles = css`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   text-align: left;
-  img {
-    min-height: 50%;
-  }
 `;
 
 type Event = {
