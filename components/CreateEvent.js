@@ -13,6 +13,9 @@ const headlinesSectionStyles = css`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  select {
+    margin: 0 5% 5% 5%;
+  }
 `;
 
 const headlineInfoStyle = css`

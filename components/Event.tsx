@@ -29,10 +29,6 @@ const containerStyles = css`
       text-decoration: underline;
     }
   }
-  a[target='_blank']::after {
-    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
-    margin: 0px 3px 0px 5px;
-  }
 `;
 
 const titleStyles = css`
@@ -49,7 +45,20 @@ const rowStyles = css`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   text-align: left;
+  a {
+    width: 45%;
+    font-style: italic;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  a[target='_blank']::after {
+    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+    margin: 0px 3px 0px 5px;
+  }
 `;
 type EventType = {
   id: number;
@@ -77,33 +86,13 @@ export default function Event(props: Props) {
         <section css={subTitleStyles}>
           <div css={rowStyles}>
             <Link href={props.event.leftLink}>
-              <a
-                style={{
-                  width: '45%',
-                  fontStyle: 'italic',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  textAlign: 'left',
-                }}
-                target="_blank"
-              >
+              <a target="_blank">
                 <Image src={props.event.leftLogo} width="50px" height="50px" />
                 <p>{props.event.leftHeadline}</p>
               </a>
             </Link>
             <Link href={props.event.rightLink}>
-              <a
-                style={{
-                  width: '45%',
-                  fontStyle: 'italic',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  textAlign: 'left',
-                }}
-                target="_blank"
-              >
+              <a target="_blank">
                 <Image src={props.event.rightLogo} width="50px" height="50px" />
                 <p>{props.event.rightHeadline}</p>
               </a>
