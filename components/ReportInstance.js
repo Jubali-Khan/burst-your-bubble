@@ -104,34 +104,40 @@ export default function ReportInstance(props) {
   // Reasons to report:
   // 1. offensive and/or disrespectful language
   // 2. hate language
-  // 3. spam, scam or fraud
+  // 3. spam or scam
   // 4. incompliance with comment guidelines
   const reportCodes = props.rep.reportedFor;
-  console.log('typeof reportCodes: ', typeof reportCodes);
-  console.log(' reportCodes: ', reportCodes);
-  let reportReasons = '';
-  reportCodes.find((entry) => entry === 1) !== undefined
-    ? (reportReasons = '1. offensive and/or disrespectful language')
-    : console.log(' ');
-  reportCodes.find((entry) => entry === 2) !== undefined
-    ? (reportReasons = reportReasons + '\n2. hate language')
-    : console.log(' ');
-  reportCodes.find((entry) => entry === 3) !== undefined
-    ? (reportReasons = reportReasons + '\n3. spam or scam')
-    : console.log(' ');
-  reportCodes.find((entry) => entry === 4) !== undefined
-    ? (reportReasons =
-        reportReasons + '\n4. incompliance with comment guidelines')
-    : console.log(' ');
-  console.log(props.rep.timesReported);
+
+  const reason1 =
+    reportCodes.find((entry) => entry === 1) !== undefined
+      ? '\n1. offensive and/or disrespectful language'
+      : '';
+  const reason2 =
+    reportCodes.find((entry) => entry === 2) !== undefined
+      ? '\n2. hate language'
+      : '';
+  const reason3 =
+    reportCodes.find((entry) => entry === 3) !== undefined
+      ? '\n3. spam or scam'
+      : '';
+  const reason4 =
+    reportCodes.find((entry) => entry === 4) !== undefined
+      ? '\n4. incompliance with comment guidelines'
+      : '';
+
+  const reportReasons = ''
+    .concat(reason1)
+    .concat(reason2)
+    .concat(reason3)
+    .concat(reason4);
   return (
     <div css={reportContainer}>
       <section className="comment">{props.rep.comment}</section>
       <hr />
       <section className="why">
         {props.rep.timesReported > 1
-          ? `reported ${props.rep.timesReported} times for:`
-          : `reported ${props.rep.timesReported} time for:`}
+          ? `reported ${props.rep.timesReported} times for:\t`
+          : `reported ${props.rep.timesReported} time for:\t`}
         <Markdown>{reportReasons}</Markdown>
       </section>
       <hr />

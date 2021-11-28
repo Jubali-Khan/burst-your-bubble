@@ -281,7 +281,7 @@ export default function OpinionComment(props) {
               >
                 <option value="1">offensive or disrespectful language</option>
                 <option value="2">hate language</option>
-                <option value="3">spam</option>
+                <option value="3">spam or scam</option>
                 <option value="4">incompliance with comment guidelines</option>
               </select>
               <button onClick={reportHandler}>DONE</button>
