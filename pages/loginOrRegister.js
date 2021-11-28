@@ -23,7 +23,7 @@ const formStyles = css`
     border: 1px solid grey;
     border-radius: 5px;
 
-    width: 200px;
+    width: 180px;
     height: 25px;
   }
 
@@ -180,7 +180,7 @@ export default function LoginOrReg() {
                 border: '1px solid grey',
                 borderRadius: '5px',
                 height: '25px',
-                width: '200px',
+                width: '180px',
               }}
               value={userName}
               onChange={(e) => setUserName(e.currentTarget.value)}

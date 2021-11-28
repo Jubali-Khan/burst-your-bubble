@@ -25,7 +25,7 @@ const formStyles = css`
     border: 1px solid grey;
     border-radius: 5px;
 
-    width: 200px;
+    width: 180px;
     height: 25px;
   }
 

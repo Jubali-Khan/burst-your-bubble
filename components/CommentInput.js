@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { useRouter } from 'next/dist/client/router';
-import Image from 'next/image';
 import { useState } from 'react';
 
 const divStyle = css`
@@ -27,7 +26,7 @@ const divStyle = css`
     border: 1px solid grey;
     border-radius: 5px;
 
-    width: 20%;
+    width: 25%;
     height: 25px;
   }
   input {
@@ -156,7 +155,7 @@ export default function CommentInput(props) {
         />
 
         <select
-          style={{ display: `${display}` }}
+          style={{ display: display }}
           value={conjChoice}
           onChange={(e) => setConjChoice(e.currentTarget.value)}
         >
@@ -167,7 +166,7 @@ export default function CommentInput(props) {
           <option value="since">since</option>
         </select>
         <input
-          style={{ display: `${display}` }}
+          style={{ display: display }}
           value={premise}
           onChange={(e) => setPremise(e.currentTarget.value)}
         />

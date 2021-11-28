@@ -62,7 +62,7 @@ export default function CommentSection(props: Props) {
     <>
       <div>
         {messages.map((err) => (
-          <span key={`${err.message}`}>{err.message}</span>
+          <span key={err.message}>{err.message}</span>
         ))}
       </div>
       <div css={containerStyles} style={{ fontSize: props.textSize }}>
@@ -71,7 +71,7 @@ export default function CommentSection(props: Props) {
             userType={props.userType}
             userInfo={props.userInfo}
             setMessages={setMessages}
-            key={`${comment.id}`}
+            key={comment.id}
             comment={comment}
             eventTitle={props.eventTitle}
           />

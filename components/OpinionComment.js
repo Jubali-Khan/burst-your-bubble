@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { useRouter } from 'next/dist/client/router';
-import Image from 'next/image';
 import { useState } from 'react';
 
 const divStyle = css`
@@ -27,7 +26,7 @@ const divStyle = css`
     border: 1px solid grey;
     border-radius: 5px;
 
-    width: 15%;
+    width: 25%;
     height: 23px;
   }
   input {
@@ -130,12 +129,6 @@ export default function OpinionComment(props) {
   }
 
   const [reportView, setReportView] = useState(false);
-  let reportingDisplay = 'none';
-  if (!reportView) {
-    reportingDisplay = 'none';
-  } else if (reportView) {
-    reportingDisplay = 'block';
-  }
 
   const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
   //
@@ -296,7 +289,6 @@ export default function OpinionComment(props) {
   return (
     <div css={divStyle}>
       <form css={rowStyle} onSubmit={(e) => e.preventDefault()}>
-        <Image src={'/../public/favicon.ico'} height="25px" width="25px" />
         <span>I</span>
         <select
           value={verbChoice}
@@ -316,7 +308,7 @@ export default function OpinionComment(props) {
         />
 
         <select
-          style={{ display: `${premisesDisplay}` }}
+          style={{ display: premisesDisplay }}
           value={conjChoice}
           onChange={(e) => setConjChoice(e.currentTarget.value)}
         >
@@ -327,7 +319,7 @@ export default function OpinionComment(props) {
           <option value="since">since</option>
         </select>
         <input
-          style={{ display: `${premisesDisplay}` }}
+          style={{ display: premisesDisplay }}
           value={premise}
           onChange={(e) => setPremise(e.currentTarget.value)}
         />
