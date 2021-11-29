@@ -80,6 +80,10 @@ const containerStyles = css`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  button {
+    max-height: 23px;
+  }
 `;
 
 const borderAndShadow = css`

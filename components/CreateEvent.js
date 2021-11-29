@@ -127,7 +127,7 @@ export default function CreateEvent(props) {
   return (
     <form
       css={formStyles}
-      onSubmit={async (event) => {
+      onSubmit={(event) => {
         event.preventDefault();
       }}
     >

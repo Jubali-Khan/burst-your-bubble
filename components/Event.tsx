@@ -24,7 +24,6 @@ const containerStyles = css`
     text-decoration: none;
     color: inherit;
     :hover {
-      background-color: #f7ecd2;
       border-radius: 10px;
       text-decoration: underline;
     }

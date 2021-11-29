@@ -92,6 +92,7 @@ export default function CommentSection(props: Props) {
           </div>
         )}
       </div>
+      <br />
     </>
   );
 }
