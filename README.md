@@ -13,6 +13,7 @@
 - Registered users can:
   - view what events/topics they contributed to (profile page)
   - update their username and email (profile page)
+  - (soon) view notifications (hence all_notifications table below)
 - Admin can:
   - post new events/topics to the website's home page
   - delete comments reported
