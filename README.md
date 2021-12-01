@@ -37,4 +37,4 @@
 
   - Event page wireframe
 
-    ![This is an screenshot of the event page wireframe](https://res.cloudinary.com/dvnaeajid/image/upload/v1638400840/Screen_Shot_2021-12-02_at_00.20.29_avltf3.png)
+    ![This is an screenshot of the event page wireframe](https://res.cloudinary.com/dvnaeajid/image/upload/v1638401221/Screen_Shot_2021-12-02_at_00.26.41_u2botp.png)
