@@ -97,7 +97,7 @@ export default function EditSpace(props) {
         />
 
         <select
-          style={{ display: props.premisesDisplay }}
+          style={{ display: props.premiseDisplay }}
           value={props.conjChoice}
           onChange={(e) => props.setConjChoice(e.currentTarget.value)}
         >
@@ -108,14 +108,14 @@ export default function EditSpace(props) {
           <option value="since">since</option>
         </select>
         <input
-          style={{ display: props.premisesDisplay }}
+          style={{ display: props.premiseDisplay }}
           value={props.premise}
           onChange={(e) => props.setPremise(e.currentTarget.value)}
         />
 
         <button
           onClick={() => {
-            props.setEditView(!props.editView);
+            props.setShowPremise(!props.showPremise);
           }}
         >
           {props.premisesDisplay === 'none' ? '+PREMISE' : '-'}
@@ -124,7 +124,7 @@ export default function EditSpace(props) {
         <button onClick={props.updateHandler}>UPDATE</button>
         <button
           onClick={() => {
-            props.setEditToggle(false);
+            props.setEditingMode(false);
             props.cancelEditHandler();
           }}
         >

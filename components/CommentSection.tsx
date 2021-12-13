@@ -68,15 +68,7 @@ export default function CommentSection(props: Props) {
       </div>
       <div css={containerStyles} style={{ fontSize: props.textSize }}>
         {comments.map((comment) => (
-          // <NewOpinionComment
-          //   userType={props.userType}
-          //   userInfo={props.userInfo}
-          //   setMessages={setMessages}
-          //   key={comment.id}
-          //   comment={comment}
-          //   eventTitle={props.eventTitle}
-          // />
-          <OpinionComment
+          <NewOpinionComment
             userType={props.userType}
             userInfo={props.userInfo}
             setMessages={setMessages}
@@ -84,6 +76,14 @@ export default function CommentSection(props: Props) {
             comment={comment}
             eventTitle={props.eventTitle}
           />
+          // <OpinionComment
+          //   userType={props.userType}
+          //   userInfo={props.userInfo}
+          //   setMessages={setMessages}
+          //   key={comment.id}
+          //   comment={comment}
+          //   eventTitle={props.eventTitle}
+          // />
         ))}
 
         {props.userInfo ? (

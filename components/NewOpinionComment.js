@@ -45,24 +45,25 @@ export default function OpinionComment(props) {
   const [conjChoice, setConjChoice] = useState(props.comment.conjChoice);
   const [premise, setPremise] = useState(props.comment.premise);
 
-  const [reportedFor, setReportedFor] = useState('1');
-
   // editingMode is used to change what OpinionComment returns
   const [editingMode, setEditingMode] = useState(false);
-
-  const [editView, setEditView] = useState(premise === '' ? false : true);
-  let [bgcolor, setBgcolor] = useState('white');
-  let premisesDisplay = 'none';
-  if (!editView) {
-    premisesDisplay = 'none';
-  } else if (editView) {
-    premisesDisplay = 'block';
+  const [showPremise, setShowPremise] = useState(premise === '' ? false : true);
+  let premiseDisplay = 'none';
+  if (!showPremise) {
+    premiseDisplay = 'none';
+  } else {
+    premiseDisplay = 'block';
   }
-
-  const [reportView, setReportView] = useState(false);
-
-  const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
   //
+
+  //
+  const [reportedFor, setReportedFor] = useState('1');
+  const [bgcolor, setBgcolor] = useState('white');
+  const [showReportDropdown, setShowReportDropdown] = useState(false);
+  //
+
+  //
+  const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
   function redirectToLoginOrReg() {
     router.push(returnToLink);
     return;
@@ -104,7 +105,7 @@ export default function OpinionComment(props) {
         argument: argument,
         conjChoice: conjChoice,
         premise: premise,
-        toggle: editView,
+        toggle: showPremise,
       }),
     });
     const update = await response.json();
@@ -163,91 +164,66 @@ export default function OpinionComment(props) {
       }
       return;
     } else if (response.status === 200) {
-      setReportView(!reportView);
+      setShowReportDropdown(!showReportDropdown);
       setBgcolor('lightgreen');
     }
   }
 
-  /*
-if logged in {
   if (props.comment.userId === props.userInfo.id) {
-    EDIT -> EditSpace
+    // EDIT -> EditSpace
     if (!editingMode) {
-      return
-      <div css={borderAndShadow}>
-      <div css={containerStyles}>
-      {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
-          {premise !== '' ? premise : ''}
-      <button className="editB" onClick={() => setEditingMode(!editToggle)}> EDIT </button>
-      </div>
-      </div>
-    } else {
-      return <EditSpace />;
-    }
-  } else if (props.comment.userId !== props.userInfo.id) {
-    REPORT
-    return (
-      <div css={borderAndShadow}>
-        <div css={containerStyles}>
-          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
-          {premise !== '' ? premise : ''}
-
-          <button style={{ backgroundColor: bgcolor }} className="reportB" onClick={() => setReportView(!reportView)}>
-              {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
-            </button>
-        </div>
-        <div>
-          {reportView === false ? (
-            ''
-          ) : (
-            <div>
-              <hr />
-              report for{' '}
-              <select
-                value={reportedFor}
-                onChange={(e) => setReportedFor(e.currentTarget.value)}
-              >
-                <option value="1">offensive or disrespectful language</option>
-                <option value="2">hate language</option>
-                <option value="3">spam or scam</option>
-                <option value="4">incompliance with comment guidelines</option>
-              </select>
-              <button onClick={reportHandler}>DONE</button>
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  }
-}
-*/
-
-  // original UI for the user's comment
-  if (!editingMode) {
-    return (
-      <div css={borderAndShadow}>
-        <div css={containerStyles}>
-          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
-          {premise !== '' ? premise : ''}
-          {props.comment.userId === props.userInfo.id ? (
+      return (
+        <div css={borderAndShadow}>
+          <div css={containerStyles}>
+            {userName} {verbChoice} {argument}{' '}
+            {premise !== '' ? conjChoice : ''} {premise !== '' ? premise : ''}
             <button
               className="editB"
               onClick={() => setEditingMode(!editingMode)}
             >
               EDIT
             </button>
-          ) : (
-            <button
-              style={{ backgroundColor: bgcolor }}
-              className="reportB"
-              onClick={() => setReportView(!reportView)}
-            >
-              {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
-            </button>
-          )}
+          </div>
+        </div>
+      );
+    } else {
+      // (editingMode)
+      return (
+        <EditSpace
+          verbChoice={verbChoice}
+          setVerbChoice={setVerbChoice}
+          argument={argument}
+          setArgument={setArgument}
+          conjChoice={conjChoice}
+          setConjChoice={setConjChoice}
+          premise={premise}
+          setPremise={setPremise}
+          setEditingMode={setEditingMode}
+          cancelEditHandler={cancelEditHandler}
+          setShowPremise={setShowPremise}
+          showPremise={showPremise}
+          updateHandler={updateHandler}
+          premiseDisplay={premiseDisplay}
+        />
+      );
+    }
+  } else if (props.comment.userId !== props.userInfo.id) {
+    // REPORT
+    return (
+      <div css={borderAndShadow}>
+        <div css={containerStyles}>
+          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
+          {premise !== '' ? premise : ''}
+          <button
+            style={{ backgroundColor: bgcolor }}
+            className="reportB"
+            onClick={() => setShowReportDropdown(!showReportDropdown)}
+          >
+            {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
+          </button>
         </div>
         <div>
-          {reportView === false ? (
+          {showReportDropdown === false ? (
             ''
           ) : (
             <div>
@@ -269,26 +245,6 @@ if logged in {
       </div>
     );
   }
-
-  // editing UI for the user's comment (editingMode is true)
-  return (
-    <EditSpace
-      verbChoice={verbChoice}
-      setVerbChoice={setVerbChoice}
-      argument={argument}
-      setArgument={setArgument}
-      conjChoice={conjChoice}
-      setConjChoice={setConjChoice}
-      premise={premise}
-      setPremise={setPremise}
-      setEditingMode={setEditingMode}
-      cancelEditHandler={cancelEditHandler}
-      setEditView={setEditView}
-      editView={editView}
-      updateHandler={updateHandler}
-      premisesDisplay={premisesDisplay}
-    />
-  );
 }
 
 /*
