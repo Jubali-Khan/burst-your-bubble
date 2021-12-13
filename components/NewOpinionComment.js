@@ -48,12 +48,6 @@ export default function OpinionComment(props) {
   // editingMode is used to change what OpinionComment returns
   const [editingMode, setEditingMode] = useState(false);
   const [showPremise, setShowPremise] = useState(premise === '' ? false : true);
-  let premiseDisplay = 'none';
-  if (!showPremise) {
-    premiseDisplay = 'none';
-  } else {
-    premiseDisplay = 'block';
-  }
   //
 
   //
@@ -82,47 +76,7 @@ export default function OpinionComment(props) {
   }
   //
 
-  //
   // Someone's logged in:
-  function cancelEditHandler() {
-    setVerbChoice(props.comment.verbChoice);
-    setArgument(props.comment.argument);
-    setConjChoice(props.comment.conjChoice);
-    setPremise(props.comment.premise);
-  }
-
-  async function updateHandler() {
-    // ping an api route
-    const response = await fetch(`/api/comments/updateComment`, {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        commentId: props.comment.id,
-        userName: userName,
-        verbChoice: verbChoice,
-        argument: argument,
-        conjChoice: conjChoice,
-        premise: premise,
-        toggle: showPremise,
-      }),
-    });
-    const update = await response.json();
-
-    if ('errors' in update) {
-      props.setMessages(update.errors);
-      if (response.status === 403) {
-        redirectToLoginOrReg();
-      }
-      return;
-    } else if (response.status === 200) {
-      props.setMessages([{ message: 'comment updated successfully' }]);
-      setEditingMode(false);
-      return;
-    }
-  }
-
   async function reportHandler() {
     // create commen to be inserted into report
     let reportedComment;
@@ -187,9 +141,10 @@ export default function OpinionComment(props) {
         </div>
       );
     } else {
-      // (editingMode)
+      // if (editingMode)
       return (
         <EditSpace
+          comment={props.comment}
           verbChoice={verbChoice}
           setVerbChoice={setVerbChoice}
           argument={argument}
@@ -199,11 +154,10 @@ export default function OpinionComment(props) {
           premise={premise}
           setPremise={setPremise}
           setEditingMode={setEditingMode}
-          cancelEditHandler={cancelEditHandler}
           setShowPremise={setShowPremise}
           showPremise={showPremise}
-          updateHandler={updateHandler}
-          premiseDisplay={premiseDisplay}
+          setMessages={props.setMessages}
+          redirectToLoginOrReg={redirectToLoginOrReg}
         />
       );
     }
