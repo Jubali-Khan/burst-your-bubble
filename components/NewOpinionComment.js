@@ -1,80 +1,7 @@
 import { css } from '@emotion/react';
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
-
-const divStyle = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-family: Arial, Helvetica, sans-serif;
-
-  max-height: 20vh;
-  background-color: white;
-  padding: 1%;
-  margin: 0.5%;
-
-  border: 1px solid grey;
-  border-radius: 10px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
-  span {
-    margin: 0.5%;
-  }
-
-  select {
-    margin: 0.5%;
-    border: 1px solid grey;
-    border-radius: 5px;
-
-    width: 25%;
-    height: 23px;
-  }
-  input {
-    margin: 0.5%;
-    border: 1px solid grey;
-    border-radius: 5px;
-
-    width: 30%;
-    height: 19px;
-  }
-  button {
-    margin: 1%;
-    background-color: white;
-    border: 1px solid grey;
-    border-radius: 5px;
-
-    height: 23px;
-    :hover {
-      background-color: #c5d0d5;
-    }
-  }
-  .add {
-    margin: 0.5%;
-    padding: 0.4%;
-    font-size: small;
-    border-radius: 5px;
-
-    :hover {
-      background-color: lightgray;
-    }
-  }
-  .cancel {
-    margin: 0.5%;
-    padding: 0.4%;
-    border-radius: 5px;
-
-    :hover {
-      background-color: lightgray;
-    }
-  }
-`;
-
-const rowStyle = css`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-`;
+import EditSpace from './EditSpace';
 
 const containerStyles = css`
   display: flex;
@@ -111,7 +38,7 @@ export default function OpinionComment(props) {
   console.log('props.userInfo: ', props.userInfo);
   console.log('props.userType: ', props.userType);
 
-  const [userName, setUserName] = useState(props.comment.userName);
+  const userName = props.comment.userName;
   const [verbChoice, setVerbChoice] = useState(props.comment.verbChoice);
   const [argument, setArgument] = useState(props.comment.argument);
 
@@ -241,8 +168,62 @@ export default function OpinionComment(props) {
     }
   }
 
+  /*
+if logged in {
+  if (props.comment.userId === props.userInfo.id) {
+    EDIT -> EditSpace
+    if (!editingMode) {
+      return
+      <div css={borderAndShadow}>
+      <div css={containerStyles}>
+      {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
+          {premise !== '' ? premise : ''}
+      <button className="editB" onClick={() => setEditingMode(!editToggle)}> EDIT </button>
+      </div>
+      </div>
+    } else {
+      return <EditSpace />;
+    }
+  } else if (props.comment.userId !== props.userInfo.id) {
+    REPORT
+    return (
+      <div css={borderAndShadow}>
+        <div css={containerStyles}>
+          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
+          {premise !== '' ? premise : ''}
+
+          <button style={{ backgroundColor: bgcolor }} className="reportB" onClick={() => setReportView(!reportView)}>
+              {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
+            </button>
+        </div>
+        <div>
+          {reportView === false ? (
+            ''
+          ) : (
+            <div>
+              <hr />
+              report for{' '}
+              <select
+                value={reportedFor}
+                onChange={(e) => setReportedFor(e.currentTarget.value)}
+              >
+                <option value="1">offensive or disrespectful language</option>
+                <option value="2">hate language</option>
+                <option value="3">spam or scam</option>
+                <option value="4">incompliance with comment guidelines</option>
+              </select>
+              <button onClick={reportHandler}>DONE</button>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+}
+*/
+
   // original UI for the user's comment
-  if (editingMode === false) {
+  if (!editingMode) {
     return (
       <div css={borderAndShadow}>
         <div css={containerStyles}>
@@ -291,62 +272,22 @@ export default function OpinionComment(props) {
 
   // editing UI for the user's comment (editingMode is true)
   return (
-    <div css={divStyle}>
-      <form css={rowStyle} onSubmit={(e) => e.preventDefault()}>
-        <span>I</span>
-        <select
-          value={verbChoice}
-          onChange={(e) => {
-            setVerbChoice(e.currentTarget.value);
-          }}
-        >
-          <option value="believes">believe</option>
-          <option value="thinks">think</option>
-          <option value="agrees">agree</option>
-          <option value="disagrees">disagree</option>
-        </select>
-
-        <input
-          value={argument}
-          onChange={(e) => setArgument(e.currentTarget.value)}
-        />
-
-        <select
-          style={{ display: premisesDisplay }}
-          value={conjChoice}
-          onChange={(e) => setConjChoice(e.currentTarget.value)}
-        >
-          <option value="because">because</option>
-          <option value="considering">considering</option>
-          <option value="as">as</option>
-          <option value="due to">due to</option>
-          <option value="since">since</option>
-        </select>
-        <input
-          style={{ display: premisesDisplay }}
-          value={premise}
-          onChange={(e) => setPremise(e.currentTarget.value)}
-        />
-
-        <button
-          onClick={() => {
-            setEditView(!editView);
-          }}
-        >
-          {premisesDisplay === 'none' ? '+PREMISE' : '-'}
-        </button>
-
-        <button onClick={updateHandler}>UPDATE</button>
-        <button
-          onClick={() => {
-            setEditingMode(false);
-            cancelEditHandler();
-          }}
-        >
-          &#10006;
-        </button>
-      </form>
-    </div>
+    <EditSpace
+      verbChoice={verbChoice}
+      setVerbChoice={setVerbChoice}
+      argument={argument}
+      setArgument={setArgument}
+      conjChoice={conjChoice}
+      setConjChoice={setConjChoice}
+      premise={premise}
+      setPremise={setPremise}
+      setEditingMode={setEditingMode}
+      cancelEditHandler={cancelEditHandler}
+      setEditView={setEditView}
+      editView={editView}
+      updateHandler={updateHandler}
+      premisesDisplay={premisesDisplay}
+    />
   );
 }
 

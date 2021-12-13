@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import Link from 'next/link';
 import { useState } from 'react';
 import CommentInput from './CommentInput';
+import NewOpinionComment from './NewOpinionComment';
 import OpinionComment from './OpinionComment';
 
 const containerStyles = css`
@@ -67,6 +68,14 @@ export default function CommentSection(props: Props) {
       </div>
       <div css={containerStyles} style={{ fontSize: props.textSize }}>
         {comments.map((comment) => (
+          // <NewOpinionComment
+          //   userType={props.userType}
+          //   userInfo={props.userInfo}
+          //   setMessages={setMessages}
+          //   key={comment.id}
+          //   comment={comment}
+          //   eventTitle={props.eventTitle}
+          // />
           <OpinionComment
             userType={props.userType}
             userInfo={props.userInfo}
