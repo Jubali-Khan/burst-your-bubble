@@ -177,4 +177,4 @@ export default function EditSpace(props) {
       </form>
     </div>
   );
-} // Update to premise conditional rendering in EditSpace
+}

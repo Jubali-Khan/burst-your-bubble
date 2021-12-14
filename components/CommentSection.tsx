@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import CommentInput from './CommentInput';
 import NewOpinionComment from './NewOpinionComment';
-import OpinionComment from './OpinionComment';
 
 const containerStyles = css`
   border: 1px solid grey;
@@ -76,14 +75,6 @@ export default function CommentSection(props: Props) {
             comment={comment}
             eventTitle={props.eventTitle}
           />
-          // <OpinionComment
-          //   userType={props.userType}
-          //   userInfo={props.userInfo}
-          //   setMessages={setMessages}
-          //   key={comment.id}
-          //   comment={comment}
-          //   eventTitle={props.eventTitle}
-          // />
         ))}
 
         {props.userInfo ? (

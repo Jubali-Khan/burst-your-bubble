@@ -161,44 +161,43 @@ export default function OpinionComment(props) {
         />
       );
     }
-  } else if (props.comment.userId !== props.userInfo.id) {
-    // REPORT
-    return (
-      <div css={borderAndShadow}>
-        <div css={containerStyles}>
-          {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
-          {premise !== '' ? premise : ''}
-          <button
-            style={{ backgroundColor: bgcolor }}
-            className="reportB"
-            onClick={() => setShowReportDropdown(!showReportDropdown)}
-          >
-            {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
-          </button>
-        </div>
-        <div>
-          {showReportDropdown === false ? (
-            ''
-          ) : (
-            <div>
-              <hr />
-              report for{' '}
-              <select
-                value={reportedFor}
-                onChange={(e) => setReportedFor(e.currentTarget.value)}
-              >
-                <option value="1">offensive or disrespectful language</option>
-                <option value="2">hate language</option>
-                <option value="3">spam or scam</option>
-                <option value="4">incompliance with comment guidelines</option>
-              </select>
-              <button onClick={reportHandler}>DONE</button>
-            </div>
-          )}
-        </div>
-      </div>
-    );
   }
+  // REPORT
+  return (
+    <div css={borderAndShadow}>
+      <div css={containerStyles}>
+        {userName} {verbChoice} {argument} {premise !== '' ? conjChoice : ''}{' '}
+        {premise !== '' ? premise : ''}
+        <button
+          style={{ backgroundColor: bgcolor }}
+          className="reportB"
+          onClick={() => setShowReportDropdown(!showReportDropdown)}
+        >
+          {bgcolor === 'white' ? 'REPORT' : 'REPORTED'}
+        </button>
+      </div>
+      <div>
+        {showReportDropdown === false ? (
+          ''
+        ) : (
+          <div>
+            <hr />
+            report for{' '}
+            <select
+              value={reportedFor}
+              onChange={(e) => setReportedFor(e.currentTarget.value)}
+            >
+              <option value="1">offensive or disrespectful language</option>
+              <option value="2">hate language</option>
+              <option value="3">spam or scam</option>
+              <option value="4">incompliance with comment guidelines</option>
+            </select>
+            <button onClick={reportHandler}>DONE</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 /*
