@@ -56,7 +56,7 @@ type Err = {
 export default function CommentSection(props: Props) {
   const [messages, setMessages] = useState<Err>([]);
   const [comments, setComments] = useState(props.comments);
-  console.log('comments SV: ', comments);
+  // console.log('comments SV: ', comments);
   const returnToLink = `/loginOrRegister?returnTo=events/${props.eventTitle}`;
   return (
     <>

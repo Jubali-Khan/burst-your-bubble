@@ -35,8 +35,8 @@ export default function OpinionComment(props) {
   const router = useRouter();
 
   // console.log('props.comment: ', props.comment);
-  console.log('props.userInfo: ', props.userInfo);
-  console.log('props.userType: ', props.userType);
+  // console.log('props.userInfo: ', props.userInfo);
+  // console.log('props.userType: ', props.userType);
 
   const userName = props.comment.userName;
   const [verbChoice, setVerbChoice] = useState(props.comment.verbChoice);

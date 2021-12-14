@@ -86,12 +86,6 @@ export default function CommentInput(props) {
   const [conjChoice, setConjChoice] = useState('because');
   const [premise, setPremise] = useState('');
 
-  let display = 'none';
-  if (!toggle) {
-    display = 'none';
-  } else if (toggle) {
-    display = 'block';
-  }
   function redirectToLoginOrReg() {
     router.push(returnToLink);
     return;
@@ -153,31 +147,38 @@ export default function CommentInput(props) {
           value={argument}
           onChange={(e) => setArgument(e.currentTarget.value)}
         />
-
-        <select
-          style={{ display: display }}
-          value={conjChoice}
-          onChange={(e) => setConjChoice(e.currentTarget.value)}
-        >
-          <option value="because">because</option>
-          <option value="considering">considering</option>
-          <option value="as">as</option>
-          <option value="due to">due to</option>
-          <option value="since">since</option>
-        </select>
-        <input
-          style={{ display: display }}
-          value={premise}
-          onChange={(e) => setPremise(e.currentTarget.value)}
-        />
+        {toggle ? (
+          <>
+            <select
+              value={conjChoice}
+              onChange={(e) => setConjChoice(e.currentTarget.value)}
+            >
+              <option value="because">because</option>
+              <option value="considering">considering</option>
+              <option value="as">as</option>
+              <option value="due to">due to</option>
+              <option value="since">since</option>
+            </select>
+            <input
+              value={premise}
+              onChange={(e) => setPremise(e.currentTarget.value)}
+            />
+          </>
+        ) : (
+          ''
+        )}
 
         <button
           className="add"
           onClick={() => {
             setToggle(!toggle);
+            if (toggle) {
+              setConjChoice('');
+              setPremise('');
+            }
           }}
         >
-          {display === 'none' ? '+PREMISE' : '-'}
+          {toggle ? '-' : '+PREMISE'}
         </button>
 
         <button className="post" onClick={postingHandler}>
