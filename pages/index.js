@@ -11,7 +11,7 @@ const homePage = css`
   }
 `;
 export default function Home(props) {
-  console.log('props.events: ', props.events);
+  // console.log('props.events: ', props.events);
   return (
     <div css={homePage}>
       <Layout userType={props.userType} userInfo={props.userInfo}>
@@ -36,8 +36,9 @@ export async function getServerSideProps(context) {
   );
   const sessionToken = context.req.cookies.sessionToken;
   const userType = await getRoleByToken(sessionToken);
-  console.log('userType in gSSP index: ', userType);
   const userInfo = await getUserinfoByToken(sessionToken);
+  // console.log('userType in gSSP index: ', userType);
+  // console.log('userInfo in gSSP index: ', userInfo);
 
   const events = await getEvents();
 

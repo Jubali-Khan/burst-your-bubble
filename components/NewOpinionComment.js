@@ -76,7 +76,7 @@ export default function OpinionComment(props) {
   }
   //
 
-  // Someone's logged in:
+  // Someone's logged in..
   async function reportHandler() {
     // create commen to be inserted into report
     let reportedComment;
@@ -123,6 +123,7 @@ export default function OpinionComment(props) {
     }
   }
 
+  // .. and it's their comment:
   if (props.comment.userId === props.userInfo.id) {
     // EDIT -> EditSpace
     if (!editingMode) {
@@ -162,6 +163,8 @@ export default function OpinionComment(props) {
       );
     }
   }
+
+  // .. and it's someone else's comment:
   // REPORT
   return (
     <div css={borderAndShadow}>
@@ -199,7 +202,3 @@ export default function OpinionComment(props) {
     </div>
   );
 }
-
-/*
-small problem: adding info to the premise -> clicking on - because you don't want it no more -> the info being sent to the db anyway. - might need to reset the 2 fields.
-*/

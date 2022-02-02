@@ -68,7 +68,7 @@ export async function getEventByTitle(eventTitle) {
   WHERE
     event_title = ${eventTitle}
   `;
-  console.log('event in getEventByTitle: ', event[0]);
+  // console.log('event in getEventByTitle: ', event[0]);
   return camelcaseKeys(event[0]);
 }
 export async function getEventsByUserID(UserID) {
@@ -92,7 +92,7 @@ export async function getEventsByUserID(UserID) {
     comments.event_id = events.id AND
     comments.user_id = ${UserID} LIMIT 1
   `;
-  console.log('events in DB: ', events);
+  // console.log('events in DB: ', events);
   return events.map((event) => camelcaseKeys(event));
 }
 
@@ -152,7 +152,7 @@ export async function getReportByCID(commentId) {
   WHERE
     comment_id=${commentId}
   `;
-  console.log('report[0] in DB: ', report[0]);
+  // console.log('report[0] in DB: ', report[0]);
   return camelcaseKeys(report[0]);
 }
 
@@ -171,7 +171,7 @@ export async function insertReport(
   RETURNING
     *
   `;
-  console.log('reportInserted in DB: ', reportInserted);
+  // console.log('reportInserted in DB: ', reportInserted);
   return camelcaseKeys(reportInserted[0]);
 }
 
@@ -245,7 +245,7 @@ export async function addReasons(reportId, newReasons) {
   WHERE
     id = ${reportId}
   `;
-  console.log('updatedReport in DB: ', updatedReport);
+  // console.log('updatedReport in DB: ', updatedReport);
   return camelcaseKeys(updatedReport);
 }
 
@@ -315,7 +315,7 @@ export async function insertComment(
     RETURNING
       *
     `;
-  console.log('insertedComment[0] in insertComment: ', insertedComment[0]);
+  // console.log('insertedComment[0] in insertComment: ', insertedComment[0]);
   return camelcaseKeys(insertedComment[0]);
 }
 
@@ -336,7 +336,7 @@ export async function updateCommentById(
     premise = ${premise}
   WHERE
     comments.id = ${id}`;
-  console.log('updatedComment in DB: ', updatedComment);
+  // console.log('updatedComment in DB: ', updatedComment);
   return camelcaseKeys(updatedComment);
 }
 
@@ -425,7 +425,7 @@ export async function getUsernameByID(id) {
   WHERE
     users.id = ${id}
   `;
-  console.log('username in getUsernamebyid: ', username);
+  // console.log('username in getUsernamebyid: ', username);
   return camelcaseKeys(username);
 }
 
@@ -439,7 +439,7 @@ export async function updateUserInfo(email, username, userId) {
   WHERE
     id = ${userId}
 `;
-  console.log('updatedUser in DB: ', updatedUser);
+  // console.log('updatedUser in DB: ', updatedUser);
   return camelcaseKeys(updatedUser);
 }
 export async function updateUserInfoInComments(username, userId) {
@@ -451,7 +451,7 @@ export async function updateUserInfoInComments(username, userId) {
   WHERE
     comments.user_id = ${userId}
 `;
-  console.log('updatedUser in uUIICs: ', updatedUser);
+  // console.log('updatedUser in uUIICs: ', updatedUser);
   return camelcaseKeys(updatedUser);
 }
 
@@ -536,7 +536,7 @@ export async function isAdminSession(token) {
     users.role = 1 AND
     sessions.user_id = users.id
   `;
-  console.log('session in isAdminSession: ', session[0]);
+  // console.log('session in isAdminSession: ', session[0]);
   return camelcaseKeys(session[0]);
 }
 
@@ -559,7 +559,7 @@ export async function getRoleByToken(token) {
     (sessions.user_id = users.id AND
     (users.role = 1 OR users.role = 2))
   `;
-  // console.log('session in getSessionAndRole: ', session[0]);
+  // console.log('userType in getRoleByToken: ', session[0]);
   return camelcaseKeys(session[0]);
 }
 
@@ -577,6 +577,6 @@ export async function getUserinfoByToken(token) {
       sessions.token = ${token} AND
       sessions.user_id = users.id
     `;
-  console.log('userInfo in getUserinfoByToken: ', userInfo[0]);
+  // console.log('userInfo in getUserinfoByToken: ', userInfo[0]);
   return camelcaseKeys(userInfo[0]);
 }

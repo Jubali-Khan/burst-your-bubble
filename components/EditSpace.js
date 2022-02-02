@@ -75,11 +75,16 @@ const rowStyle = css`
 `;
 
 export default function EditSpace(props) {
-  function discardChanges() {
+  function discardAllChanges() {
     props.setVerbChoice(props.comment.verbChoice);
     props.setArgument(props.comment.argument);
     props.setConjChoice(props.comment.conjChoice);
     props.setPremise(props.comment.premise);
+  }
+  // only on update or cancellation:
+  function deletePremise() {
+    props.setConjChoice('');
+    props.setPremise('');
   }
   async function updateHandler() {
     // ping an api route
@@ -160,6 +165,7 @@ export default function EditSpace(props) {
         <button
           onClick={() => {
             props.setShowPremise(!props.showPremise);
+            deletePremise();
           }}
         >
           {props.showPremise ? '-' : '+PREMISE'}
@@ -169,7 +175,7 @@ export default function EditSpace(props) {
         <button
           onClick={() => {
             props.setEditingMode(false);
-            discardChanges();
+            discardAllChanges();
           }}
         >
           &#10006;
